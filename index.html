@@ -567,6 +567,10 @@ body.gate-hidden #gate{display:none}
 .gate-choices #gateOwner{box-shadow:5px 5px 0 #a855f7 !important}
 .gate-choices #gateOwner:hover{box-shadow:3px 3px 0 #a855f7 !important}
 html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
+.pass-wrap{position:relative;width:100%}
+.pass-wrap input{width:100%;padding-right:42px}
+.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer;padding:4px;line-height:1}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#1d9bf0;color:#fff;border-radius:50%;font-size:.7rem;font-weight:900;margin-left:4px;vertical-align:middle}
 </style>
 </head>
 <body class="gate-lock">
@@ -583,7 +587,10 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
       <button class="btn" id="gateOwner" type="button">Owner</button>
     </div>
     <div class="gate-owner-form" id="gateOwnerForm" style="display:none">
-      <input type="password" id="gateOwnerPass" placeholder="Password owner">
+      <div class="pass-wrap">
+        <input type="password" id="gateOwnerPass" placeholder="Password owner">
+        <button type="button" id="gateTogglePass" class="pass-eye" aria-label="Tampilkan/sembunyikan password">👁️</button>
+      </div>
       <button class="btn primary" id="gateOwnerSubmit" type="button">Masuk</button>
       <p class="gate-error" id="gateError" style="display:none">Password salah, coba lagi.</p>
     </div>
@@ -591,7 +598,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 </div>
 <header>
 <nav class="container">
-<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a><span class="owner-badge" id="ownerBadge" style="display:none">OWNER</span>
+<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span><span class="verified-badge" id="verifiedBadge" title="Owner Terverifikasi" style="display:none">✓</span></a><span class="owner-badge" id="ownerBadge" style="display:none">OWNER</span>
 <div class="links" id="links">
 <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
 <button id="theme-toggle" type="button">☀️ Beralih ke Mode Terang</button>
@@ -643,12 +650,15 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
   const gateOwnerSubmit=document.getElementById('gateOwnerSubmit');
   const gateError=document.getElementById('gateError');
   const ownerBadge=document.getElementById('ownerBadge');
+  const verifiedBadge=document.getElementById('verifiedBadge');
+  const gateTogglePass=document.getElementById('gateTogglePass');
   const OWNER_PASSWORD='mannzz123'; // GANTI password ini
 
   function masuk(isOwner){
     if(isOwner){
       document.body.classList.add('owner-mode');
       if(ownerBadge) ownerBadge.style.display='inline-block';
+      if(verifiedBadge) verifiedBadge.style.display='inline-flex';
       sessionStorage.setItem('mannzzRole','owner');
     } else {
       sessionStorage.setItem('mannzzRole','visitor');
@@ -679,6 +689,11 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
   });
   if(gateOwnerPass) gateOwnerPass.addEventListener('keydown',(e)=>{
     if(e.key==='Enter') gateOwnerSubmit.click();
+  });
+  if(gateTogglePass) gateTogglePass.addEventListener('click',()=>{
+    const isPass = gateOwnerPass.type === 'password';
+    gateOwnerPass.type = isPass ? 'text' : 'password';
+    gateTogglePass.textContent = isPass ? '🙈' : '👁️';
   });
 })();
 
