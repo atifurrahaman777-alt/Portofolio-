@@ -27,7 +27,7 @@ h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.04;letter-spacing:-.06em;margi
 h2{line-height:1.2}h3{margin:0}
 .intro{color:var(--muted);max-width:480px}
 .actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
-.art{height:360px;border:1px solid #7942bd;border-radius:24px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background:radial-gradient(ellipse,#7629be66,transparent 60%),linear-gradient(135deg,#141020,#090912);box-shadow:0 0 45px #7c3aed22}
+.art{height:360px;border:1px solid #7942bd;border-radius:24px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background: none !important;box-shadow:0 0 45px #7c3aed22}
 .art:before,.art:after{content:"";position:absolute;width:140%;height:3px;background:linear-gradient(90deg,transparent,#c084fc,transparent);transform:rotate(-28deg);box-shadow:0 0 20px #a855f7}
 .art:before{top:35%}.art:after{top:72%;transform:rotate(25deg)}
 .art-content{z-index:1;padding:20px}
@@ -75,7 +75,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-s
  form{grid-template-columns:1fr}textarea,form button,#status{grid-column:1}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
-.logo { display: inline-flex; align-items: center; gap: 10px; } .logo-mark, .logo-name { display: inline-block; }\n</style>
+.logo { display: inline-flex; align-items: center; gap: 10px; } .logo-mark, .logo-name { display: inline-block; }\n.art::before, .art::after { content: none !important; display: none !important; background: none !important; }\n</style>
 </head>
 <body>
 <header>
