@@ -184,6 +184,72 @@ body .purple, body h1 .purple {
   display: none !important;
 }
 
+
+/* Gold glow menyeluruh */
+:root {
+  --gold: #ffd700;
+  --gold-glow: 0 0 5px #ffd700, 0 0 12px #ffd70099, 0 0 24px #ffd70055;
+}
+body, body p, body li, body label, body input, body textarea,
+body h1, body h2, body h3, body a, body .title, body .footer,
+body .muted, body .eyebrow, body .intro, body .links,
+body .links a, body .project-body, body .quote, body .skill,
+body .tag, body .logo {
+  color: var(--gold) !important;
+  text-shadow: var(--gold-glow) !important;
+}
+body .purple, body h1 .purple {
+  color: var(--gold) !important;
+  -webkit-text-fill-color: var(--gold) !important;
+  text-shadow: var(--gold-glow) !important;
+}
+#header-whatsapp, #theme-toggle {
+  color: var(--gold) !important;
+  border: 1px solid var(--gold);
+  text-shadow: var(--gold-glow);
+}
+#theme-toggle {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  margin-top: 8px;
+  border-radius: 9px;
+  background: transparent;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+body.light-mode {
+  background: #fffdf2 !important;
+  color: #342800 !important;
+}
+body.light-mode,
+body.light-mode header,
+body.light-mode .links,
+body.light-mode .card,
+body.light-mode .project,
+body.light-mode .quote {
+  background-color: #fffdf2 !important;
+}
+body.light-mode p, body.light-mode li, body.light-mode h1,
+body.light-mode h2, body.light-mode h3, body.light-mode label,
+body.light-mode .title, body.light-mode .muted,
+body.light-mode .intro, body.light-mode .links a,
+body.light-mode .logo, body.light-mode .project-body,
+body.light-mode .quote, body.light-mode .skill,
+body.light-mode .footer {
+  color: #8a6500 !important;
+  -webkit-text-fill-color: #8a6500 !important;
+  text-shadow: 0 0 5px #ffd70099, 0 0 12px #ffd70044 !important;
+}
+body.light-mode input, body.light-mode textarea {
+  background: #ffffff !important;
+  color: #5a4300 !important;
+}
+body.light-mode #theme-toggle {
+  color: #8a6500 !important;
+}
+
 </style>
 </head>
 <body>
@@ -192,6 +258,7 @@ body .purple, body h1 .purple {
 <a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a>
 <div class="links" id="links">
 <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
+<button id="theme-toggle" type="button">☀️ Beralih ke Mode Terang</button>
 </div>
 <div class="header-actions">
 <button class="menu" id="menu" type="button" aria-label="Buka menu" aria-expanded="false">☰</button>
@@ -232,6 +299,16 @@ body .purple, body h1 .purple {
 <script>
 const links=document.querySelector('#links');
 const menu=document.querySelector('#menu');
+const themeToggle = document.querySelector('#theme-toggle');
+if (themeToggle) {
+  themeToggle.addEventListener('click', () => {
+    const light = document.body.classList.toggle('light-mode');
+    themeToggle.textContent = light
+      ? '🌙 Beralih ke Mode Gelap'
+      : '☀️ Beralih ke Mode Terang';
+  });
+}
+
 
 if (menu && links) {
   menu.addEventListener('click', () => {
