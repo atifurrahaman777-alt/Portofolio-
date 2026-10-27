@@ -146,6 +146,30 @@ p, li, label, .muted {
   color: #ffd76a !important;
 }
 
+
+/* Glowing gold typography */
+body, body p, body li, body label, body input, body textarea,
+body button, body a, body h1, body h2, body h3, body span,
+body b, body strong, body small, body .muted, body .tag,
+body .skill, body .project-body, body .footer {
+  color: #ffd700 !important;
+  text-shadow: 0 0 5px rgba(255, 215, 0, .42),
+               0 0 12px rgba(255, 190, 0, .18);
+}
+body input::placeholder,
+body textarea::placeholder {
+  color: #d9b94c !important;
+  text-shadow: none;
+}
+body .btn.primary,
+body .btn.whatsapp-cta {
+  color: #171006 !important;
+  text-shadow: none !important;
+  background: linear-gradient(135deg, #ffe98a, #d4a017, #ffdf55);
+  border-color: #ffdf55;
+  box-shadow: 0 0 12px rgba(255, 215, 0, .28);
+}
+
 </style>
 </head>
 <body>
@@ -153,7 +177,7 @@ p, li, label, .muted {
 <nav class="container">
 <a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a>
 <div class="links" id="links">
-<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a class="btn whatsapp-cta" href="https://wa.me/6282339899845" target="_blank" rel="noreferrer">↗ WhatsApp</a>
+<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a class="btn whatsapp-cta" href="https://wa.me/6282339899845" target="_blank" rel="noreferrer">WhatsApp</a>
 </div>
 <button class="menu" id="menu" aria-label="Buka menu">☰</button>
 </nav>
