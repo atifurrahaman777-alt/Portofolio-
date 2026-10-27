@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="gate-lock">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -566,9 +566,10 @@ body.gate-hidden #gate{display:none}
 .gate-owner-form input{border:2px solid #000 !important;background:#fff !important;color:#111 !important}
 .gate-choices #gateOwner{box-shadow:5px 5px 0 #a855f7 !important}
 .gate-choices #gateOwner:hover{box-shadow:3px 3px 0 #a855f7 !important}
+html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 </style>
 </head>
-<body>
+<body class="gate-lock">
 <div id="gate">
   <video id="gateVideo" src="mannzz-v56.mp4" autoplay muted loop playsinline></video>
   <div class="gate-overlay"></div>
@@ -653,6 +654,8 @@ body.gate-hidden #gate{display:none}
       sessionStorage.setItem('mannzzRole','visitor');
     }
     document.body.classList.add('gate-hidden');
+    document.documentElement.classList.remove('gate-lock');
+    document.body.classList.remove('gate-lock');
   }
 
   const existingRole=sessionStorage.getItem('mannzzRole');
