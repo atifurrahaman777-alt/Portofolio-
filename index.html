@@ -529,7 +529,8 @@ body.light-mode textarea {
 .gate-owner-form input{padding:12px;border-radius:9px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;width:100%}
 .gate-error{color:#ff6b6b;font-size:.85rem;margin:0}
 body.gate-hidden #gate{display:none}
-.owner-badge{display:inline-flex;align-items:center;gap:3px;background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);background-size:220% 100%;animation:ownerShimmer 3s linear infinite;color:#2a1e00;font-size:.65rem;font-weight:900;padding:4px 11px;border-radius:20px;margin-left:8px;vertical-align:middle;border:1px solid #fff4c2;box-shadow:0 0 10px #ffd70066,inset 0 1px 0 #fff8dc;letter-spacing:.04em}
+.owner-badge{display:inline-flex;align-items:center;gap:3px;background:#262636;color:#b9b9cc;font-size:.65rem;font-weight:800;padding:4px 11px;border-radius:20px;margin-left:8px;vertical-align:middle;border:1px solid #3d3d52}
+.owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);background-size:220% 100%;animation:ownerShimmer 3s linear infinite;color:#2a1e00;font-weight:900;border:1px solid #fff4c2;box-shadow:0 0 10px #ffd70066,inset 0 1px 0 #fff8dc;letter-spacing:.04em}
 @keyframes ownerShimmer{0%{background-position:0% 0}100%{background-position:220% 0}}
 .gate-choices #gateOwner{background:#fff !important;color:#111 !important;-webkit-text-fill-color:#111 !important;text-shadow:none !important;border:2px solid #000 !important;box-shadow:5px 5px 0 #ffd700 !important;transition:transform .12s ease, box-shadow .12s ease}
 .gate-choices #gateOwner:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700 !important}
@@ -572,6 +573,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 .pass-wrap input{width:100%;padding-right:42px}
 .pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer;padding:4px;line-height:1}
 .verified-badge{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;background:#25d366;color:#fff;border-radius:50%;font-size:.72rem;font-weight:900;margin-left:4px;vertical-align:middle;border:1.5px solid #fff;box-shadow:0 0 6px #25d36688}
+.verified-badge.owner-role{background:#1d9bf0;box-shadow:0 0 6px #1d9bf088}
 </style>
 </head>
 <body class="gate-lock">
@@ -599,7 +601,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 </div>
 <header>
 <nav class="container">
-<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span><span class="verified-badge" id="verifiedBadge" title="Owner Terverifikasi" style="display:none">✓</span></a><span class="owner-badge" id="ownerBadge" style="display:none">👑 OWNER</span>
+<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span><span class="verified-badge" id="verifiedBadge" title="Terverifikasi">✓</span></a><span class="owner-badge" id="ownerBadge">USER</span>
 <div class="links" id="links">
 <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
 <button id="theme-toggle" type="button">☀️ Beralih ke Mode Terang</button>
@@ -658,10 +660,12 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
   function masuk(isOwner){
     if(isOwner){
       document.body.classList.add('owner-mode');
-      if(ownerBadge) ownerBadge.style.display='inline-block';
-      if(verifiedBadge) verifiedBadge.style.display='inline-flex';
+      if(ownerBadge){ ownerBadge.textContent='👑 OWNER'; ownerBadge.classList.add('owner-role'); }
+      if(verifiedBadge) verifiedBadge.classList.add('owner-role');
       sessionStorage.setItem('mannzzRole','owner');
     } else {
+      if(ownerBadge){ ownerBadge.textContent='USER'; ownerBadge.classList.remove('owner-role'); }
+      if(verifiedBadge) verifiedBadge.classList.remove('owner-role');
       sessionStorage.setItem('mannzzRole','visitor');
     }
     document.body.classList.add('gate-hidden');
