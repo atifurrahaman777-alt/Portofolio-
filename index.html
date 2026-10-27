@@ -532,12 +532,40 @@ body.gate-hidden #gate{display:none}
 .owner-badge{display:inline-block;background:var(--purple);color:#fff;font-size:.65rem;font-weight:800;padding:3px 8px;border-radius:20px;margin-left:8px;vertical-align:middle}
 .gate-choices #gateOwner{background:#fff !important;color:#111 !important;-webkit-text-fill-color:#111 !important;text-shadow:none !important;border:2px solid #000 !important;box-shadow:5px 5px 0 #ffd700 !important;transition:transform .12s ease, box-shadow .12s ease}
 .gate-choices #gateOwner:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700 !important}
+/* Gate versi lebih hidup: background putih + aksen gradient + kartu bayangan */
+#gate{
+  background:
+    radial-gradient(circle at 15% 20%, #a855f733, transparent 40%),
+    radial-gradient(circle at 85% 15%, #ffd70044, transparent 35%),
+    radial-gradient(circle at 50% 95%, #9333ea22, transparent 45%),
+    #fdfcff !important;
+}
+.gate-box{
+  background:#fff;
+  border:2px solid #000;
+  border-radius:18px;
+  box-shadow:7px 7px 0 #ffd700;
+  padding:36px 26px;
+  max-width:340px;
+}
+.gate-emoji{font-size:2.4rem;margin-bottom:8px}
+.gate-logo{color:#111 !important;-webkit-text-fill-color:#111 !important;text-shadow:none !important}
+.gate-logo .purple{color:#9333ea !important;-webkit-text-fill-color:#9333ea !important;text-shadow:none !important}
+.gate-welcome{color:#6b6b80;font-size:.85rem;margin:4px 0 16px;font-weight:600}
+.gate-sub{color:#333 !important;-webkit-text-fill-color:#333 !important;text-shadow:none !important;font-weight:700}
+.gate-choices .btn.primary{border:2px solid #000;box-shadow:5px 5px 0 #ffd700;transition:transform .12s ease, box-shadow .12s ease}
+.gate-choices .btn.primary:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700}
+.gate-owner-form input{border:2px solid #000 !important;background:#fff !important;color:#111 !important}
+.gate-choices #gateOwner{box-shadow:5px 5px 0 #a855f7 !important}
+.gate-choices #gateOwner:hover{box-shadow:3px 3px 0 #a855f7 !important}
 </style>
 </head>
 <body>
 <div id="gate">
   <div class="gate-box">
+    <div class="gate-emoji">🔐</div>
     <div class="gate-logo">MD <span class="purple">Mann'zz Dev</span></div>
+    <p class="gate-welcome">Selamat datang di portofolio saya!</p>
     <p class="gate-sub">Masuk sebagai?</p>
     <div class="gate-choices" id="gateChoices">
       <button class="btn primary" id="gateVisitor" type="button">Pengunjung</button>
