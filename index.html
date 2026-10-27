@@ -452,15 +452,35 @@ body:not(.light-mode) .actions .btn.primary {
   background: linear-gradient(135deg, #4d3900, #a67c00 48%, #6b4d00) !important;
   color: #ffd700 !important;
   -webkit-text-fill-color: #ffd700 !important;
-  border: 1px solid #ffd700 !important;
+  border: 2px solid #000 !important;
   text-shadow: 0 0 4px #ffd70088, 0 0 9px #ffd70044 !important;
-  box-shadow: 0 0 10px #ffd70033, inset 0 0 8px #ffd70022 !important;
+  box-shadow: 5px 5px 0 #ffd700, 0 0 10px #ffd70033, inset 0 0 8px #ffd70022 !important;
+  transition: transform .12s ease, box-shadow .12s ease !important;
 }
 body:not(.light-mode) .actions .btn.primary:hover {
   background: linear-gradient(135deg, #6b4d00, #c49a00 48%, #8a6500) !important;
-  box-shadow: 0 0 16px #ffd70066 !important;
+  transform: translate(2px, 2px) !important;
+  box-shadow: 3px 3px 0 #ffd700, 0 0 16px #ffd70066 !important;
 }
 
+/* ===== Efek bayangan tegas (hard shadow) ala referensi, disesuaikan ke tema gold dark ===== */
+.skill, .project, .quote, #header-whatsapp {
+  border: 2px solid #000;
+  box-shadow: 5px 5px 0 #ffd700;
+  transition: transform .12s ease, box-shadow .12s ease;
+}
+.skill:hover, .project:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 3px 3px 0 #ffd700;
+}
+#header-whatsapp:hover {
+  transform: translate(2px, 2px);
+  box-shadow: 2px 2px 0 #ffd700 !important;
+}
+input, textarea {
+  border: 2px solid #000;
+  box-shadow: 3px 3px 0 #a855f7;
+}
 </style>
 </head>
 <body>
