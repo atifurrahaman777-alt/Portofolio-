@@ -368,6 +368,55 @@ body:not(.light-mode) .menu {
   border-color: #8f7737;
 }
 
+
+/* Premium gold untuk mode gelap */
+body:not(.light-mode) {
+  --premium-gold: #ffd700;
+  --premium-gold-light: #ffe878;
+}
+
+body:not(.light-mode) p,
+body:not(.light-mode) li,
+body:not(.light-mode) label,
+body:not(.light-mode) h1,
+body:not(.light-mode) h2,
+body:not(.light-mode) h3,
+body:not(.light-mode) .title,
+body:not(.light-mode) .eyebrow,
+body:not(.light-mode) .intro,
+body:not(.light-mode) .muted,
+body:not(.light-mode) .footer,
+body:not(.light-mode) .logo,
+body:not(.light-mode) .links a,
+body:not(.light-mode) .skill,
+body:not(.light-mode) .project-body,
+body:not(.light-mode) .quote,
+body:not(.light-mode) .tag {
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+  text-shadow: 0 0 4px #ffd70066, 0 0 10px #ffbf0033 !important;
+}
+
+/* Tombol Lihat Projects: teks dan ikon gold premium */
+body:not(.light-mode) .actions .btn.primary {
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+  text-shadow: 0 0 5px #ffd70099, 0 0 12px #ffb70055 !important;
+  border: 1px solid #ffd700 !important;
+  box-shadow: 0 0 10px #ffd70033, inset 0 0 8px #ffd70018 !important;
+}
+body:not(.light-mode) .actions .btn.primary:hover {
+  box-shadow: 0 0 14px #ffd70066, inset 0 0 12px #ffd70022 !important;
+}
+
+/* Judul utama lebih kaya, tidak pucat */
+body:not(.light-mode) .hero h1,
+body:not(.light-mode) .hero h1 .purple {
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+  text-shadow: 0 0 5px #ffd70088, 0 0 14px #ffb70044 !important;
+}
+
 </style>
 </head>
 <body>
