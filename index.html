@@ -534,13 +534,21 @@ body.gate-hidden #gate{display:none}
 .gate-choices #gateOwner:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700 !important}
 /* Gate versi lebih hidup: background putih + aksen gradient + kartu bayangan */
 #gate{
+  background:#fdfcff !important;
+  overflow:hidden;
+}
+#gateVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
+.gate-overlay{
+  position:absolute;inset:0;z-index:1;
   background:
-    radial-gradient(circle at 15% 20%, #a855f733, transparent 40%),
-    radial-gradient(circle at 85% 15%, #ffd70044, transparent 35%),
-    radial-gradient(circle at 50% 95%, #9333ea22, transparent 45%),
-    #fdfcff !important;
+    radial-gradient(circle at 15% 20%, #a855f766, transparent 40%),
+    radial-gradient(circle at 85% 15%, #ffd70066, transparent 35%),
+    radial-gradient(circle at 50% 95%, #9333ea55, transparent 45%),
+    rgba(253,252,255,.72);
 }
 .gate-box{
+  position:relative;
+  z-index:2;
   background:#fff;
   border:2px solid #000;
   border-radius:18px;
@@ -562,6 +570,8 @@ body.gate-hidden #gate{display:none}
 </head>
 <body>
 <div id="gate">
+  <video id="gateVideo" src="mannzz-v56.mp4" autoplay muted loop playsinline></video>
+  <div class="gate-overlay"></div>
   <div class="gate-box">
     <div class="gate-emoji">🔐</div>
     <div class="gate-logo">MD <span class="purple">Mann'zz Dev</span></div>
