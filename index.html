@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080811">
 <meta name="description" content="Portofolio web developer by manz">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.16.0/devicon.min.css">
 <title>Mannzz | Portfolio</title>
 <script>
   // Deteksi layar fisik HP walau Chrome lagi mode "Desktop site"
@@ -51,10 +52,11 @@ section{padding:38px 0}
 .skills{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
 .skill{padding:19px 8px;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:13px;font-weight:700}
 .skill b{display:block;font-size:1.7rem;color:#c084fc}
+.skill i{display:block;font-size:1.8rem;margin-bottom:6px}
 .projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
 .project{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card);transition:.2s}
 .project:hover{transform:translateY(-4px);box-shadow:0 0 25px #7c3aed25}
-.preview{height:145px;padding:18px;background:radial-gradient(ellipse at 70% 20%,#8b5cf644,transparent 50%),#0c0c18;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.preview{height:145px;padding:18px;background:radial-gradient(ellipse at 70% 20%,#8b5cf644,transparent 50%),#0c0c18;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);overflow:hidden;border-radius:13px 13px 0 0}
 .window{width:90%;padding:12px;border:1px solid #7042a4;border-radius:8px;background:#090914}
 .dot{display:inline-block;width:6px;height:6px;background:#c084fc;border-radius:50%;margin-right:4px}
 .line{height:5px;width:80%;margin:8px 0;border-radius:8px;background:#352348}
@@ -62,6 +64,9 @@ section{padding:38px 0}
 .project-body{padding:17px}
 .project-body p{font-size:.91rem;color:var(--muted)}
 .tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.75rem;margin:2px}
+.project-links{display:flex;gap:10px;margin-top:12px}
+.project-links a{font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);color:var(--muted);display:inline-block}
+.project-links a:hover{border-color:var(--purple);color:#fff}
 .contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px}
 form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
 input,textarea{min-width:0;width:100%;padding:13px;background:#10101d;border:1px solid var(--line);border-radius:9px;color:white;font:inherit}
@@ -543,19 +548,19 @@ body.light-mode textarea {
 <div class="art"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></video></div>
 </section>
 <section id="about"><div class="container about">
-<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya adalah developer pemula yang tertarik dengan pengembangan website, aplikasi, dan bot. Saya senang mengeksplorasi teknologi baru, memecahkan masalah, dan membuat proyek yang bermanfaat.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
+<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya developer pemula yang mulai belajar lewat praktik langsung — membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya suka proses nemuin masalah terus mecahinnya satu-satu, dan percaya cara belajar paling cepat itu sambil ngerjain proyek nyata.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
 <div class="quote"><p class="purple">“Small steps make big progress.”</p><span class="muted">Keep learning, keep building.</span></div>
 </div></section>
 <section id="skills"><div class="container"><h2 class="title">Skills</h2><div class="skills">
-<div class="skill"><b>5</b>HTML</div><div class="skill"><b>3</b>CSS</div><div class="skill"><b>JS</b>JavaScript</div><div class="skill"><b>⬡</b>Node.js</div><div class="skill"><b>ex</b>Express</div><div class="skill"><b>◉</b>MongoDB</div><div class="skill"><b>⌁</b>MySQL</div><div class="skill"><b>◆</b>Git</div><div class="skill"><b>♟</b>Linux</div><div class="skill"><b>WA</b>WhatsApp API</div>
+<div class="skill"><i class="devicon-html5-plain colored"></i>HTML</div><div class="skill"><i class="devicon-css3-plain colored"></i>CSS</div><div class="skill"><i class="devicon-javascript-plain colored"></i>JavaScript</div><div class="skill"><i class="devicon-nodejs-plain colored"></i>Node.js</div><div class="skill"><i class="devicon-express-original colored"></i>Express</div><div class="skill"><i class="devicon-mongodb-plain colored"></i>MongoDB</div><div class="skill"><i class="devicon-mysql-plain colored"></i>MySQL</div><div class="skill"><i class="devicon-git-plain colored"></i>Git</div><div class="skill"><i class="devicon-linux-plain colored"></i>Linux</div><div class="skill"><b>WA</b>WhatsApp API</div>
 </div></div></section>
 <section id="projects"><div class="container"><h2 class="title">Projects</h2><div class="projects">
-<article class="project"><div class="preview"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video></div><div class="project-body"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp dengan berbagai fitur otomatisasi berbasis Zapo-js.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span></div></article>
-<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line short"></div><div class="line"></div></div></div><div class="project-body"><h3>Portfolio Website</h3><p>Website portofolio dengan desain modern, dark mode, dan responsif.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div></article>
-<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line"></div><div class="line short"></div></div></div><div class="project-body"><h3>CRM System</h3><p>Sistem manajemen pesan dan data untuk memudahkan pengelolaan informasi.</p><span class="tag">Node.js</span><span class="tag">SQLite</span><span class="tag">Express</span></div></article>
+<article class="project"><div class="preview"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video></div><div class="project-body"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium — plus deteksi command mirip saat user salah ketik.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span><div class="project-links"><a href="#" target="_blank" rel="noopener">GitHub</a></div></div></article>
+<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line short"></div><div class="line"></div></div></div><div class="project-body"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div class="project-links"><a href="#" target="_blank" rel="noopener">GitHub</a><a href="#" target="_blank" rel="noopener">Live Demo</a></div></div></article>
+<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line"></div><div class="line short"></div></div></div><div class="project-body"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div class="project-links"><a href="#" target="_blank" rel="noopener">GitHub</a></div></div></article>
 </div></div></section>
 <section id="contact"><div class="container"><h2 class="title">Contact</h2><div class="contact">
-<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ mannzz144hz@gmail.com</p><p>⌖ Indonesia</p><p class="muted">Ganti informasi contoh ini dengan kontak asli milikmu.</p></div>
+<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ mannzz144hz@gmail.com</p><p>⌖ Indonesia</p></div>
 <form id="form"><input name="name" placeholder="Nama Anda" required><input name="email" type="email" placeholder="Email Anda" required><textarea name="message" placeholder="Pesan Anda..." required></textarea><button class="btn primary" type="submit">➤ Kirim Pesan</button><div id="status" role="status"></div></form>
 </div></div></section>
 </main>
