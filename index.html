@@ -161,6 +161,29 @@ body, p, li, label, input, textarea, h1, h2, h3, .title, .footer {
   text-shadow: 0 0 5px #ffd70044;
 }
 
+
+/* Final visual adjustments */
+body, body p, body li, body label, body input, body textarea,
+body h1, body h2, body h3, body a, body .title, body .footer,
+body .muted, body .eyebrow, body .intro, body .links,
+body .links a, body .project-body, body .quote, body .skill {
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd70088, 0 0 12px #ffd70033;
+}
+body .purple, body h1 .purple {
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+  text-shadow: 0 0 7px #ffd700aa, 0 0 16px #ffd70055;
+}
+#header-whatsapp {
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+}
+.art::before, .art::after, .lightning,
+.art .lightning, .art svg {
+  display: none !important;
+}
+
 </style>
 </head>
 <body>
@@ -168,10 +191,9 @@ body, p, li, label, input, textarea, h1, h2, h3, .title, .footer {
 <nav class="container">
 <a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a>
 <div class="links" id="links">
-<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a>
+<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
 </div>
 <div class="header-actions">
-<a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
 <button class="menu" id="menu" type="button" aria-label="Buka menu" aria-expanded="false">☰</button>
 </div>
 
