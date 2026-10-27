@@ -75,7 +75,22 @@ footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-s
  form{grid-template-columns:1fr}textarea,form button,#status{grid-column:1}
 }
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
-.logo { display: inline-flex; align-items: center; gap: 10px; } .logo-mark, .logo-name { display: inline-block; }\n.art::before, .art::after { content: none !important; display: none !important; background: none !important; }\n</style>
+.logo { display: inline-flex; align-items: center; gap: 10px; } .logo-mark, .logo-name { display: inline-block; }\n.art::before, .art::after { content: none !important; display: none !important; background: none !important; }\n
+.art,
+.art::before,
+.art::after,
+.art img,
+.art video {
+  background-image: none !important;
+  box-shadow: none !important;
+}
+.art::before,
+.art::after {
+  content: none !important;
+  display: none !important;
+}
+
+</style>
 </head>
 <body>
 <header>
