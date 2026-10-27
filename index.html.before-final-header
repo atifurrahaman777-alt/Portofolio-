@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Portofolio web developer Killua Zoldyck">
+<title>Mannzz | Portfolio</title>
+<style>
+:root{--bg:#080811;--card:#111120;--text:#f5f3ff;--muted:#b7b3cc;--purple:#a855f7;--line:#382052}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:80px}
+body{margin:0;background:radial-gradient(ellipse at 80% 0%,#26104455,transparent 38%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,sans-serif}
+a{color:inherit;text-decoration:none}
+.container{width:min(1080px,calc(100% - 36px));margin:auto}
+nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+header{position:sticky;top:0;z-index:10;background:#080811eF;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
+.logo{font-size:1.4rem;font-weight:900}.logo span,.purple{color:#b56cff}
+.links{display:flex;gap:24px;color:var(--muted);font-size:.92rem}
+.links a:hover{color:#c084fc}
+.btn{display:inline-block;padding:11px 17px;border:1px solid var(--purple);border-radius:10px;font-weight:700;transition:.2s}
+.btn.primary{background:linear-gradient(110deg,#9333ea,#6527e8);border:0}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 25px #8b5cf644}
+.hero{min-height:510px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:35px;padding-top:35px;padding-bottom:35px}
+.eyebrow{color:#c084fc;font-weight:800;margin:0}
+h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.04;letter-spacing:-.06em;margin:8px 0}
+h2{line-height:1.2}h3{margin:0}
+.intro{color:var(--muted);max-width:480px}
+.actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
+.art{height:360px;border:1px solid #7942bd;border-radius:24px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background: none !important;box-shadow:0 0 45px #7c3aed22}
+.art:before,.art:after{content:"";position:absolute;width:140%;height:3px;background:linear-gradient(90deg,transparent,#c084fc,transparent);transform:rotate(-28deg);box-shadow:0 0 20px #a855f7}
+.art:before{top:35%}.art:after{top:72%;transform:rotate(25deg)}
+.art-content{z-index:1;padding:20px}
+.lightning{font-size:6rem;color:#d8b4fe;text-shadow:0 0 35px #9333ea;line-height:1}
+.art p{color:#ddd0f6}
+.social{display:flex;gap:16px;color:#d8b4fe;font-weight:700}
+section{padding:38px 0}
+.title{font-size:1.8rem;margin:0 0 22px}
+.title:after{content:"";display:inline-block;width:35px;height:3px;background:var(--purple);margin:0 0 6px 12px}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
+.muted{color:var(--muted)}
+.quote{padding:28px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(120deg,#151326,#211039)}
+.quote p{font-size:1.4rem;font-weight:800;font-style:italic}
+.skills{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.skill{padding:19px 8px;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:13px;font-weight:700}
+.skill b{display:block;font-size:1.7rem;color:#c084fc}
+.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.project{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card);transition:.2s}
+.project:hover{transform:translateY(-4px);box-shadow:0 0 25px #7c3aed25}
+.preview{height:145px;padding:18px;background:radial-gradient(ellipse at 70% 20%,#8b5cf644,transparent 50%),#0c0c18;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line)}
+.window{width:90%;padding:12px;border:1px solid #7042a4;border-radius:8px;background:#090914}
+.dot{display:inline-block;width:6px;height:6px;background:#c084fc;border-radius:50%;margin-right:4px}
+.line{height:5px;width:80%;margin:8px 0;border-radius:8px;background:#352348}
+.line.short{width:45%;background:#8b5cf6}
+.project-body{padding:17px}
+.project-body p{font-size:.91rem;color:var(--muted)}
+.tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.75rem;margin:2px}
+.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px}
+form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+input,textarea{min-width:0;width:100%;padding:13px;background:#10101d;border:1px solid var(--line);border-radius:9px;color:white;font:inherit}
+textarea{grid-column:1/-1;min-height:120px}
+form button{grid-column:1/-1;color:white;font:inherit;cursor:pointer}
+#status{grid-column:1/-1;color:#d8b4fe}
+footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:.85rem}
+.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.menu{display:none;background:transparent;color:white;border:1px solid var(--line);border-radius:8px;padding:8px}
+@media(max-width:760px){
+ .hero{grid-template-columns:1fr;padding-top:48px;gap:24px}
+ .art{height:260px}.lightning{font-size:4rem}
+ .about,.contact{grid-template-columns:1fr}
+ .skills{grid-template-columns:repeat(3,1fr)}
+ .projects{grid-template-columns:1fr}
+ .links{display:none;position:absolute;top:64px;left:14px;right:14px;padding:15px;background:#11101e;border:1px solid var(--line);border-radius:12px;flex-direction:column;gap:8px}
+ .links.open{display:flex}.menu{display:block}
+ form{grid-template-columns:1fr}textarea,form button,#status{grid-column:1}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
+
+/* Header: logo kiri, WhatsApp dan hamburger kanan */
+nav.container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+#header-whatsapp {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 9px 12px;
+  border: 1px solid #ffd700;
+  border-radius: 10px;
+  color: #ffd700 !important;
+  -webkit-text-fill-color: #ffd700 !important;
+  text-decoration: none;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.menu {
+  display: none;
+  background: transparent;
+  color: #ffd700;
+  border: 1px solid #382052;
+  border-radius: 8px;
+  padding: 8px 10px;
+  font-size: 20px;
+  cursor: pointer;
+}
+@media (max-width: 760px) {
+  nav.container {
+    position: relative;
+    flex-wrap: nowrap;
+    gap: 8px;
+  }
+  .logo {
+    font-size: 1.1rem;
+    gap: 6px;
+  }
+  .header-actions {
+    gap: 7px;
+  }
+  #header-whatsapp {
+    padding: 8px 9px;
+    font-size: 12px;
+  }
+  .menu {
+    display: block;
+  }
+  .links {
+    display: none;
+    position: absolute;
+    top: 72px;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    padding: 15px;
+    background: #11101e;
+    border: 1px solid #382052;
+    border-radius: 12px;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .links.open {
+    display: flex !important;
+  }
+}
+body, p, li, label, input, textarea, h1, h2, h3, .title, .footer {
+  color: #ffd700;
+  text-shadow: 0 0 5px #ffd70044;
+}
+
+</style>
+</head>
+<body>
+<header>
+<nav class="container">
+<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a>
+<div class="links" id="links">
+<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a>
+</div>
+<div class="header-actions">
+<a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
+<button class="menu" id="menu" type="button" aria-label="Buka menu" aria-expanded="false">☰</button>
+</div>
+
+</nav>
+</header>
+<main>
+<section class="hero container" id="home">
+<div>
+<p class="eyebrow">HELLO, I'M</p>
+<h1>Mannzz <span class="purple">dev</span></h1>
+<h2>Web Developer &amp; Tech Enthusiast</h2>
+<p class="intro">Saya suka membangun website, bot WhatsApp yang berguna. Selalu belajar hal baru dan mengembangkan ide menjadi proyek nyata.</p>
+<div class="actions"><a class="btn primary" href="#projects">⌘ Lihat Projects</a></div>
+
+</div>
+<div class="art"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></video></div>
+</section>
+<section id="about"><div class="container about">
+<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya adalah developer pemula yang tertarik dengan pengembangan website, aplikasi, dan bot. Saya senang mengeksplorasi teknologi baru, memecahkan masalah, dan membuat proyek yang bermanfaat.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
+<div class="quote"><p class="purple">“Small steps make big progress.”</p><span class="muted">Keep learning, keep building.</span></div>
+</div></section>
+<section id="skills"><div class="container"><h2 class="title">Skills</h2><div class="skills">
+<div class="skill"><b>5</b>HTML</div><div class="skill"><b>3</b>CSS</div><div class="skill"><b>JS</b>JavaScript</div><div class="skill"><b>⬡</b>Node.js</div><div class="skill"><b>ex</b>Express</div><div class="skill"><b>◉</b>MongoDB</div><div class="skill"><b>⌁</b>MySQL</div><div class="skill"><b>◆</b>Git</div><div class="skill"><b>♟</b>Linux</div><div class="skill"><b>WA</b>WhatsApp API</div>
+</div></div></section>
+<section id="projects"><div class="container"><h2 class="title">Projects</h2><div class="projects">
+<article class="project"><div class="preview"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video></div><div class="project-body"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp dengan berbagai fitur otomatisasi berbasis Zapo-js.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span></div></article>
+<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line short"></div><div class="line"></div></div></div><div class="project-body"><h3>Portfolio Website</h3><p>Website portofolio dengan desain modern, dark mode, dan responsif.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span></div></article>
+<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line"></div><div class="line short"></div></div></div><div class="project-body"><h3>CRM System</h3><p>Sistem manajemen pesan dan data untuk memudahkan pengelolaan informasi.</p><span class="tag">Node.js</span><span class="tag">SQLite</span><span class="tag">Express</span></div></article>
+</div></div></section>
+<section id="contact"><div class="container"><h2 class="title">Contact</h2><div class="contact">
+<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ mannzz144hz@gmail.com</p><p>⌖ Indonesia</p><p class="muted">Ganti informasi contoh ini dengan kontak asli milikmu.</p></div>
+<form id="form"><input name="name" placeholder="Nama Anda" required><input name="email" type="email" placeholder="Email Anda" required><textarea name="message" placeholder="Pesan Anda..." required></textarea><button class="btn primary" type="submit">➤ Kirim Pesan</button><div id="status" role="status"></div></form>
+</div></div></section>
+</main>
+<footer><div class="container footer"><span>© <span id="year"></span> Mannsz. All rights reserved.</span><span>Keep Coding · Keep Growing · Keep Dreaming</span></div></footer>
+<script>
+const links=document.querySelector('#links');
+const menu=document.querySelector('#menu');
+
+if (menu && links) {
+  menu.addEventListener('click', () => {
+    const isOpen = links.classList.toggle('open');
+    menu.setAttribute('aria-expanded', String(isOpen));
+  });
+
+  links.querySelectorAll('a').forEach(a => {
+    a.addEventListener('click', () => {
+      links.classList.remove('open');
+      menu.setAttribute('aria-expanded', 'false');
+    });
+  });
+}
+
+document.querySelector('#year').textContent=new Date().getFullYear();
+document.querySelector('#form').addEventListener('submit',e=>{
+ e.preventDefault();
+ const d=new FormData(e.currentTarget);
+ const subject=encodeURIComponent('Pesan portofolio dari '+d.get('name'));
+ const body=encodeURIComponent('Nama: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));
+ document.querySelector('#status').textContent='Membuka aplikasi email...';
+ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
+});
+</script>
+</body>
+</html>
