@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080811">
 <meta name="description" content="Portofolio web developer Killua Zoldyck">
-<title>Killua Zoldyck | Portfolio</title>
+<title>Mannzz | Portfolio</title>
 <style>
 :root{--bg:#080811;--card:#111120;--text:#f5f3ff;--muted:#b7b3cc;--purple:#a855f7;--line:#382052}
 *{box-sizing:border-box}
@@ -80,7 +80,7 @@ footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-s
 <body>
 <header>
 <nav class="container">
-<a class="logo" href="#home">KZ <span>Killua Zoldyck</span></a>
+<a class="logo" href="#home">MD<span>Mannzz dev</span></a>
 <div class="links" id="links">
 <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
 </div>
@@ -91,16 +91,16 @@ footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-s
 <section class="hero container" id="home">
 <div>
 <p class="eyebrow">HELLO, I'M</p>
-<h1>Killua <span class="purple">Zoldyck</span></h1>
+<h1>Mannzz <span class="purple">dev</span></h1>
 <h2>Web Developer &amp; Tech Enthusiast</h2>
-<p class="intro">Saya suka membangun website, bot WhatsApp, dan tools yang berguna. Selalu belajar hal baru dan mengembangkan ide menjadi proyek nyata.</p>
+<p class="intro">Saya suka membangun website, bot WhatsApp yang berguna. Selalu belajar hal baru dan mengembangkan ide menjadi proyek nyata.</p>
 <div class="actions"><a class="btn primary" href="#projects">⌘ Lihat Projects</a><a class="btn" href="#contact">✉ Hubungi Saya</a></div>
-<div class="social"><a href="https://github.com/" target="_blank" rel="noreferrer">GitHub</a><a href="https://discord.com/" target="_blank" rel="noreferrer">Discord</a><a href="https://t.me/" target="_blank" rel="noreferrer">Telegram</a></div>
+<div class="social"><a href="https://wa.me/6282339899845" target="_blank" rel="noreferrer">WhatsApp</a></div>
 </div>
-<div class="art"><div class="art-content"><div class="lightning">ϟ</div><h2>BETTER CODE<br><span class="purple">BIGGER DREAMS</span></h2><p>Ganti area ini dengan ilustrasi pilihanmu.</p></div></div>
+<div class="art"><img src="profile.jpg" alt="Foto profil Killua" style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></div>
 </section>
 <section id="about"><div class="container about">
-<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya adalah developer yang tertarik dengan pengembangan website, aplikasi, dan bot. Saya senang mengeksplorasi teknologi baru, memecahkan masalah, dan membuat proyek yang bermanfaat.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
+<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya adalah developer pemula yang tertarik dengan pengembangan website, aplikasi, dan bot. Saya senang mengeksplorasi teknologi baru, memecahkan masalah, dan membuat proyek yang bermanfaat.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
 <div class="quote"><p class="purple">“Small steps make big progress.”</p><span class="muted">Keep learning, keep building.</span></div>
 </div></section>
 <section id="skills"><div class="container"><h2 class="title">Skills</h2><div class="skills">
@@ -112,11 +112,11 @@ footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-s
 <article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line"></div><div class="line short"></div></div></div><div class="project-body"><h3>CRM System</h3><p>Sistem manajemen pesan dan data untuk memudahkan pengelolaan informasi.</p><span class="tag">Node.js</span><span class="tag">SQLite</span><span class="tag">Express</span></div></article>
 </div></div></section>
 <section id="contact"><div class="container"><h2 class="title">Contact</h2><div class="contact">
-<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ killua@example.com</p><p>⌖ Indonesia</p><p class="muted">Ganti informasi contoh ini dengan kontak asli milikmu.</p></div>
+<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ mannzz144hz@gmail.com</p><p>⌖ Indonesia</p><p class="muted">Ganti informasi contoh ini dengan kontak asli milikmu.</p></div>
 <form id="form"><input name="name" placeholder="Nama Anda" required><input name="email" type="email" placeholder="Email Anda" required><textarea name="message" placeholder="Pesan Anda..." required></textarea><button class="btn primary" type="submit">➤ Kirim Pesan</button><div id="status" role="status"></div></form>
 </div></div></section>
 </main>
-<footer><div class="container footer"><span>© <span id="year"></span> Killua Zoldyck. All rights reserved.</span><span>Keep Coding · Keep Growing · Keep Dreaming</span></div></footer>
+<footer><div class="container footer"><span>© <span id="year"></span> Mannsz. All rights reserved.</span><span>Keep Coding · Keep Growing · Keep Dreaming</span></div></footer>
 <script>
 const menu=document.querySelector('#menu'),links=document.querySelector('#links');
 menu.addEventListener('click',()=>links.classList.toggle('open'));
@@ -128,7 +128,7 @@ document.querySelector('#form').addEventListener('submit',e=>{
  const subject=encodeURIComponent('Pesan portofolio dari '+d.get('name'));
  const body=encodeURIComponent('Nama: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));
  document.querySelector('#status').textContent='Membuka aplikasi email...';
- location.href='mailto:killua@example.com?subject='+subject+'&body='+body;
+ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
 });
 </script>
 </body>
