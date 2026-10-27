@@ -101,6 +101,51 @@ body, p, li, label, input, textarea, button, a, h1, h2, h3, span, b {
   color: #17120a;
 }
 
+
+/* Mann'zz neon-gold theme */
+body {
+  color: #f2e8c9;
+}
+h1, h2, h3, .title {
+  color: #ffd76a;
+  text-shadow: 0 0 8px rgba(255, 190, 55, .30);
+}
+p, li, label, .muted {
+  color: #e8dcbd;
+}
+.logo, .logo span {
+  color: #c084fc;
+  text-shadow: 0 0 10px rgba(168, 85, 247, .42);
+}
+.tag, .skill b {
+  color: #d8a7ff;
+}
+.btn.whatsapp-cta {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 15px 23px;
+  border: 1px solid #c084fc;
+  border-radius: 12px;
+  background: linear-gradient(115deg, #a855f7, #6d28d9);
+  color: #fff3c4 !important;
+  font-weight: 700;
+  text-decoration: none;
+  box-shadow: 0 0 18px rgba(168, 85, 247, .22);
+  transition: transform .2s ease, box-shadow .2s ease;
+}
+.btn.whatsapp-cta:active {
+  transform: scale(.97);
+  box-shadow: 0 0 24px rgba(192, 132, 252, .5);
+}
+.btn.primary {
+  color: #fff3c4 !important;
+}
+.btn.outline {
+  color: #ffd76a !important;
+}
+
 </style>
 </head>
 <body>
@@ -108,7 +153,7 @@ body, p, li, label, input, textarea, button, a, h1, h2, h3, span, b {
 <nav class="container">
 <a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span></a>
 <div class="links" id="links">
-<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a href="#contact">Contact</a>
+<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a class="btn whatsapp-cta" href="https://wa.me/6282339899845" target="_blank" rel="noreferrer">↗ WhatsApp</a>
 </div>
 <button class="menu" id="menu" aria-label="Buka menu">☰</button>
 </nav>
@@ -121,7 +166,7 @@ body, p, li, label, input, textarea, button, a, h1, h2, h3, span, b {
 <h2>Web Developer &amp; Tech Enthusiast</h2>
 <p class="intro">Saya suka membangun website, bot WhatsApp yang berguna. Selalu belajar hal baru dan mengembangkan ide menjadi proyek nyata.</p>
 <div class="actions"><a class="btn primary" href="#projects">⌘ Lihat Projects</a><a class="btn" href="#contact">✉ WhatsApp</a></div>
-<div class="social"><a href="https://wa.me/6282339899845" target="_blank" rel="noreferrer">WhatsApp</a></div>
+
 </div>
 <div class="art"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></video></div>
 </section>
