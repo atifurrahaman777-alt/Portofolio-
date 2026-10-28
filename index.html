@@ -575,6 +575,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 .verified-badge{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;background:#25d366;color:#fff;border-radius:50%;font-size:.72rem;font-weight:900;margin-left:4px;vertical-align:middle;border:1.5px solid #fff;box-shadow:0 0 6px #25d36688}
 .verified-badge.owner-role{background:#1d9bf0;box-shadow:0 0 6px #1d9bf088}
 .menu{border:none !important;background:transparent !important}
+#ownerMenuLink{color:#ff6b6b !important;font-weight:800}
 </style>
 </head>
 <body class="gate-lock">
@@ -606,6 +607,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
 <div class="links" id="links">
 <a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
 <button id="theme-toggle" type="button">☀️ Beralih ke Mode Terang</button>
+<a href="#" id="ownerMenuLink" style="display:none">🔓 Logout Owner</a>
 </div>
 <div class="header-actions">
 <span class="owner-badge" id="ownerBadge">USER</span>
@@ -657,6 +659,7 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
   const ownerBadge=document.getElementById('ownerBadge');
   const verifiedBadge=document.getElementById('verifiedBadge');
   const gateTogglePass=document.getElementById('gateTogglePass');
+  const ownerMenuLink=document.getElementById('ownerMenuLink');
   const OWNER_PASSWORD='mannzz kece'; // GANTI password ini
 
   function masuk(isOwner){
@@ -664,10 +667,12 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
       document.body.classList.add('owner-mode');
       if(ownerBadge){ ownerBadge.textContent='👑 OWNER'; ownerBadge.classList.add('owner-role'); }
       if(verifiedBadge) verifiedBadge.classList.add('owner-role');
+      if(ownerMenuLink) ownerMenuLink.style.display='block';
       sessionStorage.setItem('mannzzRole','owner');
     } else {
       if(ownerBadge){ ownerBadge.textContent='USER'; ownerBadge.classList.remove('owner-role'); }
       if(verifiedBadge) verifiedBadge.classList.remove('owner-role');
+      if(ownerMenuLink) ownerMenuLink.style.display='none';
       sessionStorage.setItem('mannzzRole','visitor');
     }
     document.body.classList.add('gate-hidden');
@@ -701,6 +706,11 @@ html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
     const isPass = gateOwnerPass.type === 'password';
     gateOwnerPass.type = isPass ? 'text' : 'password';
     gateTogglePass.textContent = isPass ? '🙈' : '👁️';
+  });
+  if(ownerMenuLink) ownerMenuLink.addEventListener('click',(e)=>{
+    e.preventDefault();
+    sessionStorage.removeItem('mannzzRole');
+    location.reload();
   });
 })();
 
