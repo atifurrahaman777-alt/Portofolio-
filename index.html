@@ -76,11 +76,13 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .tool-card h3{margin:0 0 4px}
 .tool-card p{margin:0;font-size:.82rem;color:var(--muted)}
 .bottom-nav{position:fixed;left:16px;right:16px;bottom:16px;z-index:20;display:flex;align-items:flex-end;justify-content:space-around;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:10px 6px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:448px;margin:0 auto}
-.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.62rem;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:4px}
-.nav-btn span{font-size:1.2rem}
+.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.62rem;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:4px;transition:margin-top .3s cubic-bezier(.34,1.56,.64,1),color .25s ease}
+.nav-btn span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:transparent;box-shadow:none;border:3px solid transparent;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.nav-btn span .icon{width:22px;height:22px;transition:width .3s ease,height .3s ease}
 .nav-btn.active{color:var(--text);font-weight:700}
 .nav-btn.home{margin-top:-30px;color:var(--text)}
-.nav-btn.home span{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#6527e8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 6px 16px #6527e866;border:3px solid var(--bg)}
+.nav-btn.home span{width:52px;height:52px;background:linear-gradient(135deg,#9333ea,#6527e8);color:#fff;box-shadow:0 6px 16px #6527e866;border:3px solid var(--bg)}
+.nav-btn.home span .icon{width:24px;height:24px;stroke:#fff}
 footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120px}
 
 .icon{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
