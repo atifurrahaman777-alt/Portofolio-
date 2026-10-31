@@ -288,7 +288,7 @@ const navBtns=document.querySelectorAll('.nav-btn');
 const tabs=document.querySelectorAll('.tab');
 function showTab(id){
 tabs.forEach(t=>t.classList.toggle('active',t.id===id));
-navBtns.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+navBtns.forEach(b=>{b.classList.toggle('active',b.dataset.tab===id);b.classList.toggle('home',b.dataset.tab===id);});
 window.scrollTo({top:0});
 }
 navBtns.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
