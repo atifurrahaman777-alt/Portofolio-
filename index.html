@@ -92,13 +92,18 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 .banner-icon .icon{width:30px;height:30px}
 #theme-toggle .icon,#owner-toggle .icon{width:18px;height:18px}
 .pass-eye .icon{width:18px;height:18px}
+
+.icon-inline{display:inline-flex;vertical-align:-3px;margin-right:5px}
+.icon-inline .icon{width:16px;height:16px}
+.owner-badge .icon{width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:3px}
+.verified-badge .icon,.verified-badge2 .icon{width:65%;height:65%;stroke:#fff;stroke-width:3}
 </style>
 </head>
 <body>
 
 <header>
 <div class="container topbar">
-<a class="logo" href="#"><span>Mann'zz</span><span class="verified-badge" id="verifiedBadge">✓</span></a>
+<a class="logo" href="#"><span>Mann'zz</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="icon"><path d="M4 12l5 5L20 6"/></svg></span></a>
 <div class="topbar-actions">
 <span class="owner-badge" id="ownerBadge">USER</span>
 <button id="owner-toggle" type="button" aria-label="Login owner"><svg viewBox="0 0 24 24" class="icon"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></button>
@@ -123,7 +128,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
     <div class="profile-top">
       <div class="avatar">M</div>
       <div>
-        <div class="profile-name">Mann'zz <span style="color:var(--purple)">Dev</span><span class="verified-badge2">✓</span></div>
+        <div class="profile-name">Mann'zz <span style="color:var(--purple)">Dev</span><span class="verified-badge2"><svg viewBox="0 0 24 24" class="icon"><path d="M4 12l5 5L20 6"/></svg></span></div>
         <div class="profile-bio">Web Developer & Tech Enthusiast yang gemar mengeksplorasi WhatsApp bot dan pengembangan website.</div>
       </div>
     </div>
@@ -179,12 +184,12 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
   <h2 class="title">Contact</h2>
   <div class="contact-block">
     <p class="muted">Punya ide proyek atau ingin bekerja sama?</p>
-    <p>✉ mannzz144hz@gmail.com</p>
+    <p><span class="icon-inline"><svg viewBox="0 0 24 24" class="icon"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>mannzz144hz@gmail.com</p>
     <form id="form">
       <input name="name" placeholder="Nama Anda" required>
       <input name="email" type="email" placeholder="Email Anda" required>
       <textarea name="message" placeholder="Pesan Anda..." required></textarea>
-      <button type="submit">➤ Kirim Pesan</button>
+      <button type="submit"><span class="icon-inline"><svg viewBox="0 0 24 24" class="icon"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>Kirim Pesan</button>
       <div id="status" role="status"></div>
     </form>
   </div>
@@ -232,7 +237,7 @@ const OWNER_PASSWORD='mannzz kece';
 
 function setOwner(isOwner){
 if(isOwner){
-ownerBadge.textContent='👑 OWNER';
+ownerBadge.innerHTML='<svg viewBox="0 0 24 24" class="icon"><path d="M3 18h18l-1.5-9-4.5 4-3-6-3 6-4.5-4L3 18z"/></svg> OWNER';
 ownerBadge.classList.add('owner-role');
 verifiedBadge.classList.add('owner-role');
 sessionStorage.setItem('mannzzRole','owner');
