@@ -21,8 +21,9 @@ a{color:inherit;text-decoration:none}
 header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 .topbar{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.1rem}
-.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#25d366;color:#fff;border-radius:50%;font-size:.68rem;font-weight:900;border:1.5px solid #fff}
-.verified-badge.owner-role{background:#1d9bf0}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;color:#25d366;vertical-align:middle}
+.verified-badge .badge-icon{width:18px;height:18px}
+.verified-badge.owner-role{color:#1d9bf0}
 .topbar-actions{display:flex;align-items:center;gap:8px}
 .owner-badge{font-size:.65rem;font-weight:800;padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);color:#2a1e00}
@@ -40,7 +41,9 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#6527e8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0}
 .profile-name{font-weight:900;font-size:1.1rem}
 .profile-bio{color:var(--muted);font-size:.85rem;margin-top:2px}
-.verified-badge2{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#25d366;color:#fff;border-radius:50%;font-size:.6rem;margin-left:3px}
+.verified-badge2{display:inline-flex;align-items:center;justify-content:center;color:#25d366;vertical-align:middle;margin-left:3px}
+.verified-badge2 .badge-icon{width:16px;height:16px}
+.verified-badge2.owner-role{color:#1d9bf0}
 .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .stat{text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px 4px;background:var(--bg)}
 .stat b{display:block;font-size:1.3rem}
@@ -120,7 +123,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 
 <header>
 <div class="container topbar">
-<a class="logo" href="#"><span>Mann'zz</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="icon"><path d="M4 12l5 5L20 6"/></svg></span></a>
+<a class="logo" href="#"><span>Mann'zz</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></a>
 <div class="topbar-actions">
 <span class="owner-badge" id="ownerBadge">USER</span>
 <button id="owner-toggle" type="button" aria-label="Login owner"><svg viewBox="0 0 24 24" class="icon"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></button>
@@ -145,7 +148,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
     <div class="profile-top">
       <div class="avatar">M</div>
       <div>
-        <div class="profile-name">Mann'zz <span style="color:var(--purple)">Dev</span><span class="verified-badge2"><svg viewBox="0 0 24 24" class="icon"><path d="M4 12l5 5L20 6"/></svg></span></div>
+        <div class="profile-name">Mann'zz <span style="color:var(--purple)">Dev</span><span class="verified-badge2"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></div>
         <div class="profile-bio">Web Developer & Tech Enthusiast yang gemar mengeksplorasi WhatsApp bot dan pengembangan website.</div>
       </div>
     </div>
