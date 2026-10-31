@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="id" class="gate-lock">
+<html lang="id">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
@@ -13,29 +13,11 @@ body{--bg:#080811;--card:#111120;--line:#382052;--text:#ffd700;--muted:#d8b76b;-
 body.light-mode{--bg:#fffdf2;--card:#ffffff;--line:#e2c85a;--text:#111111;--muted:#5a4300;--shadow:#000000}
 *{box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,sans-serif;padding-bottom:20px;transition:background .2s,color .2s}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,sans-serif;transition:background .2s,color .2s}
 a{color:inherit;text-decoration:none}
 .container{width:min(480px,100%);margin:0 auto;padding:0 16px}
-#gate{position:fixed;inset:0;z-index:999;overflow:hidden;background:#fdfcff;display:flex;align-items:center;justify-content:center;padding:24px}
-#gateVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.gate-overlay{position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 15% 20%,#a855f733,transparent 40%),radial-gradient(circle at 85% 15%,#ffd70033,transparent 35%),radial-gradient(circle at 50% 95%,#9333ea22,transparent 45%),rgba(253,252,255,.2)}
-.gate-box{position:relative;z-index:2;background:#fff;border:2px solid #000;border-radius:18px;box-shadow:7px 7px 0 #ffd700;padding:36px 26px;max-width:320px;width:100%;text-align:center}
-.gate-emoji{font-size:2.4rem;margin-bottom:8px}
-.gate-logo{font-size:1.5rem;font-weight:900;color:#111}
-.gate-logo .purple{color:#9333ea}
-.gate-welcome{color:#6b6b80;font-size:.85rem;margin:4px 0 16px;font-weight:600}
-.gate-sub{color:#333;font-weight:700;margin-bottom:20px}
-.gate-choices{display:flex;flex-direction:column;gap:12px}
 .btn{display:inline-block;padding:11px 17px;border:2px solid #000;border-radius:10px;font-weight:700;cursor:pointer;background:transparent;color:inherit;font:inherit}
 .btn.primary{background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff;box-shadow:5px 5px 0 #ffd700}
-#gateOwner{background:#fff;color:#111;box-shadow:5px 5px 0 #a855f7}
-.gate-owner-form{margin-top:16px;display:flex;flex-direction:column;gap:10px}
-.pass-wrap{position:relative}
-.pass-wrap input{width:100%;padding:12px;padding-right:42px;border-radius:9px;border:2px solid #000;background:#fff;color:#111;font:inherit}
-.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer}
-.gate-error{color:#e23}
-body.gate-hidden #gate{display:none}
-html.gate-lock,body.gate-lock{overflow:hidden!important;height:100%}
 header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 .topbar{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.1rem}
@@ -44,8 +26,13 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .topbar-actions{display:flex;align-items:center;gap:8px}
 .owner-badge{font-size:.65rem;font-weight:800;padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
 .owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);color:#2a1e00}
-#theme-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
-.app{padding:18px 16px 24px}
+#theme-toggle,#owner-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
+.owner-panel{max-width:480px;margin:0 auto;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pass-wrap{position:relative}
+.pass-wrap input{width:100%;padding:12px;padding-right:42px;border-radius:9px;border:2px solid #000;background:var(--bg);color:var(--text);font:inherit}
+.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer}
+.gate-error{color:#e23}
+.app{padding:18px 16px 110px}
 .tab{display:none}
 .tab.active{display:block}
 .profile-card{border:2px solid #000;border-radius:16px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:18px;margin-bottom:16px}
@@ -54,20 +41,15 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .profile-name{font-weight:900;font-size:1.1rem}
 .profile-bio{color:var(--muted);font-size:.85rem;margin-top:2px}
 .verified-badge2{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#25d366;color:#fff;border-radius:50%;font-size:.6rem;margin-left:3px}
-.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
 .stat{text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px 4px;background:var(--bg)}
 .stat b{display:block;font-size:1.3rem}
 .stat span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
-.quick-actions{display:flex;gap:8px;flex-wrap:wrap}
-.pill{border:1px solid var(--purple);color:var(--purple);border-radius:20px;padding:7px 14px;font-size:.8rem;font-weight:700}
 .banner{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(120deg,#2a0f4d,#3d1a70);border:2px solid #000;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:5px 5px 0 var(--purple)}
 .banner-tag{background:#ffffff22;color:#d8b4fe;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:12px}
 .banner-title{color:#fff;font-weight:900;font-size:1.05rem;margin-top:6px}
 .banner-sub{color:#d8c6f5;font-size:.78rem}
 .banner-icon{font-size:1.8rem}
-.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;text-align:center}
-.icon-item{background:none;border:none;color:var(--text);font:inherit;font-size:.72rem;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:6px 0}
-.icon-item span{font-size:1.3rem}
 .about-block .title{font-size:1.2rem;margin:0 0 10px}
 .muted{color:var(--muted)}
 .quote{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
@@ -75,6 +57,8 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .title{font-size:1.3rem;margin:0 0 16px}
 .projects{display:flex;flex-direction:column;gap:14px}
 .project{border:2px solid #000;border-radius:14px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:16px}
+.project-media{border-radius:10px;overflow:hidden;margin-bottom:12px;border:2px solid #000}
+.project-media video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 .project h3{margin:0 0 6px}
 .project p{font-size:.85rem;color:var(--muted);margin:0 0 10px}
 .tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.72rem;margin:2px 4px 2px 0}
@@ -91,47 +75,36 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .tool-icon{font-size:1.8rem}
 .tool-card h3{margin:0 0 4px}
 .tool-card p{margin:0;font-size:.82rem;color:var(--muted)}
-.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:space-around;background:var(--card);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
-.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.65rem;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;padding:4px}
-.nav-btn span{font-size:1.25rem}
-.nav-btn.active{color:var(--purple)}
-footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px}
+.bottom-nav{position:fixed;left:16px;right:16px;bottom:16px;z-index:20;display:flex;align-items:flex-end;justify-content:space-around;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:10px 6px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:448px;margin:0 auto}
+.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.62rem;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:4px}
+.nav-btn span{font-size:1.2rem}
+.nav-btn.active{color:var(--text);font-weight:700}
+.nav-btn.home{margin-top:-30px;color:var(--text)}
+.nav-btn.home span{width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#6527e8);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;box-shadow:0 6px 16px #6527e866;border:3px solid var(--bg)}
+footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120px}
 </style>
 </head>
-<body class="gate-lock">
-
-<div id="gate">
-<video id="gateVideo" src="mannzz-v56.mp4" autoplay muted loop playsinline></video>
-<div class="gate-overlay"></div>
-<div class="gate-box">
-<div class="gate-emoji">🔐</div>
-<div class="gate-logo">MD <span class="purple">Mann'zz Dev</span></div>
-<p class="gate-welcome">Selamat datang di portofolio saya!</p>
-<p class="gate-sub">Masuk sebagai?</p>
-<div class="gate-choices" id="gateChoices">
-<button class="btn primary" id="gateVisitor" type="button">Pengunjung</button>
-<button class="btn" id="gateOwner" type="button">Owner</button>
-</div>
-<div class="gate-owner-form" id="gateOwnerForm" style="display:none">
-<div class="pass-wrap">
-<input type="password" id="gateOwnerPass" placeholder="Password owner">
-<button type="button" id="gateTogglePass" class="pass-eye">👁️</button>
-</div>
-<button class="btn primary" id="gateOwnerSubmit" type="button">Masuk</button>
-<p class="gate-error" id="gateError" style="display:none">Password salah, coba lagi.</p>
-</div>
-</div>
-</div>
+<body>
 
 <header>
 <div class="container topbar">
 <a class="logo" href="#"><span>MD Mann'zz</span><span class="verified-badge" id="verifiedBadge">✓</span></a>
 <div class="topbar-actions">
 <span class="owner-badge" id="ownerBadge">USER</span>
+<button id="owner-toggle" type="button" aria-label="Login owner">🔐</button>
 <button id="theme-toggle" type="button" aria-label="Ganti tema">☀️</button>
 </div>
 </div>
 </header>
+
+<div class="owner-panel" id="ownerPanel" style="display:none">
+<div class="pass-wrap">
+<input type="password" id="ownerPass" placeholder="Password owner">
+<button type="button" id="togglePass" class="pass-eye">👁️</button>
+</div>
+<button class="btn primary" id="ownerSubmit" type="button">Masuk sebagai Owner</button>
+<p class="gate-error" id="ownerError" style="display:none">Password salah, coba lagi.</p>
+</div>
 
 <main class="app container">
 
@@ -141,18 +114,13 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px
       <div class="avatar">MD</div>
       <div>
         <div class="profile-name">Mann'zz <span style="color:var(--purple)">Dev</span><span class="verified-badge2">✓</span></div>
-        <div class="profile-bio">Web Developer & Tech Enthusiast — suka ngulik WhatsApp bot & website.</div>
+        <div class="profile-bio">Web Developer & Tech Enthusiast yang gemar mengeksplorasi WhatsApp bot dan pengembangan website.</div>
       </div>
     </div>
     <div class="stat-row">
       <div class="stat"><b>3</b><span>Projects</span></div>
       <div class="stat"><b>7</b><span>Skills</span></div>
       <div class="stat"><b>4</b><span>Tools</span></div>
-    </div>
-    <div class="quick-actions">
-      <a class="pill" href="#" data-tab="tab-feed">Projects</a>
-      <a class="pill" href="#" data-tab="tab-sosial">Kontak</a>
-      <a class="pill" href="#" data-tab="tab-alat">Tools</a>
     </div>
   </div>
 
@@ -165,16 +133,9 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px
     <div class="banner-icon">💬</div>
   </a>
 
-  <div class="icon-grid">
-    <button class="icon-item" id="icon-theme" type="button"><span>⚙️</span>Tema</button>
-    <a class="icon-item" href="#" data-tab="tab-sosial"><span>📊</span>Skills</a>
-    <a class="icon-item" href="#" data-tab="tab-beranda"><span>👤</span>Tentang</a>
-    <a class="icon-item" href="#" data-tab="tab-sosial"><span>✉️</span>Kontak</a>
-  </div>
-
   <div class="about-block">
     <h2 class="title">Tentang Saya</h2>
-    <p class="muted">Saya developer pemula yang mulai belajar lewat praktik langsung — membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya suka proses nemuin masalah terus mecahinnya satu-satu, dan percaya cara belajar paling cepat itu sambil ngerjain proyek nyata.</p>
+    <p class="muted">Berawal dari belajar lewat praktik langsung, saya membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya fokus menemukan masalah lalu memecahkannya satu per satu, dan percaya cara belajar paling cepat adalah sambil mengerjakan proyek nyata.</p>
     <div class="quote"><p>"Small steps make big progress."</p><span class="muted">Keep learning, keep building.</span></div>
   </div>
 </section>
@@ -182,7 +143,13 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px
 <section class="tab" id="tab-feed">
   <h2 class="title">Projects</h2>
   <div class="projects">
-    <article class="project"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
+    <article class="project">
+      <div class="project-media"><video src="mannzz-v56.mp4" autoplay muted loop playsinline></video></div>
+      <h3>Mann'zz v5.6</h3>
+      <p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium.</p>
+      <span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span>
+      <div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div>
+    </article>
     <article class="project"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
     <article class="project"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
   </div>
@@ -233,7 +200,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px
 <nav class="bottom-nav">
 <button class="nav-btn" data-tab="tab-sosial"><span>👥</span>Sosial</button>
 <button class="nav-btn" data-tab="tab-feed"><span>📰</span>Feed</button>
-<button class="nav-btn active" data-tab="tab-beranda"><span>🏠</span>Beranda</button>
+<button class="nav-btn home active" data-tab="tab-beranda"><span>🏠</span>Beranda</button>
 <button class="nav-btn" data-tab="tab-game"><span>🎮</span>Game</button>
 <button class="nav-btn" data-tab="tab-alat"><span>🔧</span>Alat</button>
 </nav>
@@ -241,58 +208,62 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px
 <footer><div class="container">© <span id="year"></span> Mann'zz. All rights reserved.</div></footer>
 
 <script>
-(function(){
-const gate=document.getElementById('gate');
-const gateVisitor=document.getElementById('gateVisitor');
-const gateOwner=document.getElementById('gateOwner');
-const gateChoices=document.getElementById('gateChoices');
-const gateOwnerForm=document.getElementById('gateOwnerForm');
-const gateOwnerPass=document.getElementById('gateOwnerPass');
-const gateOwnerSubmit=document.getElementById('gateOwnerSubmit');
-const gateError=document.getElementById('gateError');
+const ownerToggle=document.getElementById('owner-toggle');
+const ownerPanel=document.getElementById('ownerPanel');
+const ownerPass=document.getElementById('ownerPass');
+const ownerSubmit=document.getElementById('ownerSubmit');
+const ownerError=document.getElementById('ownerError');
+const togglePass=document.getElementById('togglePass');
 const ownerBadge=document.getElementById('ownerBadge');
 const verifiedBadge=document.getElementById('verifiedBadge');
-const gateTogglePass=document.getElementById('gateTogglePass');
 const OWNER_PASSWORD='mannzz kece';
-function masuk(isOwner){
+
+function setOwner(isOwner){
 if(isOwner){
-document.body.classList.add('owner-mode');
-if(ownerBadge){ownerBadge.textContent='👑 OWNER';ownerBadge.classList.add('owner-role');}
-if(verifiedBadge) verifiedBadge.classList.add('owner-role');
+ownerBadge.textContent='👑 OWNER';
+ownerBadge.classList.add('owner-role');
+verifiedBadge.classList.add('owner-role');
 sessionStorage.setItem('mannzzRole','owner');
 }else{
-if(ownerBadge){ownerBadge.textContent='USER';ownerBadge.classList.remove('owner-role');}
-if(verifiedBadge) verifiedBadge.classList.remove('owner-role');
-sessionStorage.setItem('mannzzRole','visitor');
+ownerBadge.textContent='USER';
+ownerBadge.classList.remove('owner-role');
+verifiedBadge.classList.remove('owner-role');
+sessionStorage.removeItem('mannzzRole');
 }
-document.body.classList.add('gate-hidden');
-document.documentElement.classList.remove('gate-lock');
-document.body.classList.remove('gate-lock');
 }
-const existingRole=sessionStorage.getItem('mannzzRole');
-if(existingRole==='owner') masuk(true);
-else if(existingRole==='visitor') masuk(false);
-if(gateVisitor) gateVisitor.addEventListener('click',()=>masuk(false));
-if(gateOwner) gateOwner.addEventListener('click',()=>{gateChoices.style.display='none';gateOwnerForm.style.display='flex';gateOwnerPass.focus();});
-if(gateOwnerSubmit) gateOwnerSubmit.addEventListener('click',()=>{
-if(gateOwnerPass.value===OWNER_PASSWORD){masuk(true);}else{gateError.style.display='block';gateOwnerPass.value='';gateOwnerPass.focus();}
+if(sessionStorage.getItem('mannzzRole')==='owner') setOwner(true);
+
+ownerToggle.addEventListener('click',()=>{
+if(ownerBadge.textContent.includes('OWNER')){
+setOwner(false);
+return;
+}
+ownerPanel.style.display = ownerPanel.style.display==='none' ? 'flex' : 'none';
 });
-if(gateOwnerPass) gateOwnerPass.addEventListener('keydown',(e)=>{if(e.key==='Enter') gateOwnerSubmit.click();});
-if(gateTogglePass) gateTogglePass.addEventListener('click',()=>{
-const isPass=gateOwnerPass.type==='password';
-gateOwnerPass.type=isPass?'text':'password';
-gateTogglePass.textContent=isPass?'🙈':'👁️';
+ownerSubmit.addEventListener('click',()=>{
+if(ownerPass.value===OWNER_PASSWORD){
+setOwner(true);
+ownerPanel.style.display='none';
+ownerPass.value='';
+ownerError.style.display='none';
+}else{
+ownerError.style.display='block';
+ownerPass.value='';
+ownerPass.focus();
+}
 });
-})();
+ownerPass.addEventListener('keydown',(e)=>{if(e.key==='Enter') ownerSubmit.click();});
+togglePass.addEventListener('click',()=>{
+const isPass=ownerPass.type==='password';
+ownerPass.type=isPass?'text':'password';
+togglePass.textContent=isPass?'🙈':'👁️';
+});
 
 const themeToggle=document.getElementById('theme-toggle');
-const iconTheme=document.getElementById('icon-theme');
-function toggleTheme(){
+themeToggle.addEventListener('click',()=>{
 const light=document.body.classList.toggle('light-mode');
 themeToggle.textContent=light?'🌙':'☀️';
-}
-themeToggle.addEventListener('click',toggleTheme);
-if(iconTheme) iconTheme.addEventListener('click',toggleTheme);
+});
 
 const navBtns=document.querySelectorAll('.nav-btn');
 const tabs=document.querySelectorAll('.tab');
@@ -302,9 +273,6 @@ navBtns.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
 window.scrollTo({top:0});
 }
 navBtns.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
-document.querySelectorAll('[data-tab]:not(.nav-btn)').forEach(el=>{
-el.addEventListener('click',(e)=>{e.preventDefault();showTab(el.dataset.tab);});
-});
 
 document.getElementById('year').textContent=new Date().getFullYear();
 document.getElementById('form').addEventListener('submit',e=>{
