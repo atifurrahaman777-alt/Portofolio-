@@ -2,754 +2,323 @@
 <html lang="id" class="gate-lock">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#080811">
-<meta name="description" content="Portofolio web developer by manz">
+<meta name="description" content="Mann'zz — Portfolio & Tools">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.16.0/devicon.min.css">
-<title>Mannzz | Portfolio</title>
-<script>
-  // Deteksi layar fisik HP walau Chrome lagi mode "Desktop site"
-  // (screen.width/height tetap nunjukin ukuran layar asli, beda sama innerWidth yang bisa dipalsuin)
-  if (Math.min(window.screen.width, window.screen.height) <= 760) {
-    document.documentElement.classList.add('is-mobile-device');
-  }
-</script>
+<title>Mann'zz</title>
 <style>
-:root{--bg:#080811;--card:#111120;--text:#f5f3ff;--muted:#b7b3cc;--purple:#a855f7;--line:#382052}
+:root{--purple:#a855f7}
+body{--bg:#080811;--card:#111120;--line:#382052;--text:#ffd700;--muted:#d8b76b;--shadow:#ffd700}
+body.light-mode{--bg:#fffdf2;--card:#ffffff;--line:#e2c85a;--text:#111111;--muted:#5a4300;--shadow:#000000}
 *{box-sizing:border-box}
-html{scroll-behavior:smooth;scroll-padding-top:80px}
-body{margin:0;background:radial-gradient(ellipse at 80% 0%,#26104455,transparent 38%),var(--bg);color:var(--text);font:16px/1.65 system-ui,-apple-system,sans-serif}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,sans-serif;padding-bottom:20px;transition:background .2s,color .2s}
 a{color:inherit;text-decoration:none}
-.container{width:min(1080px,calc(100% - 36px));margin:auto}
-nav{height:72px;display:flex;align-items:center;justify-content:space-between;gap:20px}
-header{position:sticky;top:0;z-index:10;background:#080811eF;border-bottom:1px solid var(--line);backdrop-filter:blur(14px)}
-.logo{font-size:1.4rem;font-weight:900}.logo span,.purple{color:#b56cff}
-.links{display:flex;gap:24px;color:var(--muted);font-size:.92rem}
-.links a:hover{color:#c084fc}
-.btn{display:inline-block;padding:11px 17px;border:1px solid var(--purple);border-radius:10px;font-weight:700;transition:.2s}
-.btn.primary{background:linear-gradient(110deg,#9333ea,#6527e8);border:0}
-.btn:hover{transform:translateY(-2px);box-shadow:0 0 25px #8b5cf644}
-.hero{min-height:510px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:35px;padding-top:35px;padding-bottom:35px}
-.eyebrow{color:#c084fc;font-weight:800;margin:0}
-h1{font-size:clamp(2.8rem,6vw,5rem);line-height:1.04;letter-spacing:-.06em;margin:8px 0}
-h2{line-height:1.2}h3{margin:0}
-.intro{color:var(--muted);max-width:480px}
-.actions{display:flex;flex-wrap:wrap;gap:12px;margin:22px 0}
-.art{height:360px;border:1px solid #7942bd;border-radius:24px;display:grid;place-items:center;text-align:center;position:relative;overflow:hidden;background: none !important;box-shadow:0 0 45px #7c3aed22}
-.art:before,.art:after{content:"";position:absolute;width:140%;height:3px;background:linear-gradient(90deg,transparent,#c084fc,transparent);transform:rotate(-28deg);box-shadow:0 0 20px #a855f7}
-.art:before{top:35%}.art:after{top:72%;transform:rotate(25deg)}
-.art-content{z-index:1;padding:20px}
-.lightning{font-size:6rem;color:#d8b4fe;text-shadow:0 0 35px #9333ea;line-height:1}
-.art p{color:#ddd0f6}
-.social{display:flex;gap:16px;color:#d8b4fe;font-weight:700}
-section{padding:38px 0}
-.title{font-size:1.8rem;margin:0 0 22px}
-.title:after{content:"";display:inline-block;width:35px;height:3px;background:var(--purple);margin:0 0 6px 12px}
-.about{display:grid;grid-template-columns:1fr 1fr;gap:30px;align-items:center}
-.muted{color:var(--muted)}
-.quote{padding:28px;border:1px solid var(--line);border-radius:17px;background:linear-gradient(120deg,#151326,#211039)}
-.quote p{font-size:1.4rem;font-weight:800;font-style:italic}
-.skills{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
-.skill{padding:19px 8px;text-align:center;border:1px solid var(--line);background:var(--card);border-radius:13px;font-weight:700}
-.skill b{display:block;font-size:1.7rem;color:#c084fc}
-.skill i{display:block;font-size:1.8rem;margin-bottom:6px}
-.projects{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
-.project{border:1px solid var(--line);border-radius:15px;overflow:hidden;background:var(--card);transition:.2s}
-.project:hover{transform:translateY(-4px);box-shadow:0 0 25px #7c3aed25}
-.preview{height:145px;padding:18px;background:radial-gradient(ellipse at 70% 20%,#8b5cf644,transparent 50%),#0c0c18;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line);overflow:hidden;border-radius:13px 13px 0 0}
-.window{width:90%;padding:12px;border:1px solid #7042a4;border-radius:8px;background:#090914}
-.dot{display:inline-block;width:6px;height:6px;background:#c084fc;border-radius:50%;margin-right:4px}
-.line{height:5px;width:80%;margin:8px 0;border-radius:8px;background:#352348}
-.line.short{width:45%;background:#8b5cf6}
-.project-body{padding:17px}
-.project-body p{font-size:.91rem;color:var(--muted)}
-.tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.75rem;margin:2px}
-.project-links{display:flex;gap:10px;margin-top:12px}
-.project-links a{font-size:.8rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);color:var(--muted);display:inline-block}
-.project-links a:hover{border-color:var(--purple);color:#fff}
-.contact{display:grid;grid-template-columns:.8fr 1.2fr;gap:30px}
-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
-input,textarea{min-width:0;width:100%;padding:13px;background:#10101d;border:1px solid var(--line);border-radius:9px;color:white;font:inherit}
-textarea{grid-column:1/-1;min-height:120px}
-form button{grid-column:1/-1;color:white;font:inherit;cursor:pointer}
-#status{grid-column:1/-1;color:#d8b4fe}
-footer{border-top:1px solid var(--line);padding:20px 0;color:var(--muted);font-size:.85rem}
-.footer{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap}
-.menu{display:none;background:transparent;color:white;border:1px solid var(--line);border-radius:8px;padding:8px}
-@media(max-width:760px){
- .hero{grid-template-columns:1fr;padding-top:48px;gap:24px}
- .art{height:260px}.lightning{font-size:4rem}
- .about,.contact{grid-template-columns:1fr}
- .skills{grid-template-columns:repeat(3,1fr)}
- .projects{grid-template-columns:1fr}
- .links{display:none;position:absolute;top:64px;left:14px;right:14px;padding:15px;background:#11101e;border:1px solid var(--line);border-radius:12px;flex-direction:column;gap:8px}
- .links.open{display:flex}.menu{display:block}
- form{grid-template-columns:1fr}textarea,form button,#status{grid-column:1}
-}
-@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{transition:none!important}}
-
-/* Header: logo kiri, WhatsApp dan hamburger kanan */
-nav.container {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.logo {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  flex-shrink: 0;
-}
-.header-actions {
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  flex-shrink: 0;
-}
-#header-whatsapp {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 9px 12px;
-  border: 1px solid #ffd700;
-  border-radius: 10px;
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  text-decoration: none;
-  font-weight: 700;
-  white-space: nowrap;
-}
-.menu {
-  display: none;
-  background: transparent;
-  color: #ffd700;
-  border: 1px solid #382052;
-  border-radius: 8px;
-  padding: 8px 10px;
-  font-size: 20px;
-  cursor: pointer;
-}
-@media (max-width: 760px) {
-  nav.container {
-    position: relative;
-    flex-wrap: nowrap;
-    gap: 8px;
-  }
-  .logo {
-    font-size: 1.1rem;
-    gap: 6px;
-  }
-  .header-actions {
-    gap: 7px;
-  }
-  #header-whatsapp {
-    padding: 8px 9px;
-    font-size: 12px;
-  }
-  .menu {
-    display: block;
-  }
-  .links {
-    display: none;
-    position: absolute;
-    top: 72px;
-    left: 0;
-    right: 0;
-    z-index: 20;
-    padding: 15px;
-    background: #11101e;
-    border: 1px solid #382052;
-    border-radius: 12px;
-    flex-direction: column;
-    gap: 8px;
-  }
-  .links.open {
-    display: flex !important;
-  }
-}
-
-/* Paksa tampilan mobile (hamburger) meski Chrome lagi mode "Desktop site" */
-html.is-mobile-device nav.container { position: relative; flex-wrap: nowrap; gap: 8px; }
-html.is-mobile-device .logo { font-size: 1.1rem; gap: 6px; }
-html.is-mobile-device .header-actions { gap: 7px; }
-html.is-mobile-device #header-whatsapp { padding: 8px 9px; font-size: 12px; }
-html.is-mobile-device .menu { display: block !important; }
-html.is-mobile-device .links {
-  display: none !important;
-  position: absolute;
-  top: 72px;
-  left: 0;
-  right: 0;
-  z-index: 20;
-  padding: 15px;
-  background: #11101e;
-  border: 1px solid #382052;
-  border-radius: 12px;
-  flex-direction: column;
-  gap: 8px;
-}
-html.is-mobile-device .links.open { display: flex !important; }
-body, p, li, label, input, textarea, h1, h2, h3, .title, .footer {
-  color: #ffd700;
-  text-shadow: 0 0 5px #ffd70044;
-}
-
-
-/* Final visual adjustments */
-body, body p, body li, body label, body input, body textarea,
-body h1, body h2, body h3, body a, body .title, body .footer,
-body .muted, body .eyebrow, body .intro, body .links,
-body .links a, body .project-body, body .quote, body .skill {
-  color: #ffd700;
-  text-shadow: 0 0 5px #ffd70088, 0 0 12px #ffd70033;
-}
-body .purple, body h1 .purple {
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  text-shadow: 0 0 7px #ffd700aa, 0 0 16px #ffd70055;
-}
-#header-whatsapp {
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-}
-.art::before, .art::after, .lightning,
-.art .lightning, .art svg {
-  display: none !important;
-}
-
-
-/* Gold glow menyeluruh */
-:root {
-  --gold: #ffd700;
-  --gold-glow: 0 0 5px #ffd700, 0 0 12px #ffd70099, 0 0 24px #ffd70055;
-}
-body, body p, body li, body label, body input, body textarea,
-body h1, body h2, body h3, body a, body .title, body .footer,
-body .muted, body .eyebrow, body .intro, body .links,
-body .links a, body .project-body, body .quote, body .skill,
-body .tag, body .logo {
-  color: var(--gold) !important;
-  text-shadow: var(--gold-glow) !important;
-}
-body .purple, body h1 .purple {
-  color: var(--gold) !important;
-  -webkit-text-fill-color: var(--gold) !important;
-  text-shadow: var(--gold-glow) !important;
-}
-#header-whatsapp, #theme-toggle {
-  color: var(--gold) !important;
-  border: 1px solid var(--gold);
-  text-shadow: var(--gold-glow);
-}
-#theme-toggle {
-  display: block;
-  width: 100%;
-  padding: 10px;
-  margin-top: 8px;
-  border-radius: 9px;
-  background: transparent;
-  font: inherit;
-  text-align: left;
-  cursor: pointer;
-}
-body.light-mode {
-  background: #fffdf2 !important;
-  color: #342800 !important;
-}
-body.light-mode,
-body.light-mode header,
-body.light-mode .links,
-body.light-mode .card,
-body.light-mode .project,
-body.light-mode .quote {
-  background-color: #fffdf2 !important;
-}
-body.light-mode p, body.light-mode li, body.light-mode h1,
-body.light-mode h2, body.light-mode h3, body.light-mode label,
-body.light-mode .title, body.light-mode .muted,
-body.light-mode .intro, body.light-mode .links a,
-body.light-mode .logo, body.light-mode .project-body,
-body.light-mode .quote, body.light-mode .skill,
-body.light-mode .footer {
-  color: #8a6500 !important;
-  -webkit-text-fill-color: #8a6500 !important;
-  text-shadow: 0 0 5px #ffd70099, 0 0 12px #ffd70044 !important;
-}
-body.light-mode input, body.light-mode textarea {
-  background: #ffffff !important;
-  color: #5a4300 !important;
-}
-body.light-mode #theme-toggle {
-  color: #8a6500 !important;
-}
-
-
-/* Mode terang: teks hitam tebal */
-body.light-mode,
-body.light-mode p,
-body.light-mode li,
-body.light-mode label,
-body.light-mode input,
-body.light-mode textarea,
-body.light-mode h1,
-body.light-mode h2,
-body.light-mode h3,
-body.light-mode a,
-body.light-mode .title,
-body.light-mode .footer,
-body.light-mode .muted,
-body.light-mode .eyebrow,
-body.light-mode .intro,
-body.light-mode .links a,
-body.light-mode .logo,
-body.light-mode .project-body,
-body.light-mode .quote,
-body.light-mode .skill,
-body.light-mode .tag {
-  color: #111111 !important;
-  -webkit-text-fill-color: #111111 !important;
-  font-weight: 700 !important;
-  text-shadow: none !important;
-}
-body.light-mode #header-whatsapp,
-body.light-mode #theme-toggle,
-body.light-mode .menu {
-  color: #111111 !important;
-  -webkit-text-fill-color: #111111 !important;
-  font-weight: 700 !important;
-  text-shadow: none !important;
-  border-color: #111111;
-}
-
-
-/* Fix kontras kartu pada mode terang */
-body.light-mode .skill,
-body.light-mode .project,
-body.light-mode .preview,
-body.light-mode .window,
-body.light-mode .quote,
-body.light-mode .tag {
-  background: #ffffff !important;
-  background-color: #ffffff !important;
-  border-color: #e2c85a !important;
-  color: #111111 !important;
-  box-shadow: 0 2px 12px #b8952230;
-}
-
-body.light-mode .skill *,
-body.light-mode .project *,
-body.light-mode .preview *,
-body.light-mode .window *,
-body.light-mode .quote *,
-body.light-mode .tag {
-  color: #111111 !important;
-  -webkit-text-fill-color: #111111 !important;
-  text-shadow: none !important;
-}
-
-body.light-mode .project-body,
-body.light-mode .project-body p,
-body.light-mode .skill b {
-  color: #111111 !important;
-  -webkit-text-fill-color: #111111 !important;
-}
-
-body.light-mode .links {
-  background: #fffdf2 !important;
-  border-color: #d8bd55 !important;
-}
-
-
-/* Soft gold glow khusus mode gelap */
-body:not(.light-mode),
-body:not(.light-mode) p,
-body:not(.light-mode) li,
-body:not(.light-mode) label,
-body:not(.light-mode) input,
-body:not(.light-mode) textarea,
-body:not(.light-mode) h1,
-body:not(.light-mode) h2,
-body:not(.light-mode) h3,
-body:not(.light-mode) a,
-body:not(.light-mode) .title,
-body:not(.light-mode) .footer,
-body:not(.light-mode) .muted,
-body:not(.light-mode) .eyebrow,
-body:not(.light-mode) .intro,
-body:not(.light-mode) .links a,
-body:not(.light-mode) .logo,
-body:not(.light-mode) .project-body,
-body:not(.light-mode) .quote,
-body:not(.light-mode) .skill,
-body:not(.light-mode) .tag {
-  color: #e8c85a !important;
-  -webkit-text-fill-color: #e8c85a !important;
-  text-shadow: 0 0 3px #d9b94c55, 0 0 8px #d9b94c22 !important;
-}
-body:not(.light-mode) .purple,
-body:not(.light-mode) h1 .purple {
-  color: #f0d36b !important;
-  -webkit-text-fill-color: #f0d36b !important;
-  text-shadow: 0 0 4px #e8c85a66, 0 0 10px #e8c85a33 !important;
-}
-body:not(.light-mode) #header-whatsapp,
-body:not(.light-mode) #theme-toggle,
-body:not(.light-mode) .menu {
-  color: #e8c85a !important;
-  -webkit-text-fill-color: #e8c85a !important;
-  text-shadow: 0 0 4px #d9b94c44 !important;
-  border-color: #8f7737;
-}
-
-
-/* Premium gold untuk mode gelap */
-body:not(.light-mode) {
-  --premium-gold: #ffd700;
-  --premium-gold-light: #ffe878;
-}
-
-body:not(.light-mode) p,
-body:not(.light-mode) li,
-body:not(.light-mode) label,
-body:not(.light-mode) h1,
-body:not(.light-mode) h2,
-body:not(.light-mode) h3,
-body:not(.light-mode) .title,
-body:not(.light-mode) .eyebrow,
-body:not(.light-mode) .intro,
-body:not(.light-mode) .muted,
-body:not(.light-mode) .footer,
-body:not(.light-mode) .logo,
-body:not(.light-mode) .links a,
-body:not(.light-mode) .skill,
-body:not(.light-mode) .project-body,
-body:not(.light-mode) .quote,
-body:not(.light-mode) .tag {
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  text-shadow: 0 0 4px #ffd70066, 0 0 10px #ffbf0033 !important;
-}
-
-/* Tombol Lihat Projects: teks dan ikon gold premium */
-body:not(.light-mode) .actions .btn.primary {
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  text-shadow: 0 0 5px #ffd70099, 0 0 12px #ffb70055 !important;
-  border: 1px solid #ffd700 !important;
-  box-shadow: 0 0 10px #ffd70033, inset 0 0 8px #ffd70018 !important;
-}
-body:not(.light-mode) .actions .btn.primary:hover {
-  box-shadow: 0 0 14px #ffd70066, inset 0 0 12px #ffd70022 !important;
-}
-
-/* Judul utama lebih kaya, tidak pucat */
-body:not(.light-mode) .hero h1,
-body:not(.light-mode) .hero h1 .purple {
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  text-shadow: 0 0 5px #ffd70088, 0 0 14px #ffb70044 !important;
-}
-
-
-/* Tombol Lihat Projects gold premium */
-body:not(.light-mode) .actions .btn.primary {
-  background: linear-gradient(135deg, #4d3900, #a67c00 48%, #6b4d00) !important;
-  color: #ffd700 !important;
-  -webkit-text-fill-color: #ffd700 !important;
-  border: 2px solid #000 !important;
-  text-shadow: 0 0 4px #ffd70088, 0 0 9px #ffd70044 !important;
-  box-shadow: 5px 5px 0 #ffd700, 0 0 10px #ffd70033, inset 0 0 8px #ffd70022 !important;
-  transition: transform .12s ease, box-shadow .12s ease !important;
-}
-body:not(.light-mode) .actions .btn.primary:hover {
-  background: linear-gradient(135deg, #6b4d00, #c49a00 48%, #8a6500) !important;
-  transform: translate(2px, 2px) !important;
-  box-shadow: 3px 3px 0 #ffd700, 0 0 16px #ffd70066 !important;
-}
-
-/* ===== Efek bayangan tegas (hard shadow) ala referensi, disesuaikan ke tema gold dark ===== */
-.skill, .project, .quote, #header-whatsapp, .art {
-  border: 2px solid #000;
-  box-shadow: 5px 5px 0 #ffd700;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-.skill:hover, .project:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0 #ffd700;
-}
-#header-whatsapp:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #ffd700 !important;
-}
-input, textarea {
-  border: 2px solid #000;
-  box-shadow: 3px 3px 0 #a855f7;
-}
-
-/* Mode terang: bayangan hitam solid (sesuai referensi) */
-body.light-mode .skill,
-body.light-mode .project,
-body.light-mode .quote,
-body.light-mode #header-whatsapp,
-body.light-mode .art {
-  border: 2px solid #000 !important;
-  box-shadow: 5px 5px 0 #000 !important;
-}
-body.light-mode .skill:hover,
-body.light-mode .project:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0 #000 !important;
-}
-body.light-mode #header-whatsapp:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 2px 2px 0 #000 !important;
-}
-body.light-mode .actions .btn.primary {
-  border: 2px solid #000 !important;
-  box-shadow: 5px 5px 0 #000 !important;
-  transition: transform .12s ease, box-shadow .12s ease;
-}
-body.light-mode .actions .btn.primary:hover {
-  transform: translate(2px, 2px);
-  box-shadow: 3px 3px 0 #000 !important;
-}
-body.light-mode input,
-body.light-mode textarea {
-  border: 2px solid #000 !important;
-  box-shadow: 3px 3px 0 #000 !important;
-}
-#gate{position:fixed;inset:0;z-index:999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:24px}
-.gate-box{text-align:center;max-width:320px;width:100%}
-.gate-logo{font-size:1.6rem;font-weight:900;margin-bottom:8px}
-.gate-sub{color:var(--muted);margin-bottom:24px}
-.gate-choices{display:flex;flex-direction:column;gap:12px}
-.gate-choices .btn{width:100%}
-.gate-owner-form{margin-top:16px;display:flex;flex-direction:column;gap:10px}
-.gate-owner-form input{padding:12px;border-radius:9px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;width:100%}
-.gate-error{color:#ff6b6b;font-size:.85rem;margin:0}
-body.gate-hidden #gate{display:none}
-.owner-badge{display:inline-flex;align-items:center;gap:3px;background:#262636;color:#b9b9cc;font-size:.65rem;font-weight:800;padding:4px 11px;border-radius:20px;margin-left:8px;vertical-align:middle;border:1px solid #3d3d52}
-.owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);background-size:220% 100%;animation:ownerShimmer 3s linear infinite;color:#2a1e00;font-weight:900;border:1px solid #fff4c2;box-shadow:0 0 10px #ffd70066,inset 0 1px 0 #fff8dc;letter-spacing:.04em}
-@keyframes ownerShimmer{0%{background-position:0% 0}100%{background-position:220% 0}}
-.gate-choices #gateOwner{background:#fff !important;color:#111 !important;-webkit-text-fill-color:#111 !important;text-shadow:none !important;border:2px solid #000 !important;box-shadow:5px 5px 0 #ffd700 !important;transition:transform .12s ease, box-shadow .12s ease}
-.gate-choices #gateOwner:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700 !important}
-/* Gate versi lebih hidup: background putih + aksen gradient + kartu bayangan */
-#gate{
-  background:#fdfcff !important;
-  overflow:hidden;
-}
+.container{width:min(480px,100%);margin:0 auto;padding:0 16px}
+#gate{position:fixed;inset:0;z-index:999;overflow:hidden;background:#fdfcff;display:flex;align-items:center;justify-content:center;padding:24px}
 #gateVideo{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;z-index:0}
-.gate-overlay{
-  position:absolute;inset:0;z-index:1;
-  background:
-    radial-gradient(circle at 15% 20%, #a855f733, transparent 40%),
-    radial-gradient(circle at 85% 15%, #ffd70033, transparent 35%),
-    radial-gradient(circle at 50% 95%, #9333ea22, transparent 45%),
-    rgba(253,252,255,.2);
-}
-.gate-box{
-  position:relative;
-  z-index:2;
-  background:#fff;
-  border:2px solid #000;
-  border-radius:18px;
-  box-shadow:7px 7px 0 #ffd700;
-  padding:36px 26px;
-  max-width:340px;
-}
+.gate-overlay{position:absolute;inset:0;z-index:1;background:radial-gradient(circle at 15% 20%,#a855f733,transparent 40%),radial-gradient(circle at 85% 15%,#ffd70033,transparent 35%),radial-gradient(circle at 50% 95%,#9333ea22,transparent 45%),rgba(253,252,255,.2)}
+.gate-box{position:relative;z-index:2;background:#fff;border:2px solid #000;border-radius:18px;box-shadow:7px 7px 0 #ffd700;padding:36px 26px;max-width:320px;width:100%;text-align:center}
 .gate-emoji{font-size:2.4rem;margin-bottom:8px}
-.gate-logo{color:#111 !important;-webkit-text-fill-color:#111 !important;text-shadow:none !important}
-.gate-logo .purple{color:#9333ea !important;-webkit-text-fill-color:#9333ea !important;text-shadow:none !important}
+.gate-logo{font-size:1.5rem;font-weight:900;color:#111}
+.gate-logo .purple{color:#9333ea}
 .gate-welcome{color:#6b6b80;font-size:.85rem;margin:4px 0 16px;font-weight:600}
-.gate-sub{color:#333 !important;-webkit-text-fill-color:#333 !important;text-shadow:none !important;font-weight:700}
-.gate-choices .btn.primary{border:2px solid #000;box-shadow:5px 5px 0 #ffd700;transition:transform .12s ease, box-shadow .12s ease}
-.gate-choices .btn.primary:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 #ffd700}
-.gate-owner-form input{border:2px solid #000 !important;background:#fff !important;color:#111 !important}
-.gate-choices #gateOwner{box-shadow:5px 5px 0 #a855f7 !important}
-.gate-choices #gateOwner:hover{box-shadow:3px 3px 0 #a855f7 !important}
-html.gate-lock, body.gate-lock{overflow:hidden !important;height:100%}
-.pass-wrap{position:relative;width:100%}
-.pass-wrap input{width:100%;padding-right:42px}
-.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer;padding:4px;line-height:1}
-.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:19px;height:19px;background:#25d366;color:#fff;border-radius:50%;font-size:.72rem;font-weight:900;margin-left:4px;vertical-align:middle;border:1.5px solid #fff;box-shadow:0 0 6px #25d36688}
-.verified-badge.owner-role{background:#1d9bf0;box-shadow:0 0 6px #1d9bf088}
-.menu{border:none !important;background:transparent !important}
-#ownerMenuLink{color:#ff6b6b !important;font-weight:800}
+.gate-sub{color:#333;font-weight:700;margin-bottom:20px}
+.gate-choices{display:flex;flex-direction:column;gap:12px}
+.btn{display:inline-block;padding:11px 17px;border:2px solid #000;border-radius:10px;font-weight:700;cursor:pointer;background:transparent;color:inherit;font:inherit}
+.btn.primary{background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff;box-shadow:5px 5px 0 #ffd700}
+#gateOwner{background:#fff;color:#111;box-shadow:5px 5px 0 #a855f7}
+.gate-owner-form{margin-top:16px;display:flex;flex-direction:column;gap:10px}
+.pass-wrap{position:relative}
+.pass-wrap input{width:100%;padding:12px;padding-right:42px;border-radius:9px;border:2px solid #000;background:#fff;color:#111;font:inherit}
+.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer}
+.gate-error{color:#e23}
+body.gate-hidden #gate{display:none}
+html.gate-lock,body.gate-lock{overflow:hidden!important;height:100%}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.1rem}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;width:18px;height:18px;background:#25d366;color:#fff;border-radius:50%;font-size:.68rem;font-weight:900;border:1.5px solid #fff}
+.verified-badge.owner-role{background:#1d9bf0}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.owner-badge{font-size:.65rem;font-weight:800;padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
+.owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);color:#2a1e00}
+#theme-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
+.app{padding:18px 16px 24px}
+.tab{display:none}
+.tab.active{display:block}
+.profile-card{border:2px solid #000;border-radius:16px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:18px;margin-bottom:16px}
+.profile-top{display:flex;gap:12px;align-items:center}
+.avatar{width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#9333ea,#6527e8);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0}
+.profile-name{font-weight:900;font-size:1.1rem}
+.profile-bio{color:var(--muted);font-size:.85rem;margin-top:2px}
+.verified-badge2{display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;background:#25d366;color:#fff;border-radius:50%;font-size:.6rem;margin-left:3px}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin:16px 0}
+.stat{text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px 4px;background:var(--bg)}
+.stat b{display:block;font-size:1.3rem}
+.stat span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.quick-actions{display:flex;gap:8px;flex-wrap:wrap}
+.pill{border:1px solid var(--purple);color:var(--purple);border-radius:20px;padding:7px 14px;font-size:.8rem;font-weight:700}
+.banner{display:flex;align-items:center;justify-content:space-between;background:linear-gradient(120deg,#2a0f4d,#3d1a70);border:2px solid #000;border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:5px 5px 0 var(--purple)}
+.banner-tag{background:#ffffff22;color:#d8b4fe;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.banner-title{color:#fff;font-weight:900;font-size:1.05rem;margin-top:6px}
+.banner-sub{color:#d8c6f5;font-size:.78rem}
+.banner-icon{font-size:1.8rem}
+.icon-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:20px;text-align:center}
+.icon-item{background:none;border:none;color:var(--text);font:inherit;font-size:.72rem;display:flex;flex-direction:column;align-items:center;gap:6px;cursor:pointer;padding:6px 0}
+.icon-item span{font-size:1.3rem}
+.about-block .title{font-size:1.2rem;margin:0 0 10px}
+.muted{color:var(--muted)}
+.quote{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.quote p{font-weight:800;font-style:italic;margin:0 0 4px;color:var(--purple)}
+.title{font-size:1.3rem;margin:0 0 16px}
+.projects{display:flex;flex-direction:column;gap:14px}
+.project{border:2px solid #000;border-radius:14px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:16px}
+.project h3{margin:0 0 6px}
+.project p{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.72rem;margin:2px 4px 2px 0}
+.project-links a{font-size:.78rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);display:inline-block;margin-top:6px}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.skill{border:2px solid #000;border-radius:12px;background:var(--card);box-shadow:4px 4px 0 var(--shadow);text-align:center;padding:14px 4px;font-size:.78rem;font-weight:700}
+.skill i{display:block;font-size:1.5rem;margin-bottom:5px}
+.contact-block form{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.contact-block input,.contact-block textarea{padding:12px;border-radius:9px;border:2px solid #000;background:var(--card);color:var(--text);font:inherit}
+.contact-block textarea{min-height:100px}
+.contact-block button{border:2px solid #000;box-shadow:4px 4px 0 var(--shadow);border-radius:9px;padding:12px;font-weight:800;cursor:pointer;background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff}
+#status{font-size:.82rem;color:var(--purple)}
+.tool-card{display:flex;gap:14px;align-items:center;border:2px solid #000;border-radius:14px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:16px;margin-bottom:12px}
+.tool-icon{font-size:1.8rem}
+.tool-card h3{margin:0 0 4px}
+.tool-card p{margin:0;font-size:.82rem;color:var(--muted)}
+.bottom-nav{position:fixed;bottom:0;left:0;right:0;z-index:20;display:flex;justify-content:space-around;background:var(--card);border-top:1px solid var(--line);padding:8px 4px calc(8px + env(safe-area-inset-bottom,0px))}
+.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.65rem;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;flex:1;padding:4px}
+.nav-btn span{font-size:1.25rem}
+.nav-btn.active{color:var(--purple)}
+footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 90px}
 </style>
 </head>
 <body class="gate-lock">
+
 <div id="gate">
-  <video id="gateVideo" src="mannzz-v56.mp4" autoplay muted loop playsinline></video>
-  <div class="gate-overlay"></div>
-  <div class="gate-box">
-    <div class="gate-emoji">🔐</div>
-    <div class="gate-logo">MD <span class="purple">Mann'zz Dev</span></div>
-    <p class="gate-welcome">Selamat datang di portofolio saya!</p>
-    <p class="gate-sub">Masuk sebagai?</p>
-    <div class="gate-choices" id="gateChoices">
-      <button class="btn primary" id="gateVisitor" type="button">Pengunjung</button>
-      <button class="btn" id="gateOwner" type="button">Owner</button>
-    </div>
-    <div class="gate-owner-form" id="gateOwnerForm" style="display:none">
-      <div class="pass-wrap">
-        <input type="password" id="gateOwnerPass" placeholder="Password owner">
-        <button type="button" id="gateTogglePass" class="pass-eye" aria-label="Tampilkan/sembunyikan password">👁️</button>
+<video id="gateVideo" src="mannzz-v56.mp4" autoplay muted loop playsinline></video>
+<div class="gate-overlay"></div>
+<div class="gate-box">
+<div class="gate-emoji">🔐</div>
+<div class="gate-logo">MD <span class="purple">Mann'zz Dev</span></div>
+<p class="gate-welcome">Selamat datang di portofolio saya!</p>
+<p class="gate-sub">Masuk sebagai?</p>
+<div class="gate-choices" id="gateChoices">
+<button class="btn primary" id="gateVisitor" type="button">Pengunjung</button>
+<button class="btn" id="gateOwner" type="button">Owner</button>
+</div>
+<div class="gate-owner-form" id="gateOwnerForm" style="display:none">
+<div class="pass-wrap">
+<input type="password" id="gateOwnerPass" placeholder="Password owner">
+<button type="button" id="gateTogglePass" class="pass-eye">👁️</button>
+</div>
+<button class="btn primary" id="gateOwnerSubmit" type="button">Masuk</button>
+<p class="gate-error" id="gateError" style="display:none">Password salah, coba lagi.</p>
+</div>
+</div>
+</div>
+
+<header>
+<div class="container topbar">
+<a class="logo" href="#"><span>MD Mann'zz</span><span class="verified-badge" id="verifiedBadge">✓</span></a>
+<div class="topbar-actions">
+<span class="owner-badge" id="ownerBadge">USER</span>
+<button id="theme-toggle" type="button" aria-label="Ganti tema">☀️</button>
+</div>
+</div>
+</header>
+
+<main class="app container">
+
+<section class="tab active" id="tab-beranda">
+  <div class="profile-card">
+    <div class="profile-top">
+      <div class="avatar">MD</div>
+      <div>
+        <div class="profile-name">Mann'zz <span class="purple" style="color:var(--purple)">Dev</span><span class="verified-badge2">✓</span></div>
+        <div class="profile-bio">Web Developer & Tech Enthusiast — suka ngulik WhatsApp bot & website.</div>
       </div>
-      <button class="btn primary" id="gateOwnerSubmit" type="button">Masuk</button>
-      <p class="gate-error" id="gateError" style="display:none">Password salah, coba lagi.</p>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>3</b><span>Projects</span></div>
+      <div class="stat"><b>10</b><span>Skills</span></div>
+      <div class="stat"><b>4</b><span>Tools</span></div>
+    </div>
+    <div class="quick-actions">
+      <a class="pill" href="#" data-tab="tab-feed">Projects</a>
+      <a class="pill" href="#" data-tab="tab-sosial">Kontak</a>
+      <a class="pill" href="#" data-tab="tab-alat">Tools</a>
     </div>
   </div>
-</div>
-<header>
-<nav class="container">
-<a class="logo" href="#home"><span class="logo-mark">MD</span><span class="logo-name">Mann'zz Dev</span><span class="verified-badge" id="verifiedBadge" title="Terverifikasi">✓</span></a>
-<div class="links" id="links">
-<a href="#home">Home</a><a href="#about">About</a><a href="#skills">Skills</a><a href="#projects">Projects</a><a id="header-whatsapp" href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a>
-<button id="theme-toggle" type="button">☀️ Beralih ke Mode Terang</button>
-<a href="#" id="ownerMenuLink" style="display:none">🔓 Logout Owner</a>
-</div>
-<div class="header-actions">
-<span class="owner-badge" id="ownerBadge">USER</span>
-<button class="menu" id="menu" type="button" aria-label="Buka menu" aria-expanded="false">⚙️</button>
-</div>
 
-</nav>
-</header>
-<main>
-<section class="hero container" id="home">
-<div>
-<p class="eyebrow">HELLO, IAM</p>
-<h1>Mannzz <span class="purple">dev</span></h1>
-<h2>Web Developer &amp; Tech Enthusiast</h2>
-<p class="intro">Saya suka membangun website, bot WhatsApp yang berguna. Selalu belajar hal baru dan mengembangkan ide menjadi proyek nyata.</p>
-<div class="actions"><a class="btn primary" href="#projects">⌘ Lihat Projects</a></div>
+  <a class="banner" href="https://wa.me/6282339899845" target="_blank" rel="noopener">
+    <div>
+      <span class="banner-tag">KOMUNITAS</span>
+      <div class="banner-title">WhatsApp Mann'zz v5.6</div>
+      <div class="banner-sub">Bot · Tools · Komunitas</div>
+    </div>
+    <div class="banner-icon">💬</div>
+  </a>
 
-</div>
-<div class="art"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;border-radius:inherit;display:block"></video></div>
+  <div class="icon-grid">
+    <button class="icon-item" id="icon-theme" type="button"><span>⚙️</span>Tema</button>
+    <a class="icon-item" href="#" data-tab="tab-sosial"><span>📊</span>Skills</a>
+    <a class="icon-item" href="#" data-tab="tab-beranda"><span>👤</span>Tentang</a>
+    <a class="icon-item" href="#" data-tab="tab-sosial"><span>✉️</span>Kontak</a>
+  </div>
+
+  <div class="about-block">
+    <h2 class="title">Tentang Saya</h2>
+    <p class="muted">Saya developer pemula yang mulai belajar lewat praktik langsung — membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya suka proses nemuin masalah terus mecahinnya satu-satu, dan percaya cara belajar paling cepat itu sambil ngerjain proyek nyata.</p>
+    <div class="quote"><p>"Small steps make big progress."</p><span class="muted">Keep learning, keep building.</span></div>
+  </div>
 </section>
-<section id="about"><div class="container about">
-<div><h2 class="title">Tentang Saya</h2><p class="muted">Saya developer pemula yang mulai belajar lewat praktik langsung — membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya suka proses nemuin masalah terus mecahinnya satu-satu, dan percaya cara belajar paling cepat itu sambil ngerjain proyek nyata.</p><p>⌖ Indonesia　　&lt;/&gt; Web Developer　　✧ Always Learning</p></div>
-<div class="quote"><p class="purple">“Small steps make big progress.”</p><span class="muted">Keep learning, keep building.</span></div>
-</div></section>
-<section id="skills"><div class="container"><h2 class="title">Skills</h2><div class="skills">
-<div class="skill"><i class="devicon-html5-plain colored"></i>HTML</div><div class="skill"><i class="devicon-css3-plain colored"></i>CSS</div><div class="skill"><i class="devicon-javascript-plain colored"></i>JavaScript</div><div class="skill"><i class="devicon-nodejs-plain colored"></i>Node.js</div><div class="skill"><i class="devicon-express-original colored"></i>Express</div><div class="skill"><i class="devicon-mongodb-plain colored"></i>MongoDB</div><div class="skill"><i class="devicon-mysql-plain colored"></i>MySQL</div><div class="skill"><i class="devicon-git-plain colored"></i>Git</div><div class="skill"><i class="devicon-linux-plain colored"></i>Linux</div><div class="skill"><b>WA</b>WhatsApp API</div>
-</div></div></section>
-<section id="projects"><div class="container"><h2 class="title">Projects</h2><div class="projects">
-<article class="project"><div class="preview"><video src="mannzz-v56.mp4" autoplay muted loop playsinline style="width:100%;height:100%;object-fit:cover;display:block"></video></div><div class="project-body"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium — plus deteksi command mirip saat user salah ketik.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></div></article>
-<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line short"></div><div class="line"></div></div></div><div class="project-body"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></div></article>
-<article class="project"><div class="preview"><div class="window"><i class="dot"></i><i class="dot"></i><i class="dot"></i><div class="line"></div><div class="line"></div><div class="line short"></div></div></div><div class="project-body"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></div></article>
-</div></div></section>
-<section id="contact"><div class="container"><h2 class="title">Contact</h2><div class="contact">
-<div><p class="muted">Punya ide proyek atau ingin bekerja sama?</p><p>✉ mannzz144hz@gmail.com</p><p>⌖ Indonesia</p></div>
-<form id="form"><input name="name" placeholder="Nama Anda" required><input name="email" type="email" placeholder="Email Anda" required><textarea name="message" placeholder="Pesan Anda..." required></textarea><button class="btn primary" type="submit">➤ Kirim Pesan</button><div id="status" role="status"></div></form>
-</div></div></section>
+
+<section class="tab" id="tab-feed">
+  <h2 class="title">Projects</h2>
+  <div class="projects">
+    <article class="project"><h3>Mann'zz v5.6</h3><p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium.</p><span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
+    <article class="project"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
+    <article class="project"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>
+  </div>
+</section>
+
+<section class="tab" id="tab-sosial">
+  <h2 class="title">Skills</h2>
+  <div class="skills">
+    <div class="skill"><i class="devicon-html5-plain colored"></i>HTML</div>
+    <div class="skill"><i class="devicon-css3-plain colored"></i>CSS</div>
+    <div class="skill"><i class="devicon-javascript-plain colored"></i>JavaScript</div>
+    <div class="skill"><i class="devicon-nodejs-plain colored"></i>Node.js</div>
+    <div class="skill"><i class="devicon-express-original colored"></i>Express</div>
+    <div class="skill"><i class="devicon-mongodb-plain colored"></i>MongoDB</div>
+    <div class="skill"><i class="devicon-mysql-plain colored"></i>MySQL</div>
+    <div class="skill"><i class="devicon-git-plain colored"></i>Git</div>
+    <div class="skill"><i class="devicon-linux-plain colored"></i>Linux</div>
+    <div class="skill">WA<br>WhatsApp API</div>
+  </div>
+  <h2 class="title">Contact</h2>
+  <div class="contact-block">
+    <p class="muted">Punya ide proyek atau ingin bekerja sama?</p>
+    <p>✉ mannzz144hz@gmail.com</p>
+    <form id="form">
+      <input name="name" placeholder="Nama Anda" required>
+      <input name="email" type="email" placeholder="Email Anda" required>
+      <textarea name="message" placeholder="Pesan Anda..." required></textarea>
+      <button type="submit">➤ Kirim Pesan</button>
+      <div id="status" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<section class="tab" id="tab-game">
+  <h2 class="title">Game</h2>
+  <a class="tool-card" href="https://mannzz-tools.vercel.app/games.html" target="_blank" rel="noopener">
+    <span class="tool-icon">🎮</span>
+    <div><h3>Games</h3><p>Tic Tac Toe, Whack-a-Mole, Reaction Test, Typing Test, Spin Wheel.</p></div>
+  </a>
+</section>
+
+<section class="tab" id="tab-alat">
+  <h2 class="title">Alat</h2>
+  <a class="tool-card" href="https://mannzz-tools.vercel.app/amprem.html" target="_blank" rel="noopener"><span class="tool-icon">📨</span><div><h3>Alight Motion Premium</h3><p>Panel verifikasi email lewat magic link.</p></div></a>
+  <a class="tool-card" href="https://mannzz-tools.vercel.app/downloader.html" target="_blank" rel="noopener"><span class="tool-icon">⬇️</span><div><h3>Downloader</h3><p>Download video/foto dari YouTube, TikTok, Instagram, dll.</p></div></a>
+  <a class="tool-card" href="https://mannzz-tools.vercel.app/reactch.html" target="_blank" rel="noopener"><span class="tool-icon">💬</span><div><h3>React Channel</h3><p>Kirim reaksi emoji ke post channel WhatsApp.</p></div></a>
+</section>
+
 </main>
-<footer><div class="container footer"><span>© <span id="year"></span> Mannsz. All rights reserved.</span><span>Keep Coding · Keep Growing · Keep Dreaming</span></div></footer>
+
+<nav class="bottom-nav">
+<button class="nav-btn" data-tab="tab-sosial"><span>👥</span>Sosial</button>
+<button class="nav-btn" data-tab="tab-feed"><span>📰</span>Feed</button>
+<button class="nav-btn active" data-tab="tab-beranda"><span>🏠</span>Beranda</button>
+<button class="nav-btn" data-tab="tab-game"><span>🎮</span>Game</button>
+<button class="nav-btn" data-tab="tab-alat"><span>🔧</span>Alat</button>
+</nav>
+
+<footer><div class="container">© <span id="year"></span> Mann'zz. All rights reserved.</div></footer>
+
 <script>
 (function(){
-  const gate=document.getElementById('gate');
-  const gateVisitor=document.getElementById('gateVisitor');
-  const gateOwner=document.getElementById('gateOwner');
-  const gateChoices=document.getElementById('gateChoices');
-  const gateOwnerForm=document.getElementById('gateOwnerForm');
-  const gateOwnerPass=document.getElementById('gateOwnerPass');
-  const gateOwnerSubmit=document.getElementById('gateOwnerSubmit');
-  const gateError=document.getElementById('gateError');
-  const ownerBadge=document.getElementById('ownerBadge');
-  const verifiedBadge=document.getElementById('verifiedBadge');
-  const gateTogglePass=document.getElementById('gateTogglePass');
-  const ownerMenuLink=document.getElementById('ownerMenuLink');
-  const OWNER_PASSWORD='mannzz kece'; // GANTI password ini
-
-  function masuk(isOwner){
-    if(isOwner){
-      document.body.classList.add('owner-mode');
-      if(ownerBadge){ ownerBadge.textContent='👑 OWNER'; ownerBadge.classList.add('owner-role'); }
-      if(verifiedBadge) verifiedBadge.classList.add('owner-role');
-      if(ownerMenuLink) ownerMenuLink.style.display='block';
-      sessionStorage.setItem('mannzzRole','owner');
-    } else {
-      if(ownerBadge){ ownerBadge.textContent='USER'; ownerBadge.classList.remove('owner-role'); }
-      if(verifiedBadge) verifiedBadge.classList.remove('owner-role');
-      if(ownerMenuLink) ownerMenuLink.style.display='none';
-      sessionStorage.setItem('mannzzRole','visitor');
-    }
-    document.body.classList.add('gate-hidden');
-    document.documentElement.classList.remove('gate-lock');
-    document.body.classList.remove('gate-lock');
-  }
-
-  const existingRole=sessionStorage.getItem('mannzzRole');
-  if(existingRole==='owner') masuk(true);
-  else if(existingRole==='visitor') masuk(false);
-
-  if(gateVisitor) gateVisitor.addEventListener('click',()=>masuk(false));
-  if(gateOwner) gateOwner.addEventListener('click',()=>{
-    gateChoices.style.display='none';
-    gateOwnerForm.style.display='flex';
-    gateOwnerPass.focus();
-  });
-  if(gateOwnerSubmit) gateOwnerSubmit.addEventListener('click',()=>{
-    if(gateOwnerPass.value===OWNER_PASSWORD){
-      masuk(true);
-    } else {
-      gateError.style.display='block';
-      gateOwnerPass.value='';
-      gateOwnerPass.focus();
-    }
-  });
-  if(gateOwnerPass) gateOwnerPass.addEventListener('keydown',(e)=>{
-    if(e.key==='Enter') gateOwnerSubmit.click();
-  });
-  if(gateTogglePass) gateTogglePass.addEventListener('click',()=>{
-    const isPass = gateOwnerPass.type === 'password';
-    gateOwnerPass.type = isPass ? 'text' : 'password';
-    gateTogglePass.textContent = isPass ? '🙈' : '👁️';
-  });
-  if(ownerMenuLink) ownerMenuLink.addEventListener('click',(e)=>{
-    e.preventDefault();
-    sessionStorage.removeItem('mannzzRole');
-    location.reload();
-  });
+const gate=document.getElementById('gate');
+const gateVisitor=document.getElementById('gateVisitor');
+const gateOwner=document.getElementById('gateOwner');
+const gateChoices=document.getElementById('gateChoices');
+const gateOwnerForm=document.getElementById('gateOwnerForm');
+const gateOwnerPass=document.getElementById('gateOwnerPass');
+const gateOwnerSubmit=document.getElementById('gateOwnerSubmit');
+const gateError=document.getElementById('gateError');
+const ownerBadge=document.getElementById('ownerBadge');
+const verifiedBadge=document.getElementById('verifiedBadge');
+const gateTogglePass=document.getElementById('gateTogglePass');
+const OWNER_PASSWORD='mannzz kece';
+function masuk(isOwner){
+if(isOwner){
+document.body.classList.add('owner-mode');
+if(ownerBadge){ownerBadge.textContent='👑 OWNER';ownerBadge.classList.add('owner-role');}
+if(verifiedBadge) verifiedBadge.classList.add('owner-role');
+sessionStorage.setItem('mannzzRole','owner');
+}else{
+if(ownerBadge){ownerBadge.textContent='USER';ownerBadge.classList.remove('owner-role');}
+if(verifiedBadge) verifiedBadge.classList.remove('owner-role');
+sessionStorage.setItem('mannzzRole','visitor');
+}
+document.body.classList.add('gate-hidden');
+document.documentElement.classList.remove('gate-lock');
+document.body.classList.remove('gate-lock');
+}
+const existingRole=sessionStorage.getItem('mannzzRole');
+if(existingRole==='owner') masuk(true);
+else if(existingRole==='visitor') masuk(false);
+if(gateVisitor) gateVisitor.addEventListener('click',()=>masuk(false));
+if(gateOwner) gateOwner.addEventListener('click',()=>{gateChoices.style.display='none';gateOwnerForm.style.display='flex';gateOwnerPass.focus();});
+if(gateOwnerSubmit) gateOwnerSubmit.addEventListener('click',()=>{
+if(gateOwnerPass.value===OWNER_PASSWORD){masuk(true);}else{gateError.style.display='block';gateOwnerPass.value='';gateOwnerPass.focus();}
+});
+if(gateOwnerPass) gateOwnerPass.addEventListener('keydown',(e)=>{if(e.key==='Enter') gateOwnerSubmit.click();});
+if(gateTogglePass) gateTogglePass.addEventListener('click',()=>{
+const isPass=gateOwnerPass.type==='password';
+gateOwnerPass.type=isPass?'text':'password';
+gateTogglePass.textContent=isPass?'🙈':'👁️';
+});
 })();
 
-const links=document.querySelector('#links');
-const menu=document.querySelector('#menu');
-const themeToggle = document.querySelector('#theme-toggle');
-if (themeToggle) {
-  themeToggle.addEventListener('click', () => {
-    const light = document.body.classList.toggle('light-mode');
-    themeToggle.textContent = light
-      ? '🌙 Beralih ke Mode Gelap'
-      : '☀️ Beralih ke Mode Terang';
-  });
+const themeToggle=document.getElementById('theme-toggle');
+const iconTheme=document.getElementById('icon-theme');
+function toggleTheme(){
+const light=document.body.classList.toggle('light-mode');
+themeToggle.textContent=light?'🌙':'☀️';
 }
+themeToggle.addEventListener('click',toggleTheme);
+if(iconTheme) iconTheme.addEventListener('click',toggleTheme);
 
-
-if (menu && links) {
-  menu.addEventListener('click', () => {
-    const isOpen = links.classList.toggle('open');
-    menu.setAttribute('aria-expanded', String(isOpen));
-  });
-
-  links.querySelectorAll('a').forEach(a => {
-    a.addEventListener('click', () => {
-      links.classList.remove('open');
-      menu.setAttribute('aria-expanded', 'false');
-    });
-  });
+const navBtns=document.querySelectorAll('.nav-btn');
+const tabs=document.querySelectorAll('.tab');
+function showTab(id){
+tabs.forEach(t=>t.classList.toggle('active',t.id===id));
+navBtns.forEach(b=>b.classList.toggle('active',b.dataset.tab===id));
+window.scrollTo({top:0});
 }
+navBtns.forEach(b=>b.addEventListener('click',()=>showTab(b.dataset.tab)));
+document.querySelectorAll('[data-tab]:not(.nav-btn)').forEach(el=>{
+el.addEventListener('click',(e)=>{e.preventDefault();showTab(el.dataset.tab);});
+});
 
-document.querySelector('#year').textContent=new Date().getFullYear();
-document.querySelector('#form').addEventListener('submit',e=>{
- e.preventDefault();
- const d=new FormData(e.currentTarget);
- const subject=encodeURIComponent('Pesan portofolio dari '+d.get('name'));
- const body=encodeURIComponent('Nama: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));
- document.querySelector('#status').textContent='Membuka aplikasi email...';
- location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('form').addEventListener('submit',e=>{
+e.preventDefault();
+const d=new FormData(e.currentTarget);
+const subject=encodeURIComponent('Pesan portofolio dari '+d.get('name'));
+const body=encodeURIComponent('Nama: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));
+document.getElementById('status').textContent='Membuka aplikasi email...';
+location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
 });
 </script>
 </body>
 </html>
+
