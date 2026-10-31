@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="AMPREM — panel verifikasi email oleh Mann'zz">
+<title>Alight Motion | Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin:22px 0}
+@media(max-width:760px){.grid{grid-template-columns:repeat(2,1fr)}}
+.emoji{font-size:1.6rem}
+.label{color:var(--muted);text-shadow:none;font-size:.82rem;margin-top:10px}
+.value{font-size:1.5rem;font-weight:850;margin-top:4px;color:var(--gold)}
+
+.profile{position:relative;max-width:560px;margin:0 auto 28px;padding:24px 22px;border-radius:20px;background:var(--card);border:2px solid #000;box-shadow:6px 6px 0 var(--purple)}
+.profile-label{font-size:.68rem;font-weight:800;letter-spacing:3px;color:var(--purple)}
+.profile-name{margin-top:12px;font-size:clamp(1.8rem,7vw,2.4rem);font-weight:900}
+.profile-sub{margin-top:4px;color:var(--muted);text-shadow:none;font-size:.88rem}
+.profile-line{height:1px;margin:16px 0 10px;background:var(--line)}
+.profile-footer{font-size:.7rem;font-weight:700;letter-spacing:1px;color:var(--muted);text-shadow:none}
+.dot{display:inline-block;width:6px;height:6px;margin-right:6px;border-radius:50%;background:var(--gold);box-shadow:0 0 8px var(--gold)}
+
+.ocean-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:10px;max-width:560px;margin:18px auto}
+.ocean-tab{border:2px solid #000;background:var(--card);color:var(--muted);text-shadow:none;border-radius:999px;padding:10px 16px;font:inherit;font-weight:700;font-size:.85rem;cursor:pointer;box-shadow:4px 4px 0 var(--line);transition:transform .12s ease,box-shadow .12s ease,color .12s ease}
+.ocean-tab:hover{transform:translate(1px,1px)}
+.ocean-tab.active{color:var(--gold);text-shadow:0 0 4px #ffd70066;box-shadow:4px 4px 0 var(--gold)}
+@media(max-width:480px){.ocean-nav{gap:7px}.ocean-tab{padding:9px 12px;font-size:.78rem}}
+
+.ocean-view[hidden]{display:none}
+
+.about-card{max-width:560px;margin:0 auto 26px;padding:22px;border-radius:18px;background:var(--card);border:2px solid #000;box-shadow:5px 5px 0 var(--purple)}
+.about-kicker{font-size:.68rem;font-weight:800;letter-spacing:3px;color:var(--purple);margin-bottom:10px}
+.about-card h2{margin:0 0 10px;font-size:1.3rem}
+.about-card p{color:var(--muted);text-shadow:none;font-size:.9rem;line-height:1.7;margin:0 0 14px}
+.about-row{padding:12px 0;border-top:1px solid var(--line)}
+.about-row strong{display:block;margin-bottom:4px}
+.about-row span{font-size:.85rem;color:var(--muted);text-shadow:none}
+.about-tip{padding:12px 14px;border-radius:12px;background:#0c0c18;font-size:.78rem;color:var(--muted);text-shadow:none;border:1px solid var(--line)}
+
+.email-section{margin:0 auto;max-width:900px}
+.email-heading{text-align:center;margin-bottom:20px}
+.email-kicker{display:inline-block;margin-bottom:8px;color:var(--purple);font-size:.68rem;font-weight:800;letter-spacing:3px}
+.email-heading h2{margin:0 0 8px;font-size:1.5rem}
+.email-heading p{color:var(--muted);text-shadow:none}
+
+.email-progress{display:grid;grid-template-columns:minmax(0,1fr) 26px minmax(0,1fr) 26px minmax(0,1fr);align-items:center;gap:6px;margin:8px 0 22px}
+.email-step{min-height:80px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;padding:10px 4px;border:2px solid var(--line);border-radius:14px;color:var(--muted);text-shadow:none;background:var(--card);text-align:center}
+.step-number{display:grid;place-items:center;width:30px;height:30px;border-radius:50%;border:1px solid currentColor;font-weight:800;font-size:.85rem}
+.step-label{font-size:.72rem;font-weight:750}
+.email-step.active{color:#0c0c18;border-color:var(--gold);background:var(--gold)}
+.email-step.completed{color:#0c0c18;border-color:#55f0a0;background:#55f0a0}
+.email-step.failed{color:#fff;border-color:#ff6b6b;background:#ff6b6b}
+.step-connector{height:3px;border-radius:99px;background:var(--line)}
+.step-connector.completed{background:#55f0a0}
+
+.email-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px;align-items:stretch}
+@media(max-width:760px){.email-grid{grid-template-columns:1fr}.email-progress{grid-template-columns:minmax(0,1fr) 16px minmax(0,1fr) 16px minmax(0,1fr)}}
+.email-card{box-sizing:border-box;min-width:0;padding:18px;border-radius:16px;background:var(--card);border:2px solid #000;box-shadow:5px 5px 0 var(--purple);display:flex;flex-direction:column}
+.email-icon{display:grid;place-items:center;width:42px;height:42px;margin-bottom:12px;border-radius:12px;background:#0c0c18;border:1px solid var(--line);font-size:1.3rem}
+.email-card h3{margin:0 0 8px;font-size:1.05rem}
+.email-card p{min-height:40px;margin:0 0 16px;font-size:.85rem;color:var(--muted);text-shadow:none}
+.email-card form{display:flex;flex-direction:column;gap:10px;margin-top:auto}
+.email-card label{color:var(--muted);text-shadow:none;font-size:.8rem;font-weight:650}
+.email-card .btn{justify-content:space-between;margin-top:4px}
+#email-result{display:flex;align-items:center;gap:10px;min-height:100%;overflow-wrap:anywhere}
+#email-result span{flex-shrink:0;font-size:1.3rem}
+.email-footnote{margin:16px 0 0;color:var(--muted);text-shadow:none;font-size:.78rem;text-align:center}
+
+.panel{display:grid;grid-template-columns:1.2fr .8fr;gap:14px}
+@media(max-width:760px){.panel{grid-template-columns:1fr}}
+.panel .card h2{margin-top:0;font-size:1.05rem}
+.empty{padding:20px 0;text-align:center;color:var(--muted);text-shadow:none}
+.status{display:inline-block;color:#0c0c18;background:var(--gold);border-radius:8px;padding:5px 10px;font-size:.78rem;font-weight:700}
+.note{font-size:.82rem;color:var(--muted);text-shadow:none;line-height:1.6}
+
+.security-card{padding:20px;border-radius:16px;background:var(--card);border:2px solid #000;box-shadow:5px 5px 0 var(--gold)}
+.security-card h2{margin-top:0}
+.security-card>p{color:var(--muted);text-shadow:none}
+.security-card details{padding:12px 0;border-top:1px solid var(--line)}
+.security-card summary{cursor:pointer;font-weight:700}
+.security-card details p{color:var(--muted);text-shadow:none;margin:8px 0 0;font-size:.88rem}
+.security-card .foot-note{margin-bottom:0;font-size:.75rem;color:#716d8a;text-shadow:none}
+
+body.light-mode .profile,body.light-mode .about-card,body.light-mode .email-card,body.light-mode .security-card,body.light-mode .email-step,body.light-mode .ocean-tab{background:#fff;border-color:#000 !important;box-shadow:5px 5px 0 #000 !important}
+body.light-mode .sub,body.light-mode .label,body.light-mode .profile-sub,body.light-mode .profile-footer,body.light-mode .about-card p,body.light-mode .about-row span,body.light-mode .about-tip,body.light-mode .email-heading p,body.light-mode .email-step,body.light-mode .email-card p,body.light-mode .email-card label,body.light-mode .email-footnote,body.light-mode .empty,body.light-mode .note,body.light-mode .security-card>p,body.light-mode .security-card details p,body.light-mode .ocean-tab{color:#5a5468}
+body.light-mode .email-card h3,body.light-mode .about-row strong,body.light-mode .security-card h2,body.light-mode .security-card summary{color:#111;font-weight:800}
+body.light-mode .ocean-tab.active{color:#111}
+body.light-mode .value{color:#ffb700}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand">⚡ Alight Motion <span class="accent">by Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+<a class="back-link" href="index.html">← Hub</a>
+<div class="pill">● Live Panel</div>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">VERIFICATION CONTROL CENTER</div>
+<h1>Verifikasi cepat,<br><span class="accent">tanpa ribet.</span></h1>
+<p class="sub">Pusat kontrol AMPREM. Pantau statistik, kelola proses verifikasi email, dan cek status sistem dari satu tempat.</p>
+</section>
+
+<section class="grid">
+<article class="card"><div class="emoji">📊</div><div class="label">Total Statistik</div><div class="value" id="total">--</div></article>
+<article class="card"><div class="emoji">🟢</div><div class="label">Status Panel</div><div class="value" style="font-size:1.1rem">Siap</div></article>
+<article class="card"><div class="emoji">📡</div><div class="label">Sumber Data</div><div class="value" style="font-size:1.1rem">API</div></article>
+<article class="card"><div class="emoji">⚡</div><div class="label">Mode</div><div class="value" style="font-size:1.1rem">Website Aktif</div></article>
+</section>
+
+<section class="profile">
+<div class="profile-label">OWNER PROFILE</div>
+<div class="profile-name">Mann'zz</div>
+<div class="profile-sub">Web Developer & Tech Enthusiast</div>
+<div class="profile-line"></div>
+<div class="profile-footer"><span class="dot"></span>PERSONAL SPACE · MANN'ZZ TOOLS</div>
+</section>
+
+<nav class="ocean-nav" id="ocean-nav" aria-label="Navigasi utama">
+<button type="button" class="ocean-tab active" data-ocean-tab="home">🏠 Beranda</button>
+<button type="button" class="ocean-tab" data-ocean-tab="email">✉️ Email</button>
+<button type="button" class="ocean-tab" data-ocean-tab="activity">📈 Aktivitas</button>
+<button type="button" class="ocean-tab" data-ocean-tab="security">🔐 Keamanan</button>
+</nav>
+
+<div class="ocean-view" id="ocean-home">
+<section class="about-card">
+<div class="about-kicker">ABOUT THIS WEBSITE</div>
+<h2>Apa fungsi web ini?</h2>
+<p>Alight Motion adalah panel untuk membantu proses verifikasi email melalui magic link. Kamu bisa meminta tautan verifikasi lewat email, lalu menempelkan tautan yang diterima untuk diproses oleh layanan yang terhubung.</p>
+<div class="about-row"><strong>✉️ Kirim Magic Link</strong><span>Masukkan alamat email untuk meminta tautan verifikasi jika layanan mendukungnya.</span></div>
+<div class="about-row"><strong>🔐 Verifikasi Email</strong><span>Tempel magic link yang kamu terima untuk diteruskan ke proses verifikasi.</span></div>
+<div class="about-tip">Tips keamanan: jangan bagikan magic link kepada orang lain. Pastikan kamu mengenali layanan yang menerima email dan tautanmu.</div>
+</section>
+</div>
+
+<section class="email-section ocean-view" id="email-management" data-view="email">
+<div class="email-heading">
+<span class="email-kicker">Alight Motion CONTROL CENTER</span>
+<h2>📨 Manajemen Email</h2>
+<p>Kelola proses verifikasi email dalam satu tempat.</p>
+</div>
+
+<div class="email-progress" id="email-progress" data-stage="1" aria-label="Tahapan proses email">
+<div class="email-step active" data-email-step="1"><span class="step-number">1</span><span class="step-label">Email</span></div>
+<div class="step-connector"></div>
+<div class="email-step" data-email-step="2"><span class="step-number">2</span><span class="step-label">Verifikasi</span></div>
+<div class="step-connector"></div>
+<div class="email-step" data-email-step="3"><span class="step-number">3</span><span class="step-label">Hasil</span></div>
+</div>
+
+<div class="email-grid">
+<article class="email-card">
+<div class="email-icon">✉️</div>
+<h3>Kirim Magic Link</h3>
+<p>Masukkan email untuk meminta link verifikasi.</p>
+<form id="send-link-form">
+<label for="amprem-email">Alamat Email</label>
+<input class="input-field" id="amprem-email" name="email" type="email" placeholder="nama@email.com" autocomplete="email" required>
+<button type="submit" class="btn">Kirim Link <span>↗</span></button>
+</form>
+</article>
+
+<article class="email-card" id="email-verify-card" hidden>
+<div class="email-icon">🔐</div>
+<h3>Verifikasi Email</h3>
+<p>Tempel magic link yang kamu terima melalui email.</p>
+<form id="verify-link-form">
+<label for="amprem-magic-link">Magic Link</label>
+<input class="input-field" id="amprem-magic-link" name="magicLink" type="url" placeholder="https://..." autocomplete="url" required>
+<button type="submit" class="btn">Verifikasi Sekarang <span>✓</span></button>
+</form>
+</article>
+</div>
+
+<p class="email-footnote">⚡ Alight Motion · Secure email workflow</p>
+</section>
+
+<section class="panel ocean-view" id="ocean-activity" data-view="activity">
+<article class="card">
+<h2>📈 Aktivitas </h2>
+<div class="empty" id="list">Memuat statistik AMPREM dari API...</div>
+</article>
+<article class="card">
+<h2>🖥️ Status Sistem</h2>
+<p><span class="status">● Tampilan aktif</span></p>
+<p class="note">Ini baru tampilan awal. Data premium asli dan fungsi admin belum dihubungkan. Kita akan menambahkan API serta autentikasi sebelum panel dipublikasikan.</p>
+</article>
+</section>
+
+<section class="security-card ocean-view" id="ocean-security" data-view="security">
+<h2>🔐 Apakah Web Ini Aman Digunakan?</h2>
+<p>Keamanan akun dan data penting. Berikut beberapa hal yang perlu kamu perhatikan saat menggunakan panel ini.</p>
+<details>
+<summary>Apakah koneksi saya terlindungi?</summary>
+<p>Pastikan alamat situs menggunakan HTTPS sebelum memasukkan informasi pribadi. HTTPS melindungi koneksi, tetapi bukan jaminan bahwa seluruh situs bebas risiko.</p>
+</details>
+<details>
+<summary>Bagaimana dengan email dan magic link?</summary>
+<p>Jangan bagikan magic link atau kode verifikasi kepada orang lain. Perlakukan tautan tersebut seperti kunci akses akun.</p>
+</details>
+<details>
+<summary>Informasi apa yang sebaiknya saya hindari?</summary>
+<p>Jangan masukkan kata sandi utama, kode pemulihan, atau data sensitif yang tidak diperlukan. Pastikan kamu memahami layanan yang menerima data tersebut.</p>
+</details>
+<p class="foot-note">Catatan: panel ini berisi panduan umum, bukan hasil audit keamanan situs.</p>
+</section>
+
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+<script>
+const API = "https://vinzcloud.vercel.app";
+const fmt = n => Number(n).toLocaleString("id-ID");
+
+async function loadAmprem() {
+  const total = document.getElementById("total");
+  const list = document.getElementById("list");
+  const cards = document.querySelectorAll(".grid .card .value");
+  const systemStatus = document.querySelector(".panel .status");
+  const note = document.querySelector(".panel .note");
+
+  try {
+    const [statusRes, statsRes] = await Promise.all([
+      fetch(`${API}/api/status`, { cache: "no-store" }),
+      fetch(`${API}/api/stats`, { cache: "no-store" })
+    ]);
+
+    if (!statusRes.ok || !statsRes.ok) throw new Error("API tidak merespons normal");
+
+    const status = await statusRes.json();
+    const stats = await statsRes.json();
+
+    total.textContent = fmt(stats.total ?? 0);
+    document.querySelector(".grid .card:first-child .label").textContent = "Total Statistik";
+    cards[1].textContent = status.status === "online" ? "Online" : (status.status || "Unknown");
+
+    list.textContent = `Statistik hari ini: ${fmt(stats.today ?? 0)}. Data berasal dari API AMPREM, bukan daftar akun premium.`;
+    if (systemStatus) systemStatus.textContent = status.status === "online" ? "● API AMPREM Online" : "● Status API tidak diketahui";
+    if (note) note.textContent = `Terakhir diperiksa: ${new Date(status.timestamp || Date.now()).toLocaleString("id-ID")}. Statistik diperbarui otomatis setiap 60 detik.`;
+  } catch (err) {
+    if (total) total.textContent = "Offline";
+    if (systemStatus) systemStatus.textContent = "● API tidak dapat diakses";
+    if (list) list.textContent = "Data AMPREM gagal dimuat. Coba muat ulang halaman.";
+    if (note) note.textContent = "Periksa koneksi internet atau ketersediaan API.";
+    console.error("AMPREM API:", err);
+  }
+}
+
+loadAmprem();
+setInterval(loadAmprem, 60000);
+</script>
+<script>
+(() => {
+  const API = "";
+  const sendForm = document.getElementById("send-link-form");
+  const verifyForm = document.getElementById("verify-link-form");
+  const sendCard = sendForm?.closest(".email-card");
+  const verifyCard = document.getElementById("email-verify-card");
+  const progress = document.getElementById("email-progress");
+  const steps = [...document.querySelectorAll("[data-email-step]")];
+  const connectors = [...document.querySelectorAll("#email-progress .step-connector")];
+
+  let currentEmail = "";
+
+  const result = document.createElement("article");
+  result.className = "email-card";
+  result.id = "email-result-card";
+  result.hidden = true;
+  result.innerHTML = `
+    <div class="email-icon" id="email-result-icon">📩</div>
+    <h3 id="email-result-title">Hasil Proses</h3>
+    <p id="email-result-text" role="status" aria-live="polite"></p>
+    <button type="button" id="email-restart" class="btn">Mulai Lagi ↻</button>
+  `;
+  document.querySelector("#email-management .email-grid")?.append(result);
+
+  function setStage(stage, state = "active") {
+    progress?.setAttribute("data-stage", String(stage));
+    steps.forEach((step, index) => {
+      const number = index + 1;
+      step.classList.toggle("active", number === stage && state === "active");
+      step.classList.toggle("completed", number < stage || (number === stage && state === "completed"));
+      step.classList.toggle("failed", number === stage && state === "failed");
+    });
+    connectors.forEach((line, index) => line.classList.toggle("completed", index + 1 < stage));
+  }
+
+  function showResult(title, message, icon = "📩") {
+    result.hidden = false;
+    document.getElementById("email-result-title").textContent = title;
+    document.getElementById("email-result-text").textContent = message;
+    document.getElementById("email-result-icon").textContent = icon;
+  }
+
+  async function request(path, body) {
+    const response = await fetch(`${API}${path}`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json", "Accept": "application/json" },
+      body: JSON.stringify(body)
+    });
+
+    const raw = await response.text();
+    let data;
+    try { data = JSON.parse(raw); } catch { data = { raw }; }
+
+    if (!response.ok) {
+      throw new Error(data?.message || data?.error || `HTTP ${response.status}`);
+    }
+    return data;
+  }
+
+  function describe(data, fallback) {
+    if (typeof data?.message === "string") return data.message;
+    if (typeof data?.error === "string") return data.error;
+    if (typeof data?.status === "string") return `Status: ${data.status}`;
+    return fallback;
+  }
+
+  sendForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const emailInput = document.getElementById("amprem-email");
+    const button = sendForm.querySelector('button[type="submit"]');
+    currentEmail = emailInput.value.trim();
+    if (!currentEmail) return;
+
+    button.disabled = true;
+    button.textContent = "Mengirim...";
+    setStage(1, "active");
+    try {
+      const data = await request("/api/send-link", { email: currentEmail });
+      setStage(1, "completed");
+      setStage(2, "active");
+      sendCard.hidden = true;
+      verifyCard.hidden = false;
+      result.hidden = true;
+      showResult("Link Terkirim", describe(data, "Server menerima permintaan pengiriman. Periksa inbox dan folder spam."), "📨");
+    } catch (error) {
+      setStage(1, "failed");
+      showResult("Pengiriman Gagal", error.message || "Permintaan pengiriman gagal.", "⚠️");
+    } finally {
+      button.disabled = false;
+      button.innerHTML = 'Kirim Link <span>↗</span>';
+    }
+  });
+
+  verifyForm?.addEventListener("submit", async event => {
+    event.preventDefault();
+    const linkInput = document.getElementById("amprem-magic-link");
+    const button = verifyForm.querySelector('button[type="submit"]');
+    const magicLink = linkInput.value.trim();
+    if (!currentEmail || !magicLink) {
+      showResult("Data Belum Lengkap", "Masukkan email dan magic link yang valid.", "⚠️");
+      return;
+    }
+
+    button.disabled = true;
+    button.textContent = "Memverifikasi...";
+    try {
+      const data = await request("/api/verify-link", { email: currentEmail, magicLink });
+      verifyCard.hidden = true;
+      sendCard.hidden = true;
+      showResult("Hasil Verifikasi", describe(data, "Server merespons permintaan verifikasi."), "🔐");
+      setStage(3, "completed");
+    } catch (error) {
+      showResult("Verifikasi Gagal", error.message || "Verifikasi gagal.", "⚠️");
+      setStage(3, "failed");
+    } finally {
+      button.disabled = false;
+      button.innerHTML = 'Verifikasi Sekarang <span>✓</span>';
+    }
+  });
+
+  document.getElementById("email-restart")?.addEventListener("click", () => {
+    currentEmail = "";
+    sendForm?.reset();
+    verifyForm?.reset();
+    sendCard.hidden = false;
+    verifyCard.hidden = true;
+    result.hidden = true;
+    setStage(1, "active");
+  });
+
+  if (verifyCard) verifyCard.hidden = true;
+  result.hidden = true;
+  setStage(1, "active");
+
+  const tabs = [...document.querySelectorAll("[data-ocean-tab]")];
+  const panels = [...document.querySelectorAll(".ocean-view")];
+
+  function showTab(name) {
+    panels.forEach(panel => {
+      panel.hidden = panel.dataset.view
+        ? panel.dataset.view !== name
+        : panel.id !== "ocean-home" || name !== "home";
+    });
+    tabs.forEach(tab => {
+      const active = tab.dataset.oceanTab === name;
+      tab.classList.toggle("active", active);
+      tab.setAttribute("aria-selected", String(active));
+    });
+  }
+
+  tabs.forEach(tab => {
+    tab.setAttribute("role", "tab");
+    tab.addEventListener("click", () => showTab(tab.dataset.oceanTab));
+  });
+
+  const nav = document.getElementById("ocean-nav");
+  if (nav) nav.setAttribute("role", "tablist");
+  showTab("home");
+})();
+</script>
+</body>
+</html>

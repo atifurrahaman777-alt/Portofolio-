@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Downloader — unduh media dari berbagai platform, oleh Mann'zz">
+<title>Downloader | Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+.dl-box{max-width:640px;margin:0 auto}
+.dl-form{display:flex;gap:10px;margin:20px 0}
+@media(max-width:560px){.dl-form{flex-direction:column}}
+.dl-form input{flex:1}
+.platforms{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:0 0 24px}
+.platform-chip{font-size:.75rem;font-weight:700;padding:6px 12px;border-radius:999px;border:1px solid var(--line);color:var(--muted)}
+body.light-mode .platform-chip{color:#5a5468}
+.dl-result{display:none;margin-top:20px}
+.dl-result.show{display:block}
+.dl-result img{width:100%;border-radius:12px;border:2px solid #000;margin-bottom:14px}
+.dl-result h3{margin:0 0 6px}
+.dl-result p{color:var(--muted);text-shadow:none;font-size:.85rem;margin:0 0 14px}
+.dl-error{color:#ff6b6b;text-shadow:none;font-size:.85rem;margin-top:10px;display:none}
+.dl-error.show{display:block}
+.dl-loading{display:none;text-align:center;color:var(--muted);text-shadow:none;font-size:.85rem;margin-top:14px}
+.dl-loading.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand">⚡ Downloader <span class="accent">Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+<a class="back-link" href="index.html">← Hub</a>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">MEDIA DOWNLOADER</div>
+<h1>Download dari<br><span class="accent">mana aja.</span></h1>
+<p class="sub">Tempel link video/foto dari YouTube, TikTok, Instagram, Pinterest, dan platform lainnya.</p>
+</section>
+
+<section class="dl-box">
+<div class="platforms">
+<span class="platform-chip">YouTube</span>
+<span class="platform-chip">TikTok</span>
+<span class="platform-chip">Instagram</span>
+<span class="platform-chip">Pinterest</span>
+<span class="platform-chip">+ lainnya</span>
+</div>
+
+<form class="dl-form" id="dl-form">
+<input class="input-field" id="dl-url" type="url" placeholder="Tempel link di sini..." required>
+<button class="btn" type="submit" id="dl-submit">Download</button>
+</form>
+
+<p class="dl-loading" id="dl-loading">Memproses link...</p>
+<p class="dl-error" id="dl-error"></p>
+
+<div class="card dl-result" id="dl-result">
+<img id="dl-thumb" src="" alt="" style="display:none">
+<h3 id="dl-title"></h3>
+<p id="dl-meta"></p>
+<a class="btn" id="dl-link" href="#" target="_blank" rel="noopener">⬇ Unduh File</a>
+</div>
+</section>
+
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+<script>
+const form = document.getElementById('dl-form');
+const urlInput = document.getElementById('dl-url');
+const submitBtn = document.getElementById('dl-submit');
+const loading = document.getElementById('dl-loading');
+const errorBox = document.getElementById('dl-error');
+const result = document.getElementById('dl-result');
+const thumb = document.getElementById('dl-thumb');
+const titleEl = document.getElementById('dl-title');
+const metaEl = document.getElementById('dl-meta');
+const linkEl = document.getElementById('dl-link');
+
+const API = ""; // isi base URL API downloader kamu di sini kalau backend-nya sudah ada
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const url = urlInput.value.trim();
+  if (!url) return;
+
+  errorBox.classList.remove('show');
+  result.classList.remove('show');
+  loading.classList.add('show');
+  submitBtn.disabled = true;
+
+  try {
+    const res = await fetch(`${API}/api/download?url=${encodeURIComponent(url)}`, { cache: 'no-store' });
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); } catch { data = {}; }
+
+    if (!res.ok || !data.downloadUrl) {
+      throw new Error(data.message || 'Gagal memproses link ini.');
+    }
+
+    if (data.thumbnail) {
+      thumb.src = data.thumbnail;
+      thumb.style.display = 'block';
+    } else {
+      thumb.style.display = 'none';
+    }
+    titleEl.textContent = data.title || 'Media siap diunduh';
+    metaEl.textContent = data.meta || '';
+    linkEl.href = data.downloadUrl;
+    result.classList.add('show');
+  } catch (err) {
+    errorBox.textContent = err.message || 'Terjadi kesalahan. Pastikan link valid dan backend tersedia.';
+    errorBox.classList.add('show');
+  } finally {
+    loading.classList.remove('show');
+    submitBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

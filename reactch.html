@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="React Channel — kirim reaksi ke post channel WhatsApp, oleh Mann'zz">
+<title>React Channel | Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<link rel="icon" type="image/png" href="favicon.png">
+<style>
+.rc-box{max-width:640px;margin:0 auto}
+.rc-form{display:flex;flex-direction:column;gap:12px;margin:20px 0}
+.rc-row{display:flex;gap:10px}
+@media(max-width:560px){.rc-row{flex-direction:column}}
+.rc-form input{flex:1}
+.rc-result{display:none;margin-top:20px}
+.rc-result.show{display:block}
+.rc-result h3{margin:0 0 6px}
+.rc-result p{color:var(--muted);text-shadow:none;font-size:.85rem;margin:0 0 6px}
+.rc-error{color:#ff6b6b;text-shadow:none;font-size:.85rem;margin-top:10px;display:none}
+.rc-error.show{display:block}
+.rc-loading{display:none;text-align:center;color:var(--muted);text-shadow:none;font-size:.85rem;margin-top:14px}
+.rc-loading.show{display:block}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand">💬 React Channel <span class="accent">Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+<a class="back-link" href="index.html">← Hub</a>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">WHATSAPP TOOLS</div>
+<h1>React ke post<br><span class="accent">channel WhatsApp.</span></h1>
+<p class="sub">Tempel link post channel WhatsApp dan pilih emoji, lalu kirim reaksi langsung.</p>
+</section>
+
+<section class="rc-box">
+<form class="rc-form" id="rc-form">
+<input class="input-field" id="rc-link" type="url" placeholder="https://whatsapp.com/channel/xxxx/123" required>
+<div class="rc-row">
+<input class="input-field" id="rc-emoji" type="text" placeholder="Emoji (default ❤️)" maxlength="8">
+<button class="btn" type="submit" id="rc-submit">Kirim Reaksi</button>
+</div>
+</form>
+
+<p class="rc-loading" id="rc-loading">Mengirim reaksi...</p>
+<p class="rc-error" id="rc-error"></p>
+
+<div class="card rc-result" id="rc-result">
+<h3>✅ Reaksi Berhasil Dikirim</h3>
+<p id="rc-message"></p>
+<p id="rc-target"></p>
+<p id="rc-emojis"></p>
+<p id="rc-time"></p>
+</div>
+</section>
+
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+<script>
+const form = document.getElementById('rc-form');
+const linkInput = document.getElementById('rc-link');
+const emojiInput = document.getElementById('rc-emoji');
+const submitBtn = document.getElementById('rc-submit');
+const loading = document.getElementById('rc-loading');
+const errorBox = document.getElementById('rc-error');
+const result = document.getElementById('rc-result');
+
+form.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const link = linkInput.value.trim();
+  const emoji = emojiInput.value.trim() || '❤️';
+  if (!link) return;
+
+  errorBox.classList.remove('show');
+  result.classList.remove('show');
+  loading.classList.add('show');
+  submitBtn.disabled = true;
+
+  try {
+    const qs = new URLSearchParams({ link, emoji });
+    const res = await fetch(`/api/reactch?${qs}`, { cache: 'no-store' });
+    const raw = await res.text();
+    let data;
+    try { data = JSON.parse(raw); } catch { data = {}; }
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Gagal mengirim reaksi.');
+    }
+
+    document.getElementById('rc-message').textContent = `Pesan: ${data.message || '-'}`;
+    document.getElementById('rc-target').textContent = `Target: ${data.target || link}`;
+    document.getElementById('rc-emojis').textContent = `Emoji: ${Array.isArray(data.emojis) ? data.emojis.join(' ') : (data.emojis || emoji)}`;
+    document.getElementById('rc-time').textContent = `Waktu: ${data.took_ms ?? '-'} ms`;
+    result.classList.add('show');
+  } catch (err) {
+    errorBox.textContent = err.message || 'Terjadi kesalahan.';
+    errorBox.classList.add('show');
+  } finally {
+    loading.classList.remove('show');
+    submitBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

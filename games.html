@@ -1,0 +1,613 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Games — koleksi mini game, oleh Mann'zz">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>Games | Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.game-box{max-width:640px;margin:0 auto}
+.game-controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.game-controls button{padding:8px 14px;font-size:.82rem}
+.game-controls button.active{outline:3px solid var(--gold)}
+
+/* Tic Tac Toe */
+.ttt-board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:280px;margin:0 auto}
+.ttt-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;background:var(--card);border:2px solid #000;border-radius:12px;cursor:pointer;box-shadow:3px 3px 0 var(--gold)}
+.ttt-cell:disabled{cursor:default}
+.ttt-status{text-align:center;margin:14px 0;font-weight:700}
+
+/* Whack a mole */
+.wam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:320px;margin:0 auto}
+.wam-hole{aspect-ratio:1;background:var(--card);border:2px solid #000;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;box-shadow:3px 3px 0 var(--purple)}
+.wam-hole.up{background:var(--gold)}
+.wam-top{display:flex;justify-content:space-between;max-width:320px;margin:0 auto 14px;font-weight:700}
+
+/* Reaction */
+.rt-area{height:240px;max-width:400px;margin:0 auto;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;cursor:pointer;background:var(--card);border:2px solid #000;text-align:center;padding:14px}
+.rt-area.wait{background:#8a2020;color:#fff}
+.rt-area.go{background:#2ea055;color:#fff}
+.rt-stats{text-align:center;margin-top:14px;color:var(--muted);text-shadow:none;font-size:.85rem}
+
+/* Typing */
+.typing-text{background:var(--card);border:2px solid #000;border-radius:12px;padding:16px;margin-bottom:12px;line-height:1.8;font-size:1.02rem}
+.typing-text span.correct{color:#55f0a0}
+.typing-text span.wrong{color:#ff6b6b;text-decoration:underline}
+#typing-input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+.typing-stats{display:flex;gap:18px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.typing-stats div{text-align:center}
+.typing-stats b{display:block;font-size:1.3rem;color:var(--gold)}
+
+/* Spin wheel */
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+#wheel-canvas{max-width:100%}
+.wheel-pointer{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid var(--gold);margin-bottom:-6px}
+#wheel-options{width:100%;box-sizing:border-box;min-height:80px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+#wheel-result{text-align:center;font-size:1.3rem;font-weight:800;margin-top:8px;min-height:1.6em}
+
+body.light-mode .ttt-cell,
+body.light-mode .wam-hole,
+body.light-mode .rt-area,
+body.light-mode .typing-text,
+body.light-mode #typing-input,
+body.light-mode #wheel-options{background:#fff;color:#111;border-color:#000 !important}
+body.light-mode .rt-area.wait{background:#8a2020;color:#fff}
+body.light-mode .rt-area.go{background:#2ea055;color:#fff}
+body.light-mode .wam-hole.up{background:#ffd700;color:#111}
+body.light-mode .typing-text span{color:#111}
+body.light-mode .typing-text span.correct{color:#1a7a3c}
+body.light-mode .typing-text span.wrong{color:#c0392b}
+
+.ttt-cell,.ttt-cell:disabled{color:#fff;opacity:1;-webkit-text-fill-color:currentColor}
+.wam-hole{border-color:#666;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.wam-hole.up{color:#111}
+
+.ocean-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:640px;margin:0 auto 18px}
+.ocean-tab{padding:10px 16px;border:2px solid #000;border-radius:999px;background:var(--card);color:inherit;font:inherit;font-size:.85rem;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:3px 3px 0 var(--purple);transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
+.ocean-tab:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--purple)}
+.ocean-tab.active{background:var(--gold);color:#1a1200}
+body.light-mode .ocean-tab{background:#fff;color:#111}
+body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand">🎮 Games <span class="accent">Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+<a class="back-link" href="index.html">← Hub</a>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">MINI GAMES</div>
+<h1>Santai dulu,<br><span class="accent">main game.</span></h1>
+<p class="sub">Koleksi mini game ringan buat ngabisin waktu. Semua jalan langsung di browser.</p>
+</section>
+
+<nav class="ocean-nav" id="games-nav" aria-label="Navigasi game">
+<button type="button" class="ocean-tab active" data-game-tab="ttt">⭕ Tic Tac Toe</button>
+<button type="button" class="ocean-tab" data-game-tab="wam">🔨 Whack-a-Mole</button>
+<button type="button" class="ocean-tab" data-game-tab="rt">⚡ Reaction</button>
+<button type="button" class="ocean-tab" data-game-tab="typing">⌨️ Typing</button>
+<button type="button" class="ocean-tab" data-game-tab="wheel">🎡 Spin Wheel</button>
+</nav>
+
+<!-- TIC TAC TOE -->
+<section class="card game-box ocean-view" id="view-ttt" data-view="ttt">
+<h2 style="text-align:center;margin-top:0">Tic Tac Toe vs Bot</h2>
+<div class="game-controls">
+<button type="button" class="btn" data-diff="easy">Easy</button>
+<button type="button" class="btn" data-diff="medium">Medium</button>
+<button type="button" class="btn" data-diff="hard">Hard</button>
+</div>
+<div class="ttt-board" id="ttt-board"></div>
+<p class="ttt-status" id="ttt-status">Pick a difficulty to start.</p>
+<div style="text-align:center"><button type="button" class="btn" id="ttt-reset">Reset</button></div>
+</section>
+
+<!-- WHACK A MOLE -->
+<section class="card game-box ocean-view" id="view-wam" data-view="wam" hidden>
+<h2 style="text-align:center;margin-top:0">Whack-a-Mole</h2>
+<div class="wam-top"><span id="wam-score">Score: 0</span><span id="wam-time">Time: 30s</span></div>
+<div class="wam-grid" id="wam-grid"></div>
+<div style="text-align:center;margin-top:16px"><button type="button" class="btn" id="wam-start">Start</button></div>
+</section>
+
+<!-- REACTION TIME -->
+<section class="card game-box ocean-view" id="view-rt" data-view="rt" hidden>
+<h2 style="text-align:center;margin-top:0">Reaction Time Test</h2>
+<div class="rt-area" id="rt-area">Klik buat mulai</div>
+<p class="rt-stats" id="rt-stats">Belum ada percobaan.</p>
+</section>
+
+<!-- TYPING SPEED -->
+<section class="card game-box ocean-view" id="view-typing" data-view="typing" hidden>
+<h2 style="text-align:center;margin-top:0">Typing Speed Test</h2>
+<div class="typing-text" id="typing-text"></div>
+<textarea id="typing-input" rows="3" placeholder="Mulai ngetik di sini..."></textarea>
+<div class="typing-stats">
+<div><b id="typing-wpm">0</b>WPM</div>
+<div><b id="typing-acc">100%</b>Akurasi</div>
+<div><b id="typing-timer">0s</b>Waktu</div>
+</div>
+<div style="text-align:center;margin-top:12px"><button type="button" class="btn" id="typing-reset">Teks Baru</button></div>
+</section>
+
+<!-- SPIN WHEEL -->
+<section class="card game-box ocean-view" id="view-wheel" data-view="wheel" hidden>
+<h2 style="text-align:center;margin-top:0">Spin Wheel</h2>
+<textarea id="wheel-options" placeholder="Masukkan pilihan, pisahkan dengan koma. Contoh: Hadiah 1, Hadiah 2, Coba Lagi">Hadiah 1, Hadiah 2, Coba Lagi, Hadiah 3, Zonk</textarea>
+<div class="wheel-wrap" style="margin-top:14px">
+<div class="wheel-pointer"></div>
+<canvas id="wheel-canvas" width="320" height="320"></canvas>
+<button type="button" class="btn" id="wheel-spin">Spin</button>
+<div id="wheel-result"></div>
+</div>
+</section>
+
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+<script>
+window.addEventListener('error', function(e) {
+  document.body.insertAdjacentHTML("afterbegin", '<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff2222;color:#fff;padding:12px;font-size:13px;word-break:break-all">ERROR: ' + e.message + ' (line ' + e.lineno + ')</div>');
+});
+</script>
+<script>
+const gtabs = [...document.querySelectorAll('[data-game-tab]')];
+const gviews = [...document.querySelectorAll('.ocean-view')];
+function showGame(name) {
+  gviews.forEach(v => v.hidden = v.dataset.view !== name);
+  gtabs.forEach(t => t.classList.toggle('active', t.dataset.gameTab === name));
+}
+gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)));
+
+/* ===== TIC TAC TOE ===== */
+(() => {
+  const boardEl = document.getElementById('ttt-board');
+  const statusEl = document.getElementById('ttt-status');
+  const resetBtn = document.getElementById('ttt-reset');
+  const diffBtns = document.querySelectorAll('[data-diff]');
+  let board = Array(9).fill(null);
+  let difficulty = null;
+  let gameOver = false;
+
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function checkWinner(b) {
+    for (const [a,c,d] of WINS) {
+      if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+    }
+    return b.every(Boolean) ? 'draw' : null;
+  }
+
+  function minimax(b, isBot) {
+    const winner = checkWinner(b);
+    if (winner === 'O') return { score: 1 };
+    if (winner === 'X') return { score: -1 };
+    if (winner === 'draw') return { score: 0 };
+
+    const moves = [];
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = isBot ? 'O' : 'X';
+        const result = minimax(b, !isBot);
+        moves.push({ index: i, score: result.score });
+        b[i] = null;
+      }
+    }
+    if (isBot) {
+      return moves.reduce((best, m) => m.score > best.score ? m : best);
+    }
+    return moves.reduce((best, m) => m.score < best.score ? m : best);
+  }
+
+  function botMove() {
+    const empty = board.map((v,i) => v ? null : i).filter(v => v !== null);
+    if (!empty.length) return;
+
+    if (difficulty === 'easy') {
+      const i = empty[Math.floor(Math.random() * empty.length)];
+      board[i] = 'O';
+    } else if (difficulty === 'medium') {
+      if (Math.random() < 0.5) {
+        const best = minimax([...board], true);
+        board[best.index] = 'O';
+      } else {
+        const i = empty[Math.floor(Math.random() * empty.length)];
+        board[i] = 'O';
+      }
+    } else {
+      const best = minimax([...board], true);
+      board[best.index] = 'O';
+    }
+  }
+
+  function render() {
+    boardEl.innerHTML = '';
+    board.forEach((v, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ttt-cell';
+      btn.textContent = v || '';
+      btn.disabled = !!v || gameOver || !difficulty;
+      btn.addEventListener('click', () => playerMove(i));
+      boardEl.appendChild(btn);
+    });
+  }
+
+  function endCheck() {
+    const winner = checkWinner(board);
+    if (winner) {
+      gameOver = true;
+      if (winner === 'draw') statusEl.textContent = "It's a draw!";
+      else statusEl.textContent = winner === 'X' ? 'You win! 🎉' : 'Bot wins!';
+      return true;
+    }
+    return false;
+  }
+
+  function playerMove(i) {
+    if (gameOver || board[i] || !difficulty) return;
+    board[i] = 'X';
+    render();
+    if (endCheck()) return;
+    statusEl.textContent = 'Bot thinking...';
+    setTimeout(() => {
+      botMove();
+      render();
+      if (!endCheck()) statusEl.textContent = 'Your turn.';
+    }, 300);
+  }
+
+  diffBtns.forEach(b => b.addEventListener('click', () => {
+    difficulty = b.dataset.diff;
+    diffBtns.forEach(x => x.classList.toggle('active', x === b));
+    board = Array(9).fill(null);
+    gameOver = false;
+    statusEl.textContent = `Mode: ${difficulty[0].toUpperCase()+difficulty.slice(1)}. Your turn.`;
+    render();
+  }));
+
+  resetBtn.addEventListener('click', () => {
+    board = Array(9).fill(null);
+    gameOver = false;
+    statusEl.textContent = difficulty ? 'Your turn.' : 'Pick a difficulty to start.';
+    render();
+  });
+
+  render();
+})();
+
+/* ===== WHACK A MOLE ===== */
+(() => {
+  const grid = document.getElementById('wam-grid');
+  const scoreEl = document.getElementById('wam-score');
+  const timeEl = document.getElementById('wam-time');
+  const startBtn = document.getElementById('wam-start');
+  let holes = [];
+  let score = 0, timeLeft = 30, moleTimer = null, countdown = null, running = false;
+
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    h.className = 'wam-hole';
+    h.addEventListener('pointerdown', () => {
+      if (h.classList.contains('up')) {
+        score++;
+        scoreEl.textContent = 'Score: ' + score;
+        h.classList.remove('up');
+        h.textContent = '';
+      }
+    });
+    grid.appendChild(h);
+    holes.push(h);
+  }
+
+  function popRandom() {
+    holes.forEach(h => { h.classList.remove('up'); h.textContent = ''; });
+    const i = Math.floor(Math.random() * holes.length);
+    holes[i].classList.add('up');
+    holes[i].textContent = '🐹';
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    score = 0;
+    timeLeft = 30;
+    scoreEl.textContent = 'Score: 0';
+    timeEl.textContent = 'Time: 30s';
+    startBtn.disabled = true;
+    moleTimer = setInterval(popRandom, 700);
+    countdown = setInterval(() => {
+      timeLeft--;
+      timeEl.textContent = 'Time: ' + timeLeft + 's';
+      if (timeLeft <= 0) stop();
+    }, 1000);
+  }
+
+  function stop() {
+    running = false;
+    clearInterval(moleTimer);
+    clearInterval(countdown);
+    holes.forEach(h => { h.classList.remove('up'); h.textContent = ''; });
+    timeEl.textContent = 'Selesai! Skor: ' + score;
+    startBtn.disabled = false;
+  }
+
+  startBtn.addEventListener('click', start);
+})();
+
+/* ===== REACTION TIME ===== */
+(() => {
+  const area = document.getElementById('rt-area');
+  const stats = document.getElementById('rt-stats');
+  const decoys = [
+    { name: 'MERAH',  bg: '#c0392b' },
+    { name: 'BIRU',   bg: '#2f6fd6' },
+    { name: 'KUNING', bg: '#c99a06' },
+    { name: 'UNGU',   bg: '#8e44ad' },
+    { name: 'ORANYE', bg: '#d9702a' },
+    { name: 'PINK',   bg: '#d6336c' }
+  ];
+  let state = 'idle';
+  let decoyTimer = null, goTimer = null;
+  let startTime = 0, lastIdx = -1;
+  let results = [];
+
+  function resetStyle() { area.style.background = ''; area.style.color = ''; }
+  function clearTimers() { clearTimeout(decoyTimer); clearTimeout(goTimer); }
+
+  function nextDecoy() {
+    let i;
+    do { i = Math.floor(Math.random() * decoys.length); } while (i === lastIdx);
+    lastIdx = i;
+    area.className = 'rt-area';
+    area.style.background = decoys[i].bg;
+    area.style.color = '#fff';
+    area.textContent = decoys[i].name + ' - tunggu HIJAU...';
+    decoyTimer = setTimeout(nextDecoy, 500 + Math.random() * 500);
+  }
+
+  area.addEventListener('click', () => {
+    if (state === 'idle') {
+      state = 'waiting';
+      nextDecoy();
+      goTimer = setTimeout(() => {
+        clearTimeout(decoyTimer);
+        state = 'go';
+        resetStyle();
+        area.className = 'rt-area go';
+        area.textContent = 'HIJAU! KLIK SEKARANG!';
+        startTime = performance.now();
+      }, 2000 + Math.random() * 3500);
+    } else if (state === 'waiting') {
+      clearTimers();
+      state = 'idle';
+      resetStyle();
+      area.className = 'rt-area';
+      area.textContent = 'Kecepetan! Klik buat coba lagi.';
+    } else if (state === 'go') {
+      const reaction = Math.round(performance.now() - startTime);
+      results.push(reaction);
+      const avg = Math.round(results.reduce((a, b) => a + b, 0) / results.length);
+      const best = Math.min(...results);
+      stats.textContent = `Terakhir: ${reaction}ms · Terbaik: ${best}ms · Rata-rata: ${avg}ms (${results.length}x)`;
+      state = 'idle';
+      resetStyle();
+      area.className = 'rt-area';
+      area.textContent = 'Klik buat coba lagi';
+    }
+  });
+})();
+
+/* ===== TYPING SPEED ===== */
+(() => {
+  const sentences = [
+    'Dunia maya memberi kita akses ke informasi tanpa batas.',
+    'Latihan rutin akan membuat kecepatan mengetik semakin baik.',
+    'Teknologi terus berkembang dan mengubah cara kita bekerja.',
+    'Mann zz tools dibuat untuk membantu pekerjaan sehari hari.',
+    'Fokus dan konsistensi adalah kunci untuk mencapai hasil maksimal.',
+    'Setiap pagi matahari terbit dari timur dan membawa harapan baru.',
+    'Belajar pemrograman butuh kesabaran, tapi hasilnya sangat memuaskan.',
+    'Kopi hangat dan musik santai membuat sore hari terasa lebih tenang.',
+    'Jangan takut gagal, karena dari kesalahan kita belajar banyak hal.',
+    'Kecepatan mengetik sepuluh jari sangat berguna untuk pekerjaan kantor.',
+    'Hujan deras turun sejak siang dan jalanan menjadi sedikit tergenang.',
+    'Indonesia memiliki ribuan pulau dengan budaya dan bahasa yang beragam.',
+    'Membaca buku setiap hari dapat memperluas wawasan dan melatih imajinasi.',
+    'Teman yang baik selalu ada saat kita senang maupun saat kita susah.',
+    'Bot WhatsApp bisa membantu mengunduh video, membuat stiker, dan banyak lagi.',
+    'Keamanan akun itu penting, jadi gunakan kata sandi yang kuat dan unik.',
+    'Pasar malam ramai pengunjung yang mencari jajanan khas dan mainan murah.',
+    'Kerja keras hari ini adalah investasi untuk kesuksesan di masa depan.',
+    'Burung berkicau riang di atas pohon sementara angin berhembus pelan.',
+    'Pelan pelan asal terus berjalan, lama lama sampai juga ke tujuan.',
+    'Sebelum mengirim pesan, periksa dulu apakah tulisanmu sudah benar.',
+    'Layar ponsel yang terlalu terang bisa membuat mata cepat lelah.',
+    'Malam ini bulan bersinar terang dan bintang bertebaran di langit.',
+    'Nasi goreng buatan ibu selalu terasa paling enak dibanding yang lain.',
+    'Komputer cepat tidak ada gunanya kalau penggunanya malas belajar hal baru.',
+    'Ketik dengan tenang dan teliti, karena akurasi sama pentingnya dengan kecepatan.',
+    'Internet yang stabil membuat pekerjaan online berjalan lancar tanpa gangguan.',
+    'Liburan akhir pekan terasa singkat, tapi cukup untuk mengisi ulang semangat.',
+    'Programmer hebat bukan yang tidak pernah error, tapi yang tahu cara memperbaikinya.',
+    'Semangat belajar tidak mengenal usia, siapa pun boleh memulai kapan saja.'
+  ];
+  let lastIdx = -1;
+  const textEl = document.getElementById('typing-text');
+  const input = document.getElementById('typing-input');
+  const wpmEl = document.getElementById('typing-wpm');
+  const accEl = document.getElementById('typing-acc');
+  const timerEl = document.getElementById('typing-timer');
+  const resetBtn = document.getElementById('typing-reset');
+
+  let target = '';
+  let startTime = null;
+  let timerInterval = null;
+  let finished = false;
+
+  function loadSentence() {
+    let idx;
+    do { idx = Math.floor(Math.random() * sentences.length); } while (idx === lastIdx);
+    lastIdx = idx;
+    target = sentences[idx];
+    renderTarget('');
+    input.value = '';
+    input.disabled = false;
+    startTime = null;
+    finished = false;
+    clearInterval(timerInterval);
+    wpmEl.textContent = '0';
+    accEl.textContent = '100%';
+    timerEl.textContent = '0s';
+  }
+
+  function renderTarget(typed) {
+    textEl.innerHTML = target.split('').map((ch, i) => {
+      if (i >= typed.length) return `<span>${ch}</span>`;
+      return ch === typed[i]
+        ? `<span class="correct">${ch}</span>`
+        : `<span class="wrong">${ch}</span>`;
+    }).join('');
+  }
+
+  input.addEventListener('input', () => {
+    if (finished) return;
+    const typed = input.value;
+
+    if (!startTime) {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        timerEl.textContent = Math.floor((Date.now() - startTime) / 1000) + 's';
+      }, 200);
+    }
+
+    renderTarget(typed);
+
+    let correctChars = 0;
+    for (let i = 0; i < typed.length; i++) {
+      if (typed[i] === target[i]) correctChars++;
+    }
+    const acc = typed.length ? Math.round((correctChars / typed.length) * 100) : 100;
+    accEl.textContent = acc + '%';
+
+    const elapsedMin = (Date.now() - startTime) / 60000;
+    const words = typed.trim().length ? typed.trim().split(/\s+/).length : 0;
+    wpmEl.textContent = elapsedMin > 0 ? Math.round(words / elapsedMin) : 0;
+
+    if (typed === target) {
+      finished = true;
+      clearInterval(timerInterval);
+      input.disabled = true;
+    }
+  });
+
+  resetBtn.addEventListener('click', loadSentence);
+  loadSentence();
+})();
+
+/* ===== SPIN WHEEL ===== */
+(() => {
+  const canvas = document.getElementById('wheel-canvas');
+  const ctx = canvas.getContext('2d');
+  const optionsInput = document.getElementById('wheel-options');
+  const spinBtn = document.getElementById('wheel-spin');
+  const resultEl = document.getElementById('wheel-result');
+  const colors = ['#ffd700', '#a855f7', '#55f0a0', '#ff6b6b', '#4da3ff', '#ff9f4d'];
+
+  let rotation = 0;
+  let spinning = false;
+
+  function getOptions() {
+    return optionsInput.value.split(',').map(s => s.trim()).filter(Boolean);
+  }
+
+  function drawWheel() {
+    const options = getOptions();
+    const n = options.length || 1;
+    const size = canvas.width;
+    const cx = size / 2, cy = size / 2, r = size / 2 - 6;
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rotation);
+
+    for (let i = 0; i < n; i++) {
+      const start = (i / n) * Math.PI * 2;
+      const end = ((i + 1) / n) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.rotate(start + (end - start) / 2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#0c0c18';
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      const label = options[i].length > 14 ? options[i].slice(0, 13) + '…' : options[i];
+      ctx.fillText(label, r - 10, 5);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  drawWheel();
+  optionsInput.addEventListener('input', () => { if (!spinning) { rotation = 0; drawWheel(); resultEl.textContent=''; } });
+
+  spinBtn.addEventListener('click', () => {
+    const options = getOptions();
+    if (spinning || options.length < 2) {
+      if (options.length < 2) resultEl.textContent = 'Minimal 2 pilihan ya.';
+      return;
+    }
+    spinning = true;
+    resultEl.textContent = '';
+    spinBtn.disabled = true;
+
+    const n = options.length;
+    const targetIndex = Math.floor(Math.random() * n);
+    const sliceAngle = (Math.PI * 2) / n;
+    const centerAngle = targetIndex * sliceAngle + sliceAngle / 2;
+    const base = Math.ceil(rotation / (Math.PI * 2)) * Math.PI * 2;
+    const turns = 6 + Math.floor(Math.random() * 3);
+    const targetRotation = base + turns * Math.PI * 2 + (1.5 * Math.PI - centerAngle);
+
+    const duration = 4000;
+    const startRotation = rotation;
+    const diff = targetRotation - startRotation;
+    const startTime = performance.now();
+
+    function animate(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      rotation = startRotation + diff * eased;
+      drawWheel();
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        spinning = false;
+        spinBtn.disabled = false;
+        resultEl.textContent = '🎉 ' + options[targetIndex];
+      }
+    }
+    requestAnimationFrame(animate);
+  });
+})();
+</script>
+</body>
+</html>
