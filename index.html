@@ -109,7 +109,11 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 #toolFrame{flex:1;border:none;width:100%}
 .tool-card{cursor:pointer}
 
-.wa-fab{position:fixed;right:16px;bottom:118px;z-index:25;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.45);border:3px solid var(--bg)}
+.wa-fab{position:fixed;right:16px;bottom:118px;z-index:25;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.45);border:3px solid var(--bg);animation:wa-bounce 2.6s ease-in-out infinite}
+.wa-fab:active{transform:scale(.88)}
+.wa-fab::before{content:'';position:absolute;inset:0;border-radius:50%;background:#25d366;z-index:-1;animation:wa-ping 2.6s cubic-bezier(0,0,.2,1) infinite}
+@keyframes wa-ping{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+@keyframes wa-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
 </style>
 </head>
 <body>
