@@ -531,7 +531,25 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
 
   function drawWheel() {
     const options = getOptions();
-    const n = options.length || 1;
+    if (options.length === 0) {
+      const size = canvas.width;
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-6, 0, Math.PI*2);
+      ctx.fillStyle = '#2a2a3a';
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#ffd700';
+      ctx.font = 'bold 14px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Isi pilihan dulu', size/2, size/2);
+      ctx.restore();
+      return;
+    }
+    const n = options.length;
     const size = canvas.width;
     const cx = size / 2, cy = size / 2, r = size / 2 - 6;
 
