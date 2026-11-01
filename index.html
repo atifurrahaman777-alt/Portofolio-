@@ -104,12 +104,12 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 .verified-badge .icon,.verified-badge2 .icon{width:65%;height:65%;stroke:#fff;stroke-width:3}
 
 .game-frame{width:100%;min-height:72vh;border:2px solid #000;border-radius:14px;background:var(--card);box-shadow:5px 5px 0 var(--shadow)}
-.tool-overlay{position:fixed;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column}
+.tool-overlay{position:fixed;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column;overscroll-behavior:contain}
 .tool-overlay.active{display:flex}
 .tool-overlay-bar{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--card)}
 .tool-overlay-bar button{background:none;border:none;color:var(--text);font:inherit;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px;cursor:pointer}
 .tool-overlay-bar button .icon{width:18px;height:18px}
-#toolFrame{flex:1;border:none;width:100%}
+#toolFrame{flex:1;border:none;width:100%;overscroll-behavior:contain}
 .tool-card{cursor:pointer}
 
 .wa-fab{position:fixed;right:16px;bottom:118px;z-index:25;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.45);border:3px solid var(--bg);animation:wa-bounce 2.6s ease-in-out infinite}
@@ -324,11 +324,13 @@ toolCards.forEach(c=>{
 c.addEventListener('click',()=>{
 toolFrame.src=c.dataset.tool;
 toolOverlay.classList.add('active');
+document.body.style.overflow='hidden';
 });
 });
 if(toolClose) toolClose.addEventListener('click',()=>{
 toolOverlay.classList.remove('active');
 toolFrame.src='';
+document.body.style.overflow='';
 });
 
 document.getElementById('year').textContent=new Date().getFullYear();
