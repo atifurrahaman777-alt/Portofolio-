@@ -31,15 +31,15 @@ module.exports = async function handler(req, res) {
   const emojiValue = typeof emoji === 'string' && emoji.trim() ? emoji.trim() : '❤️';
 
   try {
-    const endpoint = new URL('https://apis.davidcyriltech.my.id/tools/wareact');
+    const endpoint = new URL('https://api.nexadev.my.id/api/rch');
+    endpoint.searchParams.set('key', 'RS-YZS!9qjg');
     endpoint.searchParams.set('url', normalized);
-    endpoint.searchParams.set('emoji', emojiValue);
+    endpoint.searchParams.set('reaction', emojiValue);
 
     const response = await fetch(endpoint, {
       headers: {
         'User-Agent':
           'Mozilla/5.0 (Linux; Android 10; K) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/154.0.0.0 Mobile Safari/537.36',
-        'Referer': 'https://wa.dclabs.my.id/',
         'Accept': 'application/json'
       },
       signal: AbortSignal.timeout(20000)
