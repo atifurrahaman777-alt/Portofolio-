@@ -77,10 +77,10 @@ body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
 <main class="wrap">
 
 <header>
-<div class="brand">🎮 Games <span class="accent">Mann'zz</span></div>
+<div class="brand"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18.5" cy="14" r="1" fill="currentColor"/></svg> Games <span class="accent">Mann'zz</span></div>
 <div style="display:flex;align-items:center;gap:10px">
 
-<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap">☀️</button>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg>️</button>
 </div>
 </header>
 
@@ -91,11 +91,11 @@ body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
 </section>
 
 <nav class="ocean-nav" id="games-nav" aria-label="Navigasi game">
-<button type="button" class="ocean-tab active" data-game-tab="ttt">⭕ Tic Tac Toe</button>
-<button type="button" class="ocean-tab" data-game-tab="wam">🔨 Whack-a-Mole</button>
-<button type="button" class="ocean-tab" data-game-tab="rt">⚡ Reaction</button>
+<button type="button" class="ocean-tab active" data-game-tab="ttt"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/></svg> Tic Tac Toe</button>
+<button type="button" class="ocean-tab" data-game-tab="wam"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 21l7-7"/><path d="M14 4l6 6-3 3-6-6 3-3z"/><path d="M12.5 8.5l-7 7"/></svg> Whack-a-Mole</button>
+<button type="button" class="ocean-tab" data-game-tab="rt"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg> Reaction</button>
 <button type="button" class="ocean-tab" data-game-tab="typing">⌨️ Typing</button>
-<button type="button" class="ocean-tab" data-game-tab="wheel">🎡 Spin Wheel</button>
+<button type="button" class="ocean-tab" data-game-tab="wheel"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.5" y1="5.5" x2="18.5" y2="18.5"/><line x1="18.5" y1="5.5" x2="5.5" y2="18.5"/></svg> Spin Wheel</button>
 </nav>
 
 <!-- TIC TAC TOE -->
@@ -246,7 +246,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     if (winner) {
       gameOver = true;
       if (winner === 'draw') statusEl.textContent = "It's a draw!";
-      else statusEl.textContent = winner === 'X' ? 'You win! 🎉' : 'Bot wins!';
+      else statusEl.textContent = winner === 'X' ? 'You win! <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>' : 'Bot wins!';
       return true;
     }
     return false;
@@ -312,7 +312,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     holes.forEach(h => { h.classList.remove('up'); h.textContent = ''; });
     const i = Math.floor(Math.random() * holes.length);
     holes[i].classList.add('up');
-    holes[i].textContent = '🐹';
+    holes[i].textContent = '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#c68642"><circle cx="12" cy="13" r="7"/><circle cx="7" cy="6" r="3"/><circle cx="17" cy="6" r="3"/><circle cx="9.5" cy="12" r="1" fill="#2a1d14"/><circle cx="14.5" cy="12" r="1" fill="#2a1d14"/></svg>';
   }
 
   function start() {
@@ -620,7 +620,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
       } else {
         spinning = false;
         spinBtn.disabled = false;
-        resultEl.textContent = '🎉 ' + options[targetIndex];
+        resultEl.textContent = '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> ' + options[targetIndex];
       }
     }
     requestAnimationFrame(animate);
