@@ -247,6 +247,23 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 
 <footer><div class="container">© <span id="year"></span> Mann'zz. All rights reserved.</div></footer>
 
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC_iYADCUCDN1pCl3j4-jeZT3pU2XcIydU",
+  authDomain: "manz-4d272.firebaseapp.com",
+  projectId: "manz-4d272",
+  storageBucket: "manz-4d272.firebasestorage.app",
+  messagingSenderId: "431533009387",
+  appId: "1:431533009387:web:72a9855b0bd596f37911ae"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+
 <script>
 const ownerToggle=document.getElementById('owner-toggle');
 const ownerPanel=document.getElementById('ownerPanel');
