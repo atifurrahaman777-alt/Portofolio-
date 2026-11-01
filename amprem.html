@@ -299,7 +299,7 @@ setInterval(loadAmprem, 60000);
     result.hidden = false;
     document.getElementById("email-result-title").textContent = title;
     document.getElementById("email-result-text").textContent = message;
-    document.getElementById("email-result-icon").textContent = icon;
+    document.getElementById("email-result-icon").innerHTML = icon;
   }
 
   async function request(path, body) {
