@@ -31,7 +31,7 @@
 <div class="brand"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M21 12a8 8 0 10-3.3 6.4L21 20l-1.2-3.4A8 8 0 0021 12z"/></svg> React Channel <span class="accent">Mann'zz</span></div>
 <div style="display:flex;align-items:center;gap:10px">
 
-<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg>️</button>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg></button>
 </div>
 </header>
 
@@ -45,7 +45,7 @@
 <form class="rc-form" id="rc-form">
 <input class="input-field" id="rc-link" type="url" placeholder="https://whatsapp.com/channel/xxxx/123" required>
 <div class="rc-row">
-<input class="input-field" id="rc-emoji" type="text" placeholder="Emoji (default <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#ff4757"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2.4 4.5 6 4.5c2 0 3.6 1.1 4.5 2.8C11.4 5.6 13 4.5 15 4.5c3.6 0 5.5 3.5 4 7.2C19.5 16.4 12 21 12 21z"/></svg>️)" maxlength="8">
+<input class="input-field" id="rc-emoji" type="text" placeholder="Emoji (default <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#ff4757"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2.4 4.5 6 4.5c2 0 3.6 1.1 4.5 2.8C11.4 5.6 13 4.5 15 4.5c3.6 0 5.5 3.5 4 7.2C19.5 16.4 12 21 12 21z"/></svg>)" maxlength="8">
 <button class="btn" type="submit" id="rc-submit">Kirim Reaksi</button>
 </div>
 </form>
@@ -77,7 +77,7 @@ const result = document.getElementById('rc-result');
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
   const link = linkInput.value.trim();
-  const emoji = emojiInput.value.trim() || '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#ff4757"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2.4 4.5 6 4.5c2 0 3.6 1.1 4.5 2.8C11.4 5.6 13 4.5 15 4.5c3.6 0 5.5 3.5 4 7.2C19.5 16.4 12 21 12 21z"/></svg>️';
+  const emoji = emojiInput.value.trim() || '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#ff4757"><path d="M12 21s-7.5-4.6-10-9.3C.5 8 2.4 4.5 6 4.5c2 0 3.6 1.1 4.5 2.8C11.4 5.6 13 4.5 15 4.5c3.6 0 5.5 3.5 4 7.2C19.5 16.4 12 21 12 21z"/></svg>';
   if (!link) return;
 
   errorBox.classList.remove('show');
