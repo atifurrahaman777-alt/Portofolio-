@@ -1,7 +1,7 @@
 const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
-const KEY = 'chat:global';
-const ONLINE = 'chat:online';
+const KEY = 'chat:global', ONLINE = 'chat:online', STORIES = 'chat:stories', NOTES = 'chat:notes';
+const DAY = 86400000;
 
 async function redis(cmds) {
   const r = await fetch(`${URL_}/pipeline`, {
@@ -12,6 +12,8 @@ async function redis(cmds) {
   if (!r.ok) throw new Error('redis ' + r.status);
   return r.json();
 }
+const parse = arr => (arr || []).map(s => { try { return JSON.parse(s); } catch { return null; } }).filter(Boolean);
+const cleanAvatar = av => /^https:\/\/[^\s"'<>]{1,280}$/.test(String(av || '')) ? String(av) : '';
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
@@ -22,26 +24,49 @@ module.exports = async function handler(req, res) {
       const now = Date.now();
       const cmds = [['LRANGE', KEY, 0, 59]];
       if (cid) cmds.push(['ZADD', ONLINE, now, cid]);
-      cmds.push(['ZREMRANGEBYSCORE', ONLINE, 0, now - 30000], ['ZCARD', ONLINE], ['EXPIRE', ONLINE, 120]);
+      cmds.push(
+        ['ZREMRANGEBYSCORE', ONLINE, 0, now - 30000],
+        ['ZCARD', ONLINE],
+        ['EXPIRE', ONLINE, 120],
+        ['LRANGE', STORIES, 0, 39],
+        ['HGETALL', NOTES]
+      );
       const out = await redis(cmds);
-      const messages = (out[0].result || [])
-        .map(s => { try { return JSON.parse(s); } catch { return null; } })
-        .filter(Boolean)
-        .reverse();
-      return res.status(200).json({ messages, online: out[out.length - 2].result || 1 });
+      const n = out.length;
+      const messages = parse(out[0].result).reverse();
+      const stories = parse(out[n - 2].result).filter(s => now - s.ts < DAY);
+      const raw = out[n - 1].result;
+      let pairs = [];
+      if (Array.isArray(raw)) { for (let i = 0; i < raw.length; i += 2) pairs.push([raw[i], raw[i + 1]]); }
+      else if (raw && typeof raw === 'object') pairs = Object.entries(raw);
+      const notes = pairs.map(([, v]) => { try { return JSON.parse(v); } catch { return null; } })
+        .filter(x => x && now - x.ts < DAY);
+      return res.status(200).json({ messages, stories, notes, online: out[n - 4].result || 1 });
     }
     if (req.method === 'POST') {
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      const type = ['story', 'note'].includes(body.type) ? body.type : 'msg';
       const name = String(body.name || '').trim().slice(0, 20);
-      const text = String(body.text || '').trim().slice(0, 300);
-      if (!name || !text) return res.status(400).json({ message: 'Nama dan pesan wajib diisi.' });
+      const text = String(body.text || '').trim().slice(0, type === 'note' ? 60 : type === 'story' ? 140 : 300);
+      if (!name || (type !== 'note' && !text)) return res.status(400).json({ message: 'Nama dan isi wajib diisi.' });
 
       const ip = String(req.headers['x-forwarded-for'] || 'x').split(',')[0].trim();
       const rl = await redis([['SET', `chat:rl:${ip}`, '1', 'EX', 2, 'NX']]);
       if (rl[0].result !== 'OK') return res.status(429).json({ message: 'Pelan-pelan, tunggu sebentar.' });
 
-      const av = String(body.avatar || '');
-      const avatar = /^https:\/\/[^\s"'<>]{1,280}$/.test(av) ? av : '';
+      const avatar = cleanAvatar(body.avatar);
+      const id = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
+
+      if (type === 'story') {
+        const bg = Math.max(0, Math.min(5, parseInt(body.bg, 10) || 0));
+        await redis([['LPUSH', STORIES, JSON.stringify({ id, name, avatar, text, bg, ts: Date.now() })], ['LTRIM', STORIES, 0, 49]]);
+        return res.status(200).json({ ok: true });
+      }
+      if (type === 'note') {
+        if (!text) await redis([['HDEL', NOTES, name]]);
+        else await redis([['HSET', NOTES, name, JSON.stringify({ name, avatar, text, ts: Date.now() })]]);
+        return res.status(200).json({ ok: true });
+      }
       let reply = null;
       if (body.reply && typeof body.reply === 'object') {
         reply = {
@@ -50,8 +75,7 @@ module.exports = async function handler(req, res) {
           text: String(body.reply.text || '').slice(0, 80)
         };
       }
-      const msg = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, text, avatar, reply, ts: Date.now() };
-      await redis([['LPUSH', KEY, JSON.stringify(msg)], ['LTRIM', KEY, 0, 99]]);
+      await redis([['LPUSH', KEY, JSON.stringify({ id, name, text, avatar, reply, ts: Date.now() })], ['LTRIM', KEY, 0, 99]]);
       return res.status(200).json({ ok: true });
     }
     res.setHeader('Allow', 'GET, POST');
