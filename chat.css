@@ -73,3 +73,9 @@ button{font:inherit;color:inherit}
 @keyframes gcbar{from{width:0}to{width:100%}}
 
 .gc-emoji{max-height:210px;overflow-y:auto}
+
+.gc-voice{display:flex;align-items:center;gap:10px;min-width:190px}
+.gc-play{width:36px;height:36px;flex:none;border-radius:50%;border:0;background:var(--acc);color:#04251c;display:flex;align-items:center;justify-content:center;cursor:pointer;padding:0}
+.gc-track{flex:1;height:5px;border-radius:3px;background:var(--line);overflow:hidden}
+.gc-track i{display:block;height:100%;width:0;background:var(--acc)}
+.gc-vdur{font-size:.75rem;color:var(--mut);min-width:32px}

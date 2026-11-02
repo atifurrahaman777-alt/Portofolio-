@@ -106,7 +106,7 @@
     box.appendChild(avatarEl(p.name || '?', p.avatar, 38));
   }
   function syncAct() {
-    if (recording) { act.classList.add('rec'); act.innerHTML = ic('mic'); return; }
+    if (recording) { act.classList.add('rec'); act.innerHTML = ic('send'); return; }
     act.classList.remove('rec');
     act.innerHTML = input.value.trim() ? ic('send') : ic('mic');
   }
@@ -219,9 +219,9 @@
   // === akhir bagian 3 ===
 
   function setReply(m) {
-    replyTo = { id: m.id, name: m.name, text: m.text.slice(0, 80) };
+    replyTo = { id: m.id, name: m.name, text: (m.text || '🎤 Pesan suara').slice(0, 80) };
     $('gc-rname').textContent = m.name;
-    $('gc-rtext').textContent = m.text;
+    $('gc-rtext').textContent = m.text || '🎤 Pesan suara';
     $('gc-replybar').classList.add('on');
     input.focus();
   }
@@ -257,7 +257,7 @@
         q.append(el('b', '', m.reply.name), el('span', '', m.reply.text));
         bub.appendChild(q);
       }
-      bub.append(el('span', 'gc-text', m.text),
+      bub.append((m.aud ? voiceEl(m) : el('span', 'gc-text', m.text)),
         el('span', 'gc-time', d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })));
       bub.addEventListener('click', () => setReply(m));
       row.appendChild(bub);
@@ -307,17 +307,95 @@
     syncAct();
   }
 
-  function toggleVoice() {
-    const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
-    if (!SR) { status.textContent = 'Browser ini belum mendukung voice ke teks.'; return; }
-    if (recording) { if (rec) rec.stop(); return; }
-    rec = new SR();
-    rec.lang = 'id-ID';
-    rec.interimResults = false;
-    rec.onresult = e => { input.value = (input.value + ' ' + e.results[0][0].transcript).trim(); };
-    rec.onend = () => { recording = false; syncAct(); };
-    rec.onerror = () => { recording = false; syncAct(); status.textContent = 'Mic tidak bisa dipakai (izin ditolak?).'; };
-    recording = true; syncAct(); rec.start();
+  let mr = null, chunks = [], recStart = 0, recTick = null, recCancel = false, recStream = null;
+  const fmt = n => Math.floor(n / 60) + ':' + String(n % 60).padStart(2, '0');
+  function stopTracks() { if (recStream) recStream.getTracks().forEach(t => t.stop()); recStream = null; }
+  function endRec() {
+    clearInterval(recTick); recording = false;
+    input.readOnly = false; input.placeholder = 'Tulis pesan';
+    stopTracks(); syncAct();
+  }
+  async function toggleVoice() {
+    if (recording) { if (mr && mr.state === 'recording') mr.stop(); return; }
+    if (!navigator.mediaDevices || !window.MediaRecorder) { status.textContent = 'Browser ini belum mendukung rekam suara.'; return; }
+    const p = ensureProfile();
+    if (!p) return;
+    try {
+      recStream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    } catch { status.textContent = 'Izin mikrofon ditolak. Izinkan lewat setelan situs Chrome.'; return; }
+    const types = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus'];
+    const mime = types.find(t => MediaRecorder.isTypeSupported(t)) || '';
+    chunks = []; recCancel = false;
+    try { mr = new MediaRecorder(recStream, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 }); }
+    catch { stopTracks(); status.textContent = 'Gagal memulai rekaman.'; return; }
+    mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    mr.onstop = async () => {
+      const dur = Math.max(1, Math.round((Date.now() - recStart) / 1000));
+      const type = mr.mimeType || mime || 'audio/webm';
+      endRec();
+      if (recCancel || !chunks.length) return;
+      const blob = new Blob(chunks, { type });
+      if (blob.size > 280000) { status.textContent = 'Rekaman terlalu besar, coba lebih pendek.'; return; }
+      const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => res(''); r.readAsDataURL(blob); });
+      if (!dataUrl) { status.textContent = 'Gagal membaca rekaman.'; return; }
+      act.disabled = true;
+      if (await post({ name: p.name, text: '', avatar: p.avatar, reply: replyTo, audio: dataUrl, dur })) {
+        clearReply(); force = true; msgSig = null; await load();
+      }
+      act.disabled = false; syncAct();
+    };
+    recStart = Date.now(); recording = true;
+    input.readOnly = true; syncAct();
+    recTick = setInterval(() => {
+      const t = Math.round((Date.now() - recStart) / 1000);
+      input.placeholder = '🔴 Merekam ' + fmt(t) + ' · ketuk di sini untuk batal';
+      if (t >= 40 && mr.state === 'recording') mr.stop();
+    }, 250);
+    mr.start();
+  }
+  input.addEventListener('click', () => {
+    if (recording && mr && mr.state === 'recording') { recCancel = true; mr.stop(); }
+  });
+  const audCache = new Map();
+  let curAudio = null, curReset = null, curBtn = null;
+  const PLAY = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
+  const PAUSE = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
+  function voiceEl(m) {
+    const box = el('div', 'gc-voice');
+    const btn = el('button', 'gc-play');
+    btn.type = 'button'; btn.innerHTML = PLAY;
+    const track = el('div', 'gc-track'), fill = document.createElement('i');
+    track.appendChild(fill);
+    box.append(btn, track, el('span', 'gc-vdur', fmt(m.dur || 1)));
+    btn.addEventListener('click', async e => {
+      e.stopPropagation();
+      if (curAudio && curBtn === btn) { if (curAudio.paused) curAudio.play(); else curAudio.pause(); return; }
+      if (curAudio) curAudio.pause();
+      if (curReset) curReset();
+      btn.disabled = true;
+      let url = audCache.get(m.id);
+      if (!url) {
+        try {
+          const r = await fetch('/api/chat?audio=' + encodeURIComponent(m.id), { cache: 'no-store' });
+          const d = await r.json().catch(() => ({}));
+          if (!r.ok || !d.audio) { status.textContent = d.message || 'Audio tidak tersedia.'; btn.disabled = false; return; }
+          url = d.audio; audCache.set(m.id, url);
+        } catch { status.textContent = 'Koneksi bermasalah.'; btn.disabled = false; return; }
+      }
+      btn.disabled = false;
+      const a = new Audio(url);
+      const reset = () => { btn.innerHTML = PLAY; fill.style.width = '0'; if (curBtn === btn) { curAudio = null; curBtn = null; curReset = null; } };
+      curAudio = a; curBtn = btn; curReset = reset;
+      a.addEventListener('timeupdate', () => {
+        const d = a.duration && isFinite(a.duration) ? a.duration : (m.dur || 1);
+        fill.style.width = Math.min(100, a.currentTime / d * 100) + '%';
+      });
+      a.addEventListener('play', () => { btn.innerHTML = PAUSE; });
+      a.addEventListener('pause', () => { if (!a.ended) btn.innerHTML = PLAY; });
+      a.addEventListener('ended', reset);
+      a.play().catch(() => { status.textContent = 'Gagal memutar audio.'; reset(); });
+    });
+    return box;
   }
   // === akhir bagian 4 ===
 
