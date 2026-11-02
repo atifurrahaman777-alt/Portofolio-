@@ -320,3 +320,56 @@
     recording = true; syncAct(); rec.start();
   }
   // === akhir bagian 4 ===
+
+  act.addEventListener('click', () => { if (input.value.trim()) sendMsg(); else toggleVoice(); });
+  input.addEventListener('input', syncAct);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendMsg(); } });
+
+  $('gc-back').addEventListener('click', () => { if (history.length > 1) history.back(); else location.href = '/'; });
+  $('gc-theme').addEventListener('click', () => {
+    root.classList.toggle('light');
+    ls.set('chat_light', root.classList.contains('light') ? '1' : '0');
+    syncTheme();
+  });
+  $('gc-bell').addEventListener('click', () => {
+    bellOn = !bellOn;
+    ls.set('chat_bell', bellOn ? '1' : '0');
+    syncBell();
+    if (bellOn) beep();
+  });
+  $('gc-eye').addEventListener('click', () => {
+    const top = $('gc-top');
+    const hide = top.style.display !== 'none';
+    top.style.display = hide ? 'none' : '';
+    ls.set('chat_hidetop', hide ? '1' : '0');
+  });
+  // === akhir bagian 5a ===
+
+  $('gc-eraser').addEventListener('click', () => {
+    if (clearTs) {
+      if (!confirm('Tampilkan lagi semua pesan?')) return;
+      clearTs = 0; ls.del('chat_clear');
+    } else {
+      if (!confirm('Bersihkan tampilan chat? (hanya di perangkatmu, pesan tidak dihapus)')) return;
+      clearTs = Date.now(); ls.set('chat_clear', String(clearTs));
+    }
+    msgSig = null; force = true; load();
+  });
+  $('gc-users').addEventListener('click', () => {
+    const names = [...new Set(data.messages.map(m => m.name).concat(data.stories.map(s => s.name), data.notes.map(n => n.name)))];
+    alert('Anggota aktif (' + names.length + '):\n' + (names.join('\n') || '-'));
+  });
+
+  const emo = ['😀', '😂', '🤣', '😊', '😍', '😘', '😎', '🤔', '😅', '😭', '😡', '🥳', '👍', '👎', '🙏', '👏', '🔥', '💯', '❤️', '💀', '🤝', '😴', '🤯', '😱', '🎉', '✅', '❌', '👀', '🤖', '💬', '😋', '🥰'];
+  const ep = $('gc-emoji');
+  emo.forEach(e => {
+    const b = el('button', '', e);
+    b.type = 'button';
+    b.addEventListener('click', () => { input.value += e; syncAct(); input.focus(); });
+    ep.appendChild(b);
+  });
+  $('gc-sticker').addEventListener('click', () => ep.classList.toggle('on'));
+
+  setInterval(() => { if (!document.hidden) load(); }, 8000);
+  load();
+})();
