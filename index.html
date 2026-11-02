@@ -258,7 +258,113 @@ input[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}
 
 <section class="tab" id="tab-sosial">
   <h2 class="title">Chat Global</h2>
-  <p class="muted" id="sosial-placeholder">Fitur chat lagi dibangun, bentar lagi nyusul.</p>
+  <section id="gchat">
+<style>
+#gchat{max-width:640px;margin:0 auto;padding-bottom:130px}
+#gchat-list{height:calc(100vh - 380px);min-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:12px;border:2px solid #000;border-radius:16px;background:rgba(127,127,127,.08)}
+.gc-msg{max-width:82%;padding:8px 12px;border:2px solid #000;border-radius:14px;background:rgba(127,127,127,.18);word-break:break-word;align-self:flex-start}
+.gc-msg.me{align-self:flex-end;background:#7c3aed;color:#fff}
+.gc-name{display:block;font-size:.72rem;font-weight:800;opacity:.75;margin-bottom:2px}
+.gc-time{display:block;font-size:.65rem;opacity:.6;text-align:right;margin-top:2px}
+#gchat-row{display:flex;gap:8px;margin-top:10px}
+#gchat-input{flex:1;min-width:0;padding:12px 14px;font:inherit;border:2px solid #000;border-radius:12px;background:#fff;color:#111;outline:none}
+#gchat-send{padding:12px 18px;font:inherit;font-weight:800;border:2px solid #000;border-radius:12px;background:#ffd700;color:#1a1200;box-shadow:3px 3px 0 #7c3aed;cursor:pointer}
+#gchat-send:disabled{opacity:.6}
+#gchat-status{font-size:.8rem;opacity:.75;margin-top:6px;min-height:1.2em}
+</style>
+<div id="gchat-list">Memuat chat...</div>
+<div id="gchat-row">
+<input id="gchat-input" type="text" maxlength="300" placeholder="Tulis pesan..." autocomplete="off">
+<button id="gchat-send" type="button">Kirim</button>
+</div>
+<div id="gchat-status"></div>
+<script>
+(() => {
+  const list = document.getElementById('gchat-list');
+  const input = document.getElementById('gchat-input');
+  const send = document.getElementById('gchat-send');
+  const status = document.getElementById('gchat-status');
+  let lastId;
+  let force = true;
+
+  function findName() {
+    try {
+      const saved = localStorage.getItem('chat_name');
+      if (saved) return saved;
+      for (let i = 0; i < localStorage.length; i++) {
+        const v = localStorage.getItem(localStorage.key(i));
+        if (!v || v[0] !== '{') continue;
+        try {
+          const o = JSON.parse(v);
+          const n = o.displayName || o.name || o.username || o.nama;
+          if (typeof n === 'string' && n.trim()) return n.trim().slice(0, 20);
+        } catch {}
+      }
+    } catch {}
+    return null;
+  }
+
+  function render(msgs) {
+    const last = msgs.length ? msgs[msgs.length - 1].id : null;
+    if (last === lastId) return;
+    lastId = last;
+    const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 80;
+    const mine = findName();
+    list.textContent = '';
+    if (!msgs.length) { list.textContent = 'Belum ada pesan. Jadi yang pertama!'; return; }
+    msgs.forEach(m => {
+      const d = document.createElement('div');
+      d.className = 'gc-msg' + (m.name === mine ? ' me' : '');
+      const n = document.createElement('span'); n.className = 'gc-name'; n.textContent = m.name;
+      const t = document.createElement('span'); t.textContent = m.text;
+      const tm = document.createElement('span'); tm.className = 'gc-time';
+      tm.textContent = new Date(m.ts).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+      d.append(n, t, tm);
+      list.appendChild(d);
+    });
+    if (nearBottom || force) { list.scrollTop = list.scrollHeight; force = false; }
+  }
+
+  async function load() {
+    try {
+      const r = await fetch('/api/chat', { cache: 'no-store' });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) { status.textContent = d.message || 'Gagal memuat chat.'; return; }
+      status.textContent = '';
+      render(d.messages || []);
+    } catch { status.textContent = 'Koneksi bermasalah.'; }
+  }
+
+  async function sendMsg() {
+    const text = input.value.trim();
+    if (!text) return;
+    let name = findName();
+    if (!name) {
+      name = (prompt('Nama buat chat:') || '').trim().slice(0, 20);
+      if (!name) return;
+      try { localStorage.setItem('chat_name', name); } catch {}
+    }
+    send.disabled = true;
+    try {
+      const r = await fetch('/api/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, text })
+      });
+      const d = await r.json().catch(() => ({}));
+      if (!r.ok) status.textContent = d.message || 'Gagal kirim.';
+      else { input.value = ''; status.textContent = ''; force = true; await load(); }
+    } catch { status.textContent = 'Koneksi bermasalah.'; }
+    send.disabled = false;
+  }
+
+  send.addEventListener('click', sendMsg);
+  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendMsg(); } });
+  setInterval(() => { if (!document.hidden) load(); }, 6000);
+  load();
+})();
+</script>
+</section>
 </section><section class="tab" id="tab-game">
   <h2 class="title">Game</h2>
   <div class="tool-card" data-tool="games.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="14" r="1"/></svg></span><div><h3>Games</h3><p>Tic Tac Toe, Whack-a-Mole, Reaction Test, Typing Test, Spin Wheel.</p></div></div>
