@@ -1,6 +1,7 @@
 const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 const KEY = 'chat:global';
+const ONLINE = 'chat:online';
 
 async function redis(cmds) {
   const r = await fetch(`${URL_}/pipeline`, {
@@ -14,17 +15,20 @@ async function redis(cmds) {
 
 module.exports = async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store');
-  if (!URL_ || !TOKEN) {
-    return res.status(503).json({ message: 'Database chat belum dikonfigurasi.' });
-  }
+  if (!URL_ || !TOKEN) return res.status(503).json({ message: 'Database chat belum dikonfigurasi.' });
   try {
     if (req.method === 'GET') {
-      const out = await redis([['LRANGE', KEY, 0, 49]]);
+      const cid = String(req.query?.cid || '').replace(/[^a-z0-9]/gi, '').slice(0, 40);
+      const now = Date.now();
+      const cmds = [['LRANGE', KEY, 0, 59]];
+      if (cid) cmds.push(['ZADD', ONLINE, now, cid]);
+      cmds.push(['ZREMRANGEBYSCORE', ONLINE, 0, now - 30000], ['ZCARD', ONLINE], ['EXPIRE', ONLINE, 120]);
+      const out = await redis(cmds);
       const messages = (out[0].result || [])
         .map(s => { try { return JSON.parse(s); } catch { return null; } })
         .filter(Boolean)
         .reverse();
-      return res.status(200).json({ messages });
+      return res.status(200).json({ messages, online: out[out.length - 2].result || 1 });
     }
     if (req.method === 'POST') {
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
@@ -36,7 +40,17 @@ module.exports = async function handler(req, res) {
       const rl = await redis([['SET', `chat:rl:${ip}`, '1', 'EX', 2, 'NX']]);
       if (rl[0].result !== 'OK') return res.status(429).json({ message: 'Pelan-pelan, tunggu sebentar.' });
 
-      const msg = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, text, ts: Date.now() };
+      const av = String(body.avatar || '');
+      const avatar = /^https:\/\/[^\s"'<>]{1,280}$/.test(av) ? av : '';
+      let reply = null;
+      if (body.reply && typeof body.reply === 'object') {
+        reply = {
+          id: String(body.reply.id || '').slice(0, 20),
+          name: String(body.reply.name || '').slice(0, 20),
+          text: String(body.reply.text || '').slice(0, 80)
+        };
+      }
+      const msg = { id: Date.now().toString(36) + Math.random().toString(36).slice(2, 6), name, text, avatar, reply, ts: Date.now() };
       await redis([['LPUSH', KEY, JSON.stringify(msg)], ['LTRIM', KEY, 0, 99]]);
       return res.status(200).json({ ok: true });
     }

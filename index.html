@@ -260,77 +260,176 @@ input[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}
   <h2 class="title">Chat Global</h2>
   <section id="gchat">
 <style>
-#gchat{max-width:640px;margin:0 auto;padding-bottom:130px}
-#gchat-list{height:calc(100vh - 380px);min-height:260px;overflow-y:auto;display:flex;flex-direction:column;gap:8px;padding:12px;border:2px solid #000;border-radius:16px;background:rgba(127,127,127,.08)}
-.gc-msg{max-width:82%;padding:8px 12px;border:2px solid #000;border-radius:14px;background:rgba(127,127,127,.18);word-break:break-word;align-self:flex-start}
-.gc-msg.me{align-self:flex-end;background:#7c3aed;color:#fff}
-.gc-name{display:block;font-size:.72rem;font-weight:800;opacity:.75;margin-bottom:2px}
-.gc-time{display:block;font-size:.65rem;opacity:.6;text-align:right;margin-top:2px}
-#gchat-row{display:flex;gap:8px;margin-top:10px}
-#gchat-input{flex:1;min-width:0;padding:12px 14px;font:inherit;border:2px solid #000;border-radius:12px;background:#fff;color:#111;outline:none}
-#gchat-send{padding:12px 18px;font:inherit;font-weight:800;border:2px solid #000;border-radius:12px;background:#ffd700;color:#1a1200;box-shadow:3px 3px 0 #7c3aed;cursor:pointer}
-#gchat-send:disabled{opacity:.6}
-#gchat-status{font-size:.8rem;opacity:.75;margin-top:6px;min-height:1.2em}
+#gchat{max-width:640px;margin:0 auto;padding:0 0 110px}
+#gchat *{box-sizing:border-box}
+.gc-wrap{display:flex;flex-direction:column;height:calc(100vh - 260px);height:calc(100dvh - 260px);min-height:380px;background:#0f1a1c;color:#e8f0ee;border:2px solid #000;border-radius:18px;overflow:hidden;box-shadow:5px 5px 0 #ffd700}
+.gc-head{display:flex;align-items:center;gap:12px;padding:12px 14px;background:#16252a;border-bottom:1px solid #26393f}
+.gc-head b{display:block;font-size:1.05rem}
+.gc-online{font-size:.75rem;color:#8fb0aa;display:flex;align-items:center;gap:6px}
+.gc-dot{width:8px;height:8px;border-radius:50%;background:#2bd4a0;box-shadow:0 0 6px #2bd4a0}
+.gc-list{flex:1;overflow-y:auto;padding:12px;display:flex;flex-direction:column;gap:10px}
+.gc-day{align-self:center;font-size:.7rem;color:#8fb0aa;background:#16252a;padding:3px 12px;border-radius:999px}
+.gc-row{display:flex;gap:8px;align-items:flex-end;max-width:92%}
+.gc-row.me{align-self:flex-end;flex-direction:row-reverse}
+.gc-av{width:34px;height:34px;border-radius:50%;flex:none;display:flex;align-items:center;justify-content:center;font-weight:800;color:#fff;overflow:hidden}
+.gc-av img{width:100%;height:100%;object-fit:cover}
+.gc-bub{background:#1d2c31;border-radius:14px 14px 14px 4px;padding:7px 10px 5px;min-width:72px;word-break:break-word;cursor:pointer}
+.gc-row.me .gc-bub{background:#175c4c;border-radius:14px 14px 4px 14px}
+.gc-name{display:block;font-size:.8rem;font-weight:800;margin-bottom:2px}
+.gc-quote{border-left:3px solid #2bd4a0;background:rgba(0,0,0,.22);border-radius:6px;padding:4px 8px;margin-bottom:4px;font-size:.78rem}
+.gc-quote b{display:block;color:#2bd4a0}
+.gc-quote span{display:block;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:220px}
+.gc-text{font-size:.95rem;line-height:1.35;white-space:pre-wrap}
+.gc-time{float:right;font-size:.65rem;color:#8fb0aa;margin:5px 0 0 12px}
+.gc-replybar{display:none;align-items:center;gap:10px;padding:8px 12px;background:#16252a;border-top:1px solid #26393f;font-size:.8rem}
+.gc-replybar.on{display:flex}
+.gc-replybar div{flex:1;min-width:0;border-left:3px solid #2bd4a0;padding-left:8px}
+.gc-replybar b{display:block;color:#2bd4a0}
+.gc-replybar span{display:block;opacity:.85;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.gc-replybar button{background:none;border:0;color:#8fb0aa;font-size:1.1rem;cursor:pointer}
+.gc-bar{display:flex;gap:8px;align-items:center;padding:10px;background:#16252a;border-top:1px solid #26393f}
+#gchat-input{flex:1;min-width:0;background:#223338;color:#e8f0ee;border:0;border-radius:999px;padding:12px 16px;font:inherit;outline:none}
+#gchat-input::placeholder{color:#7f9a96}
+#gchat-send{width:44px;height:44px;flex:none;border-radius:50%;border:0;background:#2bd4a0;color:#06251d;display:flex;align-items:center;justify-content:center;cursor:pointer}
+#gchat-send:disabled{opacity:.5}
+#gchat-status{font-size:.75rem;color:#ff9f9f;padding:0 14px 8px;background:#16252a;min-height:0}
+#gchat-status:empty{display:none}
 </style>
-<div id="gchat-list">Memuat chat...</div>
-<div id="gchat-row">
-<input id="gchat-input" type="text" maxlength="300" placeholder="Tulis pesan..." autocomplete="off">
-<button id="gchat-send" type="button">Kirim</button>
+<div class="gc-wrap">
+  <div class="gc-head">
+    <div><b>Chat Global</b><span class="gc-online"><i class="gc-dot"></i><span id="gchat-online">1 online</span></span></div>
+  </div>
+  <div class="gc-list" id="gchat-list"></div>
+  <div class="gc-replybar" id="gchat-replybar">
+    <div><b id="gchat-reply-name"></b><span id="gchat-reply-text"></span></div>
+    <button type="button" id="gchat-reply-x" aria-label="Batal balas">✕</button>
+  </div>
+  <div id="gchat-status"></div>
+  <div class="gc-bar">
+    <input id="gchat-input" type="text" maxlength="300" placeholder="Tulis pesan..." autocomplete="off">
+    <button id="gchat-send" type="button" aria-label="Kirim">
+      <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+    </button>
+  </div>
 </div>
-<div id="gchat-status"></div>
 <script>
 (() => {
   const list = document.getElementById('gchat-list');
   const input = document.getElementById('gchat-input');
   const send = document.getElementById('gchat-send');
   const status = document.getElementById('gchat-status');
-  let lastId;
-  let force = true;
+  const onlineEl = document.getElementById('gchat-online');
+  const bar = document.getElementById('gchat-replybar');
+  const rName = document.getElementById('gchat-reply-name');
+  const rText = document.getElementById('gchat-reply-text');
+  const palette = ['#ff7b7b', '#c792ea', '#4dd0e1', '#ffd166', '#7bd88f', '#ff9f68', '#6fa8ff'];
+  let lastId, force = true, replyTo = null;
 
-  function findName() {
+  let cid = '';
+  try { cid = localStorage.getItem('chat_cid') || ''; } catch {}
+  if (!cid) {
+    cid = Math.random().toString(36).slice(2, 12) + Date.now().toString(36);
+    try { localStorage.setItem('chat_cid', cid); } catch {}
+  }
+
+  function el(tag, cls, text) {
+    const e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text !== undefined) e.textContent = text;
+    return e;
+  }
+  function colorFor(name) {
+    let h = 0;
+    for (const c of String(name)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
+    return palette[h % palette.length];
+  }
+  function ini(name) { return (String(name).trim()[0] || '?').toUpperCase(); }
+
+  function profile() {
+    let name = null, avatar = '';
     try {
-      const saved = localStorage.getItem('chat_name');
-      if (saved) return saved;
+      name = localStorage.getItem('chat_name');
       for (let i = 0; i < localStorage.length; i++) {
         const v = localStorage.getItem(localStorage.key(i));
         if (!v || v[0] !== '{') continue;
         try {
           const o = JSON.parse(v);
           const n = o.displayName || o.name || o.username || o.nama;
-          if (typeof n === 'string' && n.trim()) return n.trim().slice(0, 20);
+          const a = o.avatar || o.photo || o.foto || o.photoURL || o.image || o.pfp || o.avatarUrl;
+          if (!name && typeof n === 'string' && n.trim()) name = n.trim().slice(0, 20);
+          if (!avatar && typeof a === 'string' && /^https:\/\//.test(a)) avatar = a;
         } catch {}
       }
     } catch {}
-    return null;
+    return { name, avatar };
   }
 
+  function setReply(m) {
+    replyTo = { id: m.id, name: m.name, text: m.text.slice(0, 80) };
+    rName.textContent = m.name;
+    rText.textContent = m.text;
+    bar.classList.add('on');
+    input.focus();
+  }
+  function clearReply() { replyTo = null; bar.classList.remove('on'); }
+  document.getElementById('gchat-reply-x').addEventListener('click', clearReply);
+
   function render(msgs) {
-    const last = msgs.length ? msgs[msgs.length - 1].id : null;
+    const last = msgs.length ? msgs[msgs.length - 1].id : 'none';
     if (last === lastId) return;
     lastId = last;
-    const nearBottom = list.scrollHeight - list.scrollTop - list.clientHeight < 80;
-    const mine = findName();
+    const near = list.scrollHeight - list.scrollTop - list.clientHeight < 100;
+    const me = profile().name;
     list.textContent = '';
-    if (!msgs.length) { list.textContent = 'Belum ada pesan. Jadi yang pertama!'; return; }
+    if (!msgs.length) { list.appendChild(el('div', 'gc-day', 'Belum ada pesan. Mulai obrolan!')); return; }
+    let day = '';
     msgs.forEach(m => {
-      const d = document.createElement('div');
-      d.className = 'gc-msg' + (m.name === mine ? ' me' : '');
-      const n = document.createElement('span'); n.className = 'gc-name'; n.textContent = m.name;
-      const t = document.createElement('span'); t.textContent = m.text;
-      const tm = document.createElement('span'); tm.className = 'gc-time';
-      tm.textContent = new Date(m.ts).toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-      d.append(n, t, tm);
-      list.appendChild(d);
+      const d = new Date(m.ts);
+      const key = d.toDateString();
+      if (key !== day) {
+        day = key;
+        list.appendChild(el('div', 'gc-day', key === new Date().toDateString()
+          ? 'Hari ini'
+          : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })));
+      }
+      const mine = m.name === me;
+      const row = el('div', 'gc-row' + (mine ? ' me' : ''));
+      const av = el('div', 'gc-av');
+      av.style.background = colorFor(m.name);
+      if (m.avatar) {
+        const img = new Image();
+        img.alt = ''; img.referrerPolicy = 'no-referrer'; img.src = m.avatar;
+        img.onerror = () => { img.remove(); av.textContent = ini(m.name); };
+        av.appendChild(img);
+      } else av.textContent = ini(m.name);
+
+      const bub = el('div', 'gc-bub');
+      if (!mine) {
+        const n = el('span', 'gc-name', m.name);
+        n.style.color = colorFor(m.name);
+        bub.appendChild(n);
+      }
+      if (m.reply && m.reply.name) {
+        const q = el('div', 'gc-quote');
+        q.append(el('b', '', m.reply.name), el('span', '', m.reply.text));
+        bub.appendChild(q);
+      }
+      bub.appendChild(el('span', 'gc-text', m.text));
+      bub.appendChild(el('span', 'gc-time', d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' })));
+      bub.addEventListener('click', () => setReply(m));
+      row.append(av, bub);
+      list.appendChild(row);
     });
-    if (nearBottom || force) { list.scrollTop = list.scrollHeight; force = false; }
+    if (near || force) { list.scrollTop = list.scrollHeight; force = false; }
   }
 
   async function load() {
     try {
-      const r = await fetch('/api/chat', { cache: 'no-store' });
+      const r = await fetch('/api/chat?cid=' + encodeURIComponent(cid), { cache: 'no-store' });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) { status.textContent = d.message || 'Gagal memuat chat.'; return; }
       status.textContent = '';
+      onlineEl.textContent = (d.online || 1) + ' online';
       render(d.messages || []);
     } catch { status.textContent = 'Koneksi bermasalah.'; }
   }
@@ -338,7 +437,8 @@ input[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}
   async function sendMsg() {
     const text = input.value.trim();
     if (!text) return;
-    let name = findName();
+    const p = profile();
+    let name = p.name;
     if (!name) {
       name = (prompt('Nama buat chat:') || '').trim().slice(0, 20);
       if (!name) return;
@@ -349,11 +449,11 @@ input[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}
       const r = await fetch('/api/chat', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, text })
+        body: JSON.stringify({ name, text, avatar: p.avatar, reply: replyTo })
       });
       const d = await r.json().catch(() => ({}));
       if (!r.ok) status.textContent = d.message || 'Gagal kirim.';
-      else { input.value = ''; status.textContent = ''; force = true; await load(); }
+      else { input.value = ''; status.textContent = ''; clearReply(); force = true; await load(); }
     } catch { status.textContent = 'Koneksi bermasalah.'; }
     send.disabled = false;
   }
