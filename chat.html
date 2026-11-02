@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#182226">
+<title>Chat Global</title>
+<link rel="stylesheet" href="chat.css">
+</head>
+<body>
+<div class="gc" id="gc">
+  <div class="gc-head">
+    <button type="button" class="gc-ib" id="gc-users" aria-label="Anggota"></button>
+    <button type="button" class="gc-ib" id="gc-back" aria-label="Kembali"></button>
+    <div class="gc-title"><b>Chat Global</b><span><i class="gc-dot"></i><span id="gc-online">1 online</span></span></div>
+    <button type="button" class="gc-ib" id="gc-bell" aria-label="Suara"></button>
+    <button type="button" class="gc-ib" id="gc-theme" aria-label="Tema"></button>
+    <div id="gc-me"></div>
+  </div>
+  <div id="gc-top">
+    <div class="gc-strip" id="gc-stories"></div>
+    <div class="gc-strip gc-notes" id="gc-notes"></div>
+  </div>
+  <div class="gc-list" id="gc-list"></div>
+  <div class="gc-replybar" id="gc-replybar">
+    <div><b id="gc-rname"></b><span id="gc-rtext"></span></div>
+    <button type="button" id="gc-rx" aria-label="Batal">✕</button>
+  </div>
+  <div class="gc-emoji" id="gc-emoji"></div>
+  <div id="gc-status"></div>
+  <div class="gc-bar">
+    <button type="button" class="gc-ib" id="gc-eye" aria-label="Sembunyikan story"></button>
+    <button type="button" class="gc-ib" id="gc-eraser" aria-label="Bersihkan"></button>
+    <button type="button" class="gc-ib" id="gc-sticker" aria-label="Emoji"></button>
+    <input id="gc-input" type="text" maxlength="300" placeholder="Tulis pesan" autocomplete="off">
+    <button type="button" class="gc-act" id="gc-action" aria-label="Kirim"></button>
+  </div>
+</div>
+<div id="gc-overlay" hidden></div>
+<script src="chat.js"></script>
+</body>
+</html>
