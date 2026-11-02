@@ -119,6 +119,11 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 .wa-fab::before{content:'';position:absolute;inset:0;border-radius:50%;background:#25d366;z-index:-1;animation:wa-ping 2.6s cubic-bezier(0,0,.2,1) infinite}
 @keyframes wa-ping{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
 @keyframes wa-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.auth-tabs{display:flex;gap:8px}
+.auth-tab{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--muted);font:inherit;font-weight:700;cursor:pointer}
+.auth-tab.active{color:var(--text);border-color:var(--purple)}
+.auth-form{display:flex;flex-direction:column;gap:10px}
+.owner-panel input[type="text"],.owner-panel input[type="email"]{width:100%;padding:12px;border-radius:9px;border:2px solid #000;background:var(--bg);color:var(--text);font:inherit}
 </style>
 </head>
 <body class="light-mode">
@@ -127,20 +132,37 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 <div class="container topbar">
 <a class="logo" href="#"><span>Mann'zz</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></a>
 <div class="topbar-actions">
-<span class="owner-badge" id="ownerBadge">USER</span>
-<button id="owner-toggle" type="button" aria-label="Login owner"><svg viewBox="0 0 24 24" class="icon"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></button>
+<span class="owner-badge" id="ownerBadge">Tamu</span>
+<button id="auth-toggle" type="button" aria-label="Akun"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></button>
 <button id="theme-toggle" type="button" aria-label="Ganti tema"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
 </div>
 </div>
 </header>
 
-<div class="owner-panel" id="ownerPanel" style="display:none">
-<div class="pass-wrap">
-<input type="password" id="ownerPass" placeholder="Password owner">
-<button type="button" id="togglePass" class="pass-eye"><svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+<div class="owner-panel" id="authPanel" style="display:none">
+<div class="auth-tabs">
+<button type="button" class="auth-tab active" data-auth-tab="login">Masuk</button>
+<button type="button" class="auth-tab" data-auth-tab="register">Daftar</button>
 </div>
-<button class="btn primary" id="ownerSubmit" type="button">Masuk sebagai Owner</button>
-<p class="gate-error" id="ownerError" style="display:none">Password salah, coba lagi.</p>
+<div class="auth-form" id="authLoginForm">
+<input type="email" id="loginEmail" placeholder="Email">
+<div class="pass-wrap">
+<input type="password" id="loginPass" placeholder="Password">
+<button type="button" class="pass-eye" data-eye-for="loginPass"><svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+</div>
+<button class="btn primary" id="loginSubmit" type="button">Masuk</button>
+</div>
+<div class="auth-form" id="authRegisterForm" style="display:none">
+<input type="text" id="regName" placeholder="Nama">
+<input type="email" id="regEmail" placeholder="Email">
+<div class="pass-wrap">
+<input type="password" id="regPass" placeholder="Password (min 6 karakter)">
+<button type="button" class="pass-eye" data-eye-for="regPass"><svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+</div>
+<button class="btn primary" id="registerSubmit" type="button">Daftar</button>
+</div>
+<p class="gate-error" id="authError" style="display:none"></p>
+<button class="btn" id="logoutBtn" type="button" style="display:none">Keluar</button>
 </div>
 
 <main class="app container">
@@ -270,57 +292,114 @@ const db = firebase.firestore();
 </script>
 
 <script>
-const ownerToggle=document.getElementById('owner-toggle');
-const ownerPanel=document.getElementById('ownerPanel');
-const ownerPass=document.getElementById('ownerPass');
-const ownerSubmit=document.getElementById('ownerSubmit');
-const ownerError=document.getElementById('ownerError');
-const togglePass=document.getElementById('togglePass');
-const EYE_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
-const EYEOFF_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M3 3l18 18"/><path d="M9.9 4.2A11 11 0 0112 4c7 0 11 7 11 7a13.6 13.6 0 01-3.4 4.1M6.1 6.1A13.6 13.6 0 001 11s4 7 11 7a10.8 10.8 0 004.9-1.1"/><path d="M9.5 9.9a3 3 0 004.1 4.2"/></svg>';
+const authToggle=document.getElementById('auth-toggle');
+const authPanel=document.getElementById('authPanel');
+const authTabs=document.querySelectorAll('.auth-tab');
+const authLoginForm=document.getElementById('authLoginForm');
+const authRegisterForm=document.getElementById('authRegisterForm');
+const loginEmail=document.getElementById('loginEmail');
+const loginPass=document.getElementById('loginPass');
+const loginSubmit=document.getElementById('loginSubmit');
+const regName=document.getElementById('regName');
+const regEmail=document.getElementById('regEmail');
+const regPass=document.getElementById('regPass');
+const registerSubmit=document.getElementById('registerSubmit');
+const authError=document.getElementById('authError');
+const logoutBtn=document.getElementById('logoutBtn');
 const ownerBadge=document.getElementById('ownerBadge');
 const verifiedBadge=document.getElementById('verifiedBadge');
-const OWNER_PASSWORD='mannzz kece';
+const EYE_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYEOFF_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M3 3l18 18"/><path d="M9.9 4.2A11 11 0 0112 4c7 0 11 7 11 7a13.6 13.6 0 01-3.4 4.1M6.1 6.1A13.6 13.6 0 001 11s4 7 11 7a10.8 10.8 0 004.9-1.1"/><path d="M9.5 9.9a3 3 0 004.1 4.2"/></svg>';
+const CROWN_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M3 18h18l-1.5-9-4.5 4-3-6-3 6-4.5-4L3 18z"/></svg>';
 
-function setOwner(isOwner){
-if(isOwner){
-ownerBadge.innerHTML='<svg viewBox="0 0 24 24" class="icon"><path d="M3 18h18l-1.5-9-4.5 4-3-6-3 6-4.5-4L3 18z"/></svg> OWNER';
+function showAuthError(msg){ authError.textContent=msg; authError.style.display='block'; }
+function clearAuthError(){ authError.style.display='none'; }
+
+authTabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+authTabs.forEach(t=>t.classList.toggle('active',t===tab));
+const which=tab.dataset.authTab;
+authLoginForm.style.display=which==='login'?'flex':'none';
+authRegisterForm.style.display=which==='register'?'flex':'none';
+clearAuthError();
+});
+});
+
+authToggle.addEventListener('click',()=>{
+authPanel.style.display = authPanel.style.display==='none' ? 'flex' : 'none';
+});
+
+registerSubmit.addEventListener('click', async ()=>{
+clearAuthError();
+const name=regName.value.trim();
+const email=regEmail.value.trim();
+const pass=regPass.value;
+if(!name||!email||pass.length<6){ showAuthError('Isi nama, email, dan password minimal 6 karakter.'); return; }
+registerSubmit.disabled=true;
+try{
+const cred=await auth.createUserWithEmailAndPassword(email,pass);
+await db.collection('users').doc(cred.user.uid).set({
+name:name, email:email, isAdmin:false, createdAt:firebase.firestore.FieldValue.serverTimestamp()
+});
+}catch(e){ showAuthError(e.message||'Daftar gagal.'); }
+finally{ registerSubmit.disabled=false; }
+});
+
+loginSubmit.addEventListener('click', async ()=>{
+clearAuthError();
+const email=loginEmail.value.trim();
+const pass=loginPass.value;
+if(!email||!pass){ showAuthError('Isi email dan password.'); return; }
+loginSubmit.disabled=true;
+try{ await auth.signInWithEmailAndPassword(email,pass); }
+catch(e){ showAuthError(e.message||'Masuk gagal.'); }
+finally{ loginSubmit.disabled=false; }
+});
+
+logoutBtn.addEventListener('click',()=>{ auth.signOut(); });
+
+document.querySelectorAll('.pass-eye[data-eye-for]').forEach(btn=>{
+btn.addEventListener('click',()=>{
+const input=document.getElementById(btn.dataset.eyeFor);
+const isPass=input.type==='password';
+input.type=isPass?'text':'password';
+btn.innerHTML=isPass?EYEOFF_ICON:EYE_ICON;
+});
+});
+
+auth.onAuthStateChanged(async (user)=>{
+if(user){
+authPanel.style.display='none';
+logoutBtn.style.display='block';
+authTabs.forEach(t=>t.style.display='none');
+authLoginForm.style.display='none';
+authRegisterForm.style.display='none';
+let isAdmin=false, name=user.email;
+try{
+const doc=await db.collection('users').doc(user.uid).get();
+if(doc.exists){ const data=doc.data(); isAdmin=!!data.isAdmin; name=data.name||name; }
+}catch(e){}
+if(isAdmin){
+ownerBadge.innerHTML=CROWN_ICON+' OWNER';
 ownerBadge.classList.add('owner-role');
 verifiedBadge.classList.add('owner-role');
-sessionStorage.setItem('mannzzRole','owner');
 }else{
-ownerBadge.textContent='USER';
+ownerBadge.textContent=name;
 ownerBadge.classList.remove('owner-role');
 verifiedBadge.classList.remove('owner-role');
-sessionStorage.removeItem('mannzzRole');
 }
-}
-if(sessionStorage.getItem('mannzzRole')==='owner') setOwner(true);
-
-ownerToggle.addEventListener('click',()=>{
-if(ownerBadge.textContent.includes('OWNER')){
-setOwner(false);
-return;
-}
-ownerPanel.style.display = ownerPanel.style.display==='none' ? 'flex' : 'none';
-});
-ownerSubmit.addEventListener('click',()=>{
-if(ownerPass.value===OWNER_PASSWORD){
-setOwner(true);
-ownerPanel.style.display='none';
-ownerPass.value='';
-ownerError.style.display='none';
+window.currentUserProfile={uid:user.uid, isAdmin:isAdmin, name:name};
 }else{
-ownerError.style.display='block';
-ownerPass.value='';
-ownerPass.focus();
+ownerBadge.textContent='Tamu';
+ownerBadge.classList.remove('owner-role');
+verifiedBadge.classList.remove('owner-role');
+logoutBtn.style.display='none';
+authTabs.forEach(t=>t.style.display='block');
+authLoginForm.style.display='flex';
+authRegisterForm.style.display='none';
+window.currentUserProfile=null;
 }
 });
-ownerPass.addEventListener('keydown',(e)=>{if(e.key==='Enter') ownerSubmit.click();});
-togglePass.addEventListener('click',()=>{
-const isPass=ownerPass.type==='password';
-ownerPass.type=isPass?'text':'password';
-togglePass.innerHTML=isPass?EYEOFF_ICON:EYE_ICON;
 });
 
 const themeToggle=document.getElementById('theme-toggle');
