@@ -58,7 +58,7 @@
   if (!cid) { cid = Math.random().toString(36).slice(2, 12) + Date.now().toString(36); ls.set('chat_cid', cid); }
 
   function profile() {
-    let name = ls.get('chat_name'), avatar = '';
+    let name = ls.get('chat_name'), avatar = ls.get('chat_avatar') || '';
     try {
       for (let i = 0; i < localStorage.length; i++) {
         const v = localStorage.getItem(localStorage.key(i));
@@ -360,7 +360,7 @@
     alert('Anggota aktif (' + names.length + '):\n' + (names.join('\n') || '-'));
   });
 
-  const emo = ['😀', '😂', '🤣', '😊', '😍', '😘', '😎', '🤔', '😅', '😭', '😡', '🥳', '👍', '👎', '🙏', '👏', '🔥', '💯', '❤️', '💀', '🤝', '😴', '🤯', '😱', '🎉', '✅', '❌', '👀', '🤖', '💬', '😋', '🥰'];
+  const emo = '😀 😃 😄 😁 😆 😅 🤣 😂 🙂 🙃 😉 😊 😇 🥰 😍 🤩 😘 😗 😋 😛 😜 🤪 😝 🤑 🤗 🤭 🤫 🤔 🤐 😐 😑 😶 😏 😒 🙄 😬 😌 😔 😪 😴 😷 🤒 🤕 🤢 🤮 🥵 🥶 🥴 😵 🤯 🤠 🥳 😎 🤓 🧐 😕 😟 🙁 😮 😲 😳 🥺 😦 😨 😰 😥 😢 😭 😱 😖 😣 😞 😓 😩 😫 🥱 😤 😡 😠 🤬 😈 👿 💀 👻 👽 🤖 💩 🙈 🙉 🙊 👍 👎 👌 ✌️ 🤞 🤟 🤘 👈 👉 👆 👇 👋 🤝 👏 🙌 🙏 💪 ❤️ 🧡 💛 💚 💙 💜 🖤 🤍 💔 💯 💢 💥 💫 💦 🔥 ✨ ⭐ 🎉 🎊 🎁 🏆 ⚽ 🎮 🎧 🎵 📱 💻 💬 👀 ✅ ❌ ⚠️ 🍕 🍔 🍟 🍜 🍗 ☕ 🍺 🐶 🐱 🐹 🐸 🐵 🌹 🌈 ☀️ 🌙'.split(' ');
   const ep = $('gc-emoji');
   emo.forEach(e => {
     const b = el('button', '', e);
@@ -370,6 +370,22 @@
   });
   $('gc-sticker').addEventListener('click', () => ep.classList.toggle('on'));
 
+  $('gc-me').style.cursor = 'pointer';
+  $('gc-me').addEventListener('click', () => {
+    const p = profile();
+    const n = prompt('Nama (maks 20 huruf):', p.name || '');
+    if (n === null) return;
+    if (n.trim()) ls.set('chat_name', n.trim().slice(0, 20));
+    const a = prompt('Link foto profil (harus https://). Kosongkan untuk hapus:', p.avatar || '');
+    if (a !== null) {
+      const u = a.trim();
+      if (!u) ls.del('chat_avatar');
+      else if (/^https:\/\/[^\s"'<>]{1,280}$/.test(u)) ls.set('chat_avatar', u);
+      else { status.textContent = 'Link harus diawali https://'; return; }
+    }
+    status.textContent = '';
+    renderMe(); msgSig = null; load();
+  });
   setInterval(() => { if (!document.hidden) load(); }, 8000);
   load();
 })();

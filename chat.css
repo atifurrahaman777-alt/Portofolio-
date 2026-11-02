@@ -71,3 +71,5 @@ button{font:inherit;color:inherit}
 .gc-ov-bar{height:3px;background:rgba(255,255,255,.35);border-radius:2px;overflow:hidden}
 .gc-ov-bar i{display:block;height:100%;background:#fff;animation:gcbar 6s linear forwards}
 @keyframes gcbar{from{width:0}to{width:100%}}
+
+.gc-emoji{max-height:210px;overflow-y:auto}
