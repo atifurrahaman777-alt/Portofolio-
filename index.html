@@ -133,7 +133,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 120p
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:2px solid #000;border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}
-</style></head>
+</style><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"></head>
 <body class="light-mode">
 
 <header>
@@ -517,5 +517,5 @@ document.getElementById('status').textContent='Membuka aplikasi email...';
 location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
 });
 </script>
-</body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
 </html>

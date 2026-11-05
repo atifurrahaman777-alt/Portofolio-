@@ -27,7 +27,7 @@ body.light-mode .platform-chip{color:#5a5468}
 .dl-loading.show{display:block}
 [hidden]{display:none!important}
 </style>
-</head>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"></head>
 <body>
 <main class="wrap">
 
@@ -126,5 +126,5 @@ form.addEventListener('submit', async (e) => {
   }
 });
 </script>
-</body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
 </html>

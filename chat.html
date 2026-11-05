@@ -6,7 +6,7 @@
 <meta name="theme-color" content="#182226">
 <title>Chat Global</title>
 <link rel="stylesheet" href="chat.css">
-</head>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"></head>
 <body>
 <div class="gc" id="gc">
   <div class="gc-head">
@@ -38,5 +38,5 @@
 </div>
 <div id="gc-overlay" hidden></div>
 <script src="chat.js"></script>
-</body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
 </html>
