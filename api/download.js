@@ -3,47 +3,82 @@ module.exports = async function handler(req, res) {
 
   if (req.method !== 'GET') {
     res.setHeader('Allow', 'GET');
-    return res.status(405).json({ message: 'Method tidak diizinkan.' });
-  }
-
-  const url = req.query?.url;
-  const base = process.env.DOWNLOADER_API_URL;
-
-  if (!base) {
-    return res.status(503).json({
-      message: 'Backend downloader belum dikonfigurasi.'
+    return res.status(405).json({
+      success: false,
+      message: 'Gunakan GET.'
     });
-  }
-
-  if (typeof url !== 'string' || !url.trim() || url.length > 2048) {
-    return res.status(400).json({ message: 'Link tidak valid.' });
   }
 
   try {
-    const endpoint = new URL('/api/download', base);
-    endpoint.searchParams.set('url', url);
+    const link = String(req.query?.url || '').trim();
 
-    const response = await fetch(endpoint, {
-      headers: { Accept: 'application/json' },
-      signal: AbortSignal.timeout(20000)
-    });
-
-    const data = await response.json().catch(() => ({}));
-
-    if (!response.ok) {
-      return res.status(response.status).json({
-        message: data.detail || data.message || 'Gagal memproses link.'
+    if (!link || link.length > 3000) {
+      return res.status(400).json({
+        success: false,
+        message: 'Masukkan link terlebih dahulu.'
       });
     }
 
-    if (data.downloadUrl && data.downloadUrl.startsWith('/')) {
-      data.downloadUrl = new URL(data.downloadUrl, base).toString();
+    let url;
+
+    try {
+      url = new URL(link);
+    } catch {
+      return res.status(400).json({
+        success: false,
+        message: 'Link tidak valid.'
+      });
     }
 
-    return res.status(200).json(data);
-  } catch {
+    if (!['https:', 'http:'].includes(url.protocol)) {
+      return res.status(400).json({
+        success: false,
+        message: 'Protokol tidak didukung.'
+      });
+    }
+
+    const { resolve, detect } = await import('../lib/omdown.mjs');
+
+    const platform = detect(url.href);
+
+    if (!platform) {
+      return res.status(400).json({
+        success: false,
+        message: 'Platform tidak didukung.'
+      });
+    }
+
+    const data = await resolve(url.href, {
+      platform,
+      locale: 'en',
+      size: false
+    });
+
+    const formats = Array.isArray(data.formats)
+      ? data.formats
+      : [];
+
+    const available = formats.filter(f =>
+      f && typeof f.downloadUrl === 'string' &&
+      /^https?:\/\//i.test(f.downloadUrl)
+    );
+
+    return res.status(200).json({
+      success: true,
+      title: data.title || data.name || platform,
+      thumbnail: data.thumbnailUrl || data.thumbnail || '',
+      meta: data.platform || platform,
+      downloadUrl: available[0]?.downloadUrl || '',
+      formats: available,
+      data
+    });
+
+  } catch (err) {
+    console.error('OMDown:', err);
+
     return res.status(502).json({
-      message: 'Backend downloader tidak merespons. Coba lagi nanti.'
+      success: false,
+      message: err.message || 'Gagal mengambil media.'
     });
   }
 };

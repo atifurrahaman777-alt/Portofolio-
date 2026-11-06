@@ -20,7 +20,7 @@ body.light-mode .platform-chip{color:#5a5468}
 .dl-result.show{display:block}
 .dl-result img{width:100%;border-radius:12px;border:2px solid #000;margin-bottom:14px}
 .dl-result h3{margin:0 0 6px}
-.dl-result p{color:var(--muted);text-shadow:none;font-size:.85rem;margin:0 0 14px}
+.dl-formats{display:grid;gap:10px;margin-top:16px}.dl-format{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:12px;border:1px solid var(--line);border-radius:12px}.dl-format small{color:var(--muted)}.dl-format a{white-space:nowrap;text-decoration:none}.dl-result p{color:var(--muted);text-shadow:none;font-size:.85rem;margin:0 0 14px}
 .dl-error{color:#ff6b6b;text-shadow:none;font-size:.85rem;margin-top:10px;display:none}
 .dl-error.show{display:block}
 .dl-loading{display:none;text-align:center;color:var(--muted);text-shadow:none;font-size:.85rem;margin-top:14px}
@@ -66,6 +66,7 @@ body.light-mode .platform-chip{color:#5a5468}
 <img id="dl-thumb" src="" alt="" style="display:none">
 <h3 id="dl-title"></h3>
 <p id="dl-meta"></p>
+<div id="dl-formats" class="dl-formats"></div>
 <a class="btn" id="dl-link" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg> Unduh File</a>
 </div>
 </section>
@@ -74,6 +75,7 @@ body.light-mode .platform-chip{color:#5a5468}
 <footer>© Mann'zz Tools</footer>
 <script src="app.js"></script>
 <script>
+
 const form = document.getElementById('dl-form');
 const urlInput = document.getElementById('dl-url');
 const submitBtn = document.getElementById('dl-submit');
@@ -84,11 +86,11 @@ const thumb = document.getElementById('dl-thumb');
 const titleEl = document.getElementById('dl-title');
 const metaEl = document.getElementById('dl-meta');
 const linkEl = document.getElementById('dl-link');
-
-const API = ""; // isi base URL API downloader kamu di sini kalau backend-nya sudah ada
+const formatsEl = document.getElementById('dl-formats');
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
+
   const url = urlInput.value.trim();
   if (!url) return;
 
@@ -96,29 +98,89 @@ form.addEventListener('submit', async (e) => {
   result.classList.remove('show');
   loading.classList.add('show');
   submitBtn.disabled = true;
+  formatsEl.replaceChildren();
 
   try {
-    const res = await fetch(`${API}/api/download?url=${encodeURIComponent(url)}`, { cache: 'no-store' });
+    const res = await fetch(
+      `/api/download?url=${encodeURIComponent(url)}`,
+      { cache: 'no-store' }
+    );
+
     const raw = await res.text();
     let data;
-    try { data = JSON.parse(raw); } catch { data = {}; }
 
-    if (!res.ok || !data.downloadUrl) {
-      throw new Error(data.message || 'Gagal memproses link ini.');
+    try {
+      data = JSON.parse(raw);
+    } catch {
+      throw new Error('Respons server tidak valid.');
+    }
+
+    if (!res.ok || !data.success) {
+      throw new Error(data.message || 'Gagal memproses link.');
+    }
+
+    const formats = Array.isArray(data.formats)
+      ? data.formats.filter(f =>
+          f && typeof f.downloadUrl === 'string' &&
+          /^https?:\/\//i.test(f.downloadUrl)
+        )
+      : [];
+
+    if (!formats.length && !data.downloadUrl) {
+      throw new Error('Link download tidak ditemukan.');
     }
 
     if (data.thumbnail) {
       thumb.src = data.thumbnail;
       thumb.style.display = 'block';
     } else {
+      thumb.removeAttribute('src');
       thumb.style.display = 'none';
     }
+
     titleEl.textContent = data.title || 'Media siap diunduh';
-    metaEl.textContent = data.meta || '';
-    linkEl.href = data.downloadUrl;
+    metaEl.textContent = data.meta || 'OMDown';
+
+    const items = formats.length
+      ? formats
+      : [{ downloadUrl: data.downloadUrl, quality: 'Download' }];
+
+    items.forEach((f, i) => {
+      const row = document.createElement('div');
+      row.className = 'dl-format';
+
+      const info = document.createElement('div');
+      const name = document.createElement('strong');
+      const detail = document.createElement('small');
+
+      name.textContent =
+        f.quality || f.label || f.resolution ||
+        f.format || f.ext || `Format ${i + 1}`;
+
+      detail.textContent = [
+        f.ext,
+        f.mimeType || f.contentType,
+        f.size || ''
+      ].filter(Boolean).join(' • ') || 'Media';
+
+      info.append(name, document.createElement('br'), detail);
+
+      const a = document.createElement('a');
+      a.className = 'btn';
+      a.href = f.downloadUrl;
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      a.textContent = 'Unduh';
+
+      row.append(info, a);
+      formatsEl.appendChild(row);
+    });
+
+    linkEl.href = items[0].downloadUrl;
     result.classList.add('show');
+
   } catch (err) {
-    errorBox.textContent = err.message || 'Terjadi kesalahan. Pastikan link valid dan backend tersedia.';
+    errorBox.textContent = err.message || 'Terjadi kesalahan.';
     errorBox.classList.add('show');
   } finally {
     loading.classList.remove('show');
@@ -128,3 +190,4 @@ form.addEventListener('submit', async (e) => {
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
 </html>
+#dl-link{display:none!important}
