@@ -114,7 +114,7 @@ body.light-mode .value{color:#ffb700}
 <article class="card"><div class="emoji"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><line x1="4" y1="20" x2="4" y2="12"/><line x1="10" y1="20" x2="10" y2="8"/><line x1="16" y1="20" x2="16" y2="4"/><line x1="4" y1="20" x2="20" y2="20"/></svg></div><div class="label">Total Statistik</div><div class="value" id="total">--</div></article>
 <article class="card"><div class="emoji"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#2ecc71"><circle cx="12" cy="12" r="8"/></svg></div><div class="label">Status Panel</div><div class="value" style="font-size:1.1rem">Siap</div></article>
 <article class="card"><div class="emoji"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 16a9 9 0 0113-8"/><circle cx="18" cy="6" r="2"/><path d="M12 12l-5 7"/><path d="M9 15l3 3"/></svg></div><div class="label">Sumber Data</div><div class="value" style="font-size:1.1rem">API</div></article>
-<article class="card"><div class="emoji"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div><div class="label">Mode</div><div class="value" style="font-size:1.1rem">Website Aktif</div></article>
+<article class="card"><div class="emoji"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg></div><div class="label">Mode</div><div class="value" style="font-size:1.1rem">Public</div></article>
 </section>
 
 <section class="profile">
@@ -244,8 +244,8 @@ async function loadAmprem() {
     document.querySelector(".grid .card:first-child .label").textContent = "Total Statistik";
     cards[1].textContent = status.status === "online" ? "Online" : (status.status || "Unknown");
 
-    list.textContent = `Statistik hari ini: ${fmt(stats.today ?? 0)}. Data berasal dari API AMPREM, bukan daftar akun premium.`;
-    if (systemStatus) systemStatus.textContent = status.status === "online" ? "● API AMPREM Online" : "● Status API tidak diketahui";
+    list.textContent = `Statistik hari ini: ${fmt(stats.today ?? 0)}. Data berasal dari API Alight Motion, bukan daftar akun premium.`;
+    if (systemStatus) systemStatus.textContent = status.status === "online" ? "● API Alight Motion Online" : "● Status API tidak diketahui";
     if (note) note.textContent = `Terakhir diperiksa: ${new Date(status.timestamp || Date.now()).toLocaleString("id-ID")}. Statistik diperbarui otomatis setiap 60 detik.`;
   } catch (err) {
     if (total) total.textContent = "Offline";
