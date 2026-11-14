@@ -1,0 +1,21 @@
+[33mcommit 3fa7b61861c6ecbf78f6139a0d2ec8a51ed29827[m
+Author: Manz <atifurrahaman777@gmail.com>
+Date:   Fri Nov 13 19:11:46 2026 +0700
+
+    update index.html
+
+[1mdiff --git a/index.html b/index.html[m
+[1mindex 218bde7..89285e6 100644[m
+[1m--- a/index.html[m
+[1m+++ b/index.html[m
+[36m@@ -219,8 +219,8 @@[m [minput[placeholder*="foto" i]:focus{box-shadow:3px 3px 0 #ffd700}[m
+       <div class="project-media"><video src="mannzz-v56.mp4" autoplay muted loop playsinline></video></div>[m
+       <h3>Mann'zz v5.6</h3>[m
+       <p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium.</p>[m
+[31m-      <span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">WhatsApp</span>[m
+[31m-      <div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div>[m
+[32m+[m[32m      <span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">Channel</span>[m
+[32m+[m[32m      <div class="project-links"><a href="https://whatsapp.com/channel/0029VbDsbXE1noz0Tpjb5K1O" target="_blank" rel="noopener">WhatsApp</a></div>[m
+     </article>[m
+     <article class="project"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>[m
+     <article class="project"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div class="project-links"><a href="https://wa.me/6282339899845" target="_blank" rel="noopener">WhatsApp</a></div></article>[m
