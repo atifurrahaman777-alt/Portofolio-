@@ -29,8 +29,9 @@ a{color:inherit;text-decoration:none}
 @media(min-width:1400px){
   .container{width:min(1200px,88%)}
 }
-.btn{display:inline-block;padding:11px 17px;border:2px solid #000;border-radius:10px;font-weight:700;cursor:pointer;background:transparent;color:inherit;font:inherit}
+.btn{display:inline-block;padding:11px 17px;border:2px solid #000;border-radius:10px;font-weight:700;cursor:pointer;background:transparent;color:inherit;font:inherit;transition:transform .12s ease}
 .btn.primary{background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff;box-shadow:5px 5px 0 #ffd700}
+.btn:active{transform:scale(.95)}
 header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
 .topbar{display:flex;align-items:center;justify-content:space-between;height:64px}
 .logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.1rem}
@@ -85,7 +86,8 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .contact-block form{display:flex;flex-direction:column;gap:10px;margin-top:12px}
 .contact-block input,.contact-block textarea{padding:12px;border-radius:9px;border:2px solid #000;background:var(--card);color:var(--text);font:inherit}
 .contact-block textarea{min-height:100px}
-.contact-block button{border:2px solid #000;box-shadow:4px 4px 0 var(--shadow);border-radius:9px;padding:12px;font-weight:800;cursor:pointer;background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff}
+.contact-block button{border:2px solid #000;box-shadow:4px 4px 0 var(--shadow);border-radius:9px;padding:12px;font-weight:800;cursor:pointer;background:linear-gradient(110deg,#9333ea,#6527e8);color:#fff;transition:transform .12s ease}
+.contact-block button:active{transform:scale(.96)}
 #status{font-size:.82rem;color:var(--purple)}
 .tool-card{display:flex;gap:14px;align-items:center;border:2px solid #000;border-radius:14px;background:var(--card);box-shadow:5px 5px 0 var(--shadow);padding:16px;margin-bottom:12px}
 .tool-icon{font-size:1.8rem}

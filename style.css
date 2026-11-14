@@ -19,12 +19,20 @@ h1{font-size:clamp(2.2rem,6vw,3.4rem);line-height:1.08;margin:12px 0;letter-spac
 h1 .accent{color:var(--gold)}
 .sub{color:var(--muted);text-shadow:none}
 
-.card{background:var(--card);border:2px solid #000;border-radius:16px;padding:18px;box-shadow:5px 5px 0 var(--gold);transition:transform .12s ease,box-shadow .12s ease}
-.card:hover{transform:translate(2px,2px);box-shadow:3px 3px 0 var(--gold)}
+.card{background:var(--card);border:2px solid #000;border-radius:16px;padding:18px;box-shadow:5px 5px 0 var(--gold);transition:transform .18s ease,box-shadow .18s ease}
+.card:hover{transform:translateY(-6px);box-shadow:7px 11px 0 var(--gold)}
 
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;padding:12px 20px;border:2px solid #000;border-radius:10px;color:#1a1200;background:var(--gold);font:inherit;font-weight:800;cursor:pointer;box-shadow:4px 4px 0 var(--purple);transition:transform .12s ease,box-shadow .12s ease}
 .btn:hover{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--purple)}
+.btn:active{transform:scale(.95);box-shadow:1px 1px 0 var(--purple)}
 .btn:disabled{opacity:.6;cursor:default}
+
+/* Spinner loading */
+.spinner{width:22px;height:22px;border:3px solid rgba(255,255,255,.25);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite;display:inline-block}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn.is-loading{pointer-events:none;opacity:.75;position:relative}
+.btn.is-loading .btn-label{visibility:hidden}
+.btn.is-loading .spinner{position:absolute;left:50%;top:50%;margin:-11px 0 0 -11px}
 
 .input-field{box-sizing:border-box;width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;text-shadow:none;font:inherit;outline:none}
 .input-field::placeholder{color:#716d8a}
