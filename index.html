@@ -10,7 +10,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="favicon.png">
 <style>
-:root{--purple:#4f46e5;--accent:#4f46e5}
+:root{--purple:#2563eb;--accent:#2563eb}
 body{--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5)}
 body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12)}
 *{box-sizing:border-box}
@@ -79,7 +79,7 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .project-media video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
 .project h3{margin:0 0 6px}
 .project p{font-size:.85rem;color:var(--muted);margin:0 0 10px}
-.tag{display:inline-block;background:#702cff22;border:1px solid #6639a0;color:#d8b4fe;border-radius:20px;padding:2px 9px;font-size:.72rem;margin:2px 4px 2px 0}
+.tag{display:inline-block;background:#2563eb22;border:1px solid #2563eb;color:#ffffff;border-radius:20px;padding:2px 9px;font-size:.72rem;margin:2px 4px 2px 0}
 .project-links a{font-size:.78rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);display:inline-block;margin-top:6px}
 .skills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
 .skill{border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 4px 18px var(--shadow);text-align:center;padding:14px 4px;font-size:.78rem;font-weight:700}
@@ -100,7 +100,7 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .nav-btn span .icon{width:22px;height:22px;transition:width .3s ease,height .3s ease}
 .nav-btn.active{color:var(--text);font-weight:700}
 .nav-btn.home{margin-top:-30px;color:var(--text)}
-.nav-btn.home span{width:52px;height:52px;background:var(--accent);color:#fff;box-shadow:0 6px 16px #6527e866;border:3px solid var(--bg)}
+.nav-btn.home span{width:52px;height:52px;background:var(--accent);color:#fff;box-shadow:0 6px 16px #1d4ed866;border:3px solid var(--bg)}
 .nav-btn.home span .icon{width:24px;height:24px;stroke:#fff}
 #menu-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
 #menu-toggle .icon{width:18px;height:18px}
@@ -187,7 +187,7 @@ input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
 <span class="logo">Multifungsi</span>
 <button id="sidebar-close" type="button" aria-label="Tutup menu"><svg viewBox="0 0 24 24" class="icon"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
 </div>
-<button class="nav-btn" id="auth-toggle" style="flex-direction:row;justify-content:flex-start;gap:12px;width:100%;padding:12px 14px;border-radius:10px;font-size:.92rem;font-weight:600;color:var(--muted);margin-top:0"><span style="background:transparent;border:none;box-shadow:none;width:22px;height:22px"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span>Login / Akun</button>
+<button class="nav-btn" id="auth-toggle" style="flex:0 0 auto!important;flex-direction:row;justify-content:flex-start;gap:12px;width:100%;padding:12px 14px;border-radius:10px;font-size:.92rem;font-weight:600;color:var(--muted);margin-top:0"><span style="background:transparent;border:none;box-shadow:none;width:22px;height:22px"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span>Login / Akun</button>
 <div style="height:1px;background:var(--line);margin:4px 0 8px"></div>
 <nav class="sidebar-nav">
 <button class="nav-btn home active" data-tab="tab-beranda"><span><svg viewBox="0 0 24 24" class="icon"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></span>Beranda</button>
