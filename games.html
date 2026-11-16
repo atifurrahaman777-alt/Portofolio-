@@ -73,7 +73,31 @@ body.light-mode .ocean-tab{background:#fff;color:#111}
 body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
 [hidden]{display:none!important}
 </style>
-<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"></head>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"><style id="mz-theme">
+html body:not(.light-mode){--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
+html body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
+html body:is(.light-mode,:not(.light-mode)){background:var(--bg)!important;color:var(--text)!important}
+html body:is(.light-mode,:not(.light-mode))::before,html body:is(.light-mode,:not(.light-mode))::after{background:none!important}
+html body:is(.light-mode,:not(.light-mode)) .card,html body:is(.light-mode,:not(.light-mode)) .game-box,html body:is(.light-mode,:not(.light-mode)) .ocean-tab{background:var(--card)!important;border:1px solid var(--line)!important;box-shadow:0 4px 18px var(--shadow)!important;border-radius:14px!important}
+html body:is(.light-mode,:not(.light-mode)) .ocean-tab{color:var(--muted)!important;border-radius:999px!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .ocean-tab.active{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}
+html body:is(.light-mode,:not(.light-mode)) .ttt-cell,html body:is(.light-mode,:not(.light-mode)) .wam-hole,html body:is(.light-mode,:not(.light-mode)) .typing-text{background:var(--bg)!important;border:1px solid var(--line)!important;box-shadow:none!important;border-radius:12px!important}
+html body:is(.light-mode,:not(.light-mode)) .rt-area{border:1px solid var(--line)!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .ttt-cell,html body:is(.light-mode,:not(.light-mode)) .ttt-cell:disabled{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+html body:is(.light-mode,:not(.light-mode)) .wam-hole.up{background:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button{background:var(--card)!important;color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:none!important;border-radius:10px!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button.active{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;outline:none!important}
+html body:is(.light-mode,:not(.light-mode)) .btn{background:var(--accent)!important;color:#fff!important;border:1px solid var(--line)!important;box-shadow:0 4px 18px var(--shadow)!important;text-shadow:none!important;border-radius:10px!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button:not(.active){background:var(--card)!important;color:var(--text)!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) #typing-input,html body:is(.light-mode,:not(.light-mode)) #wheel-options,html body:is(.light-mode,:not(.light-mode)) textarea,html body:is(.light-mode,:not(.light-mode)) input{background:var(--bg)!important;color:var(--text)!important;border:1px solid var(--line)!important;border-radius:9px!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .typing-stats b{color:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) .wheel-pointer{border-top-color:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) h1,html body:is(.light-mode,:not(.light-mode)) h2,html body:is(.light-mode,:not(.light-mode)) h3,html body:is(.light-mode,:not(.light-mode)) .brand,html body:is(.light-mode,:not(.light-mode)) #wheel-result,html body:is(.light-mode,:not(.light-mode)) .ttt-status,html body:is(.light-mode,:not(.light-mode)) .wam-top{color:var(--text)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .accent,html body:is(.light-mode,:not(.light-mode)) .eyebrow{color:var(--accent)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .sub,html body:is(.light-mode,:not(.light-mode)) .rt-stats,html body:is(.light-mode,:not(.light-mode)) footer{color:var(--muted)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) #theme-toggle{background:var(--card)!important;border:1px solid var(--line)!important;color:var(--text)!important;border-radius:8px!important;box-shadow:none!important}
+</style>
+</head>
 <body>
 <main class="wrap">
 
@@ -628,5 +652,20 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   });
 })();
 </script>
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script>
+(function(){
+  function sync(){
+    try{
+      var pb = window.parent !== window ? window.parent.document.body : null;
+      if(pb) document.body.classList.toggle('light-mode', pb.classList.contains('light-mode'));
+    }catch(e){}
+  }
+  sync();
+  window.addEventListener('load', sync);
+  try{
+    new MutationObserver(sync).observe(window.parent.document.body, {attributes:true, attributeFilter:['class']});
+  }catch(e){}
+})();
+</script>
+</body>
 </html>
