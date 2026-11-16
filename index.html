@@ -193,6 +193,15 @@ html body .auth-prov svg{width:20px;height:20px;flex-shrink:0}
 html body .auth-prov:active{transform:scale(.97)}
 html body .auth-prov:disabled{opacity:.6}
 </style>
+<style id="mz-side">
+html body .sidebar{top:0!important;bottom:auto!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;overscroll-behavior:contain}
+html body .sidebar-head{margin-bottom:10px!important;flex-shrink:0}
+html body .sidebar-nav{flex:0 1 auto!important;min-height:0;overflow-y:auto;overscroll-behavior:contain;gap:2px!important}
+html body .sidebar-nav .nav-btn{flex:0 0 auto!important;padding:10px 12px!important;font-size:.9rem!important;margin-top:0!important}
+html body .sidebar-nav .nav-btn span{width:22px!important;height:22px!important}
+html body .sidebar-foot{margin-top:auto!important;flex-shrink:0}
+html.mz-lock,html.mz-lock body{overflow:hidden!important}
+</style>
 </head>
 <body class="light-mode">
 
@@ -861,6 +870,19 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       if (created) location.reload();
     }
   });
+})();
+</script>
+<script id="mz-side-js">
+(function(){
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sidebarOverlay');
+  if (!sb) return;
+  function sync(){
+    document.documentElement.classList.toggle('mz-lock', sb.classList.contains('active'));
+  }
+  new MutationObserver(sync).observe(sb, {attributes:true, attributeFilter:['class']});
+  if (ov) ov.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+  sync();
 })();
 </script>
 </body>
