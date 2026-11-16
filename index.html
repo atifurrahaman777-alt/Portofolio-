@@ -200,6 +200,7 @@ input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
 </aside>
 
 <div class="owner-panel" id="authPanel" style="display:none">
+<div style="display:flex;justify-content:flex-end"><button id="authPanel-close" type="button" aria-label="Tutup" style="background:none;border:none;cursor:pointer;color:var(--text);padding:4px"><svg viewBox="0 0 24 24" style="width:20px;height:20px" class="icon"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
 <div class="auth-tabs">
 <button type="button" class="auth-tab active" data-auth-tab="login">Masuk</button>
 <button type="button" class="auth-tab" data-auth-tab="register">Daftar</button>
@@ -375,6 +376,13 @@ const db = firebase.firestore();
 <script>
 const authToggle=document.getElementById('auth-toggle');
 const authPanel=document.getElementById('authPanel');
+const authPanelClose=document.getElementById('authPanel-close');
+if(authPanelClose) authPanelClose.addEventListener('click',()=>{authPanel.style.display='none';});
+document.addEventListener('click',(e)=>{
+if(authPanel.style.display!=='none' && !authPanel.contains(e.target) && !authToggle.contains(e.target)){
+authPanel.style.display='none';
+}
+});
 const authTabs=document.querySelectorAll('.auth-tab');
 const authLoginForm=document.getElementById('authLoginForm');
 const authRegisterForm=document.getElementById('authRegisterForm');
@@ -407,6 +415,7 @@ clearAuthError();
 });
 
 authToggle.addEventListener('click',()=>{
+if(typeof closeSidebar==='function') closeSidebar();
 authPanel.style.display = authPanel.style.display==='none' ? 'flex' : 'none';
 });
 
