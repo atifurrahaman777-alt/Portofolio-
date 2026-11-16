@@ -121,7 +121,7 @@ header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px s
 .title{position:relative;padding-left:14px}
 .title::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:3px;background:var(--accent)}
 body::before{content:'';position:fixed;top:0;left:0;right:0;height:380px;background:radial-gradient(circle at 20% 0%,rgba(79,70,229,.14),transparent 60%);pointer-events:none;z-index:0}
-.container{position:relative;z-index:1}
+.container{position:relative}
 footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px}
 
 .icon{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
@@ -312,9 +312,7 @@ input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
 <section class="tab" id="tab-sosial">
   <h2 class="title">Chat Global</h2>
   <section id="gchat">
-<a href="chat.html" style="display:flex;align-items:center;gap:14px;padding:18px;border:1px solid var(--line);border-radius:16px;background:#182226;color:#e6efed;text-decoration:none;box-shadow:0 4px 18px var(--shadow);height:48px;border-radius:50%;background:#35c9a1;color:#04251c;display:flex;align-items:center;justify-content:center;font-size:1.4rem">💬</span>
-<span><b style="display:block;font-size:1.05rem">Buka Chat Global</b><small style="opacity:.75">Ngobrol, story, dan catatan bareng</small></span>
-</a>
+<a class="tool-card" href="chat.html"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12a8 8 0 10-3.3 6.4L21 20l-1.2-3.4A8 8 0 0021 12z"/></svg></span><div><h3>Buka Chat Global</h3><p>Ngobrol, story, dan catatan bareng.</p></div></a>
 </section>
 </section><section class="tab" id="tab-game">
   <h2 class="title">Game</h2>
