@@ -237,6 +237,12 @@ html body header{transition:box-shadow .3s ease}
 html body.mz-scrolled header{box-shadow:0 6px 18px var(--shadow)}
 @media(prefers-reduced-motion:reduce){html body .mz-rv{opacity:1!important;transform:none!important;transition:none!important}html body .tab.active,html body [class*="bd-o-"]{animation:none!important}}
 </style>
+<style id="mz-sidelinks">
+html body .mz-sidelinks{display:flex;gap:10px;margin-bottom:10px}
+html body .mz-sl{flex:1 1 0;min-width:0;display:flex;align-items:center;justify-content:center;gap:8px;padding:11px 8px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-weight:700;font-size:.85rem;text-decoration:none;cursor:pointer}
+html body .mz-sl svg{width:18px;height:18px;flex-shrink:0}
+html body .mz-sl:active{transform:scale(.96)}
+</style>
 </head>
 <body class="light-mode">
 
@@ -265,7 +271,7 @@ html body.mz-scrolled header{box-shadow:0 6px 18px var(--shadow)}
 <button class="nav-btn" data-tab="tab-game"><span><svg viewBox="0 0 24 24" class="icon"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="14" r="1"/></svg></span>Game</button>
 <button class="nav-btn" data-tab="tab-alat"><span><svg viewBox="0 0 24 24" class="icon"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2-2z"/></svg></span>Alat</button>
 </nav>
-<div class="sidebar-foot"><button id="auth-toggle" type="button" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 14px;border-radius:10px;background:var(--accent);color:var(--on);border:1px solid var(--line);font:inherit;font-weight:800;font-size:.95rem;cursor:pointer"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span id="authToggleLabel">Masuk</span></button></div>
+<div class="sidebar-foot"><div class="mz-sidelinks"><a class="mz-sl" href="https://whatsapp.com/channel/0029VbDsbXE1noz0Tpjb5K1O" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" class="icon"><path d="M3 11v2a1 1 0 001 1h2l5 4V6L6 10H4a1 1 0 00-1 1z"/><path d="M15.5 8.5a5 5 0 010 7"/><path d="M18.5 6a9 9 0 010 12"/></svg><span>Saluran</span></a><a class="mz-sl" href="https://wa.me/6282339899845" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span>Owner</span></a></div><button id="auth-toggle" type="button" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 14px;border-radius:10px;background:var(--accent);color:var(--on);border:1px solid var(--line);font:inherit;font-weight:800;font-size:.95rem;cursor:pointer"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span id="authToggleLabel">Masuk</span></button></div>
 </aside>
 
 <div class="owner-panel" id="authPanel" style="display:none">

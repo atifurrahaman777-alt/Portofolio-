@@ -1,0 +1,1050 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Mann'zz — Portfolio & Tools">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/devicon@2.16.0/devicon.min.css">
+<title>Mann'zz</title>
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="favicon.png">
+<style>
+:root{--purple:#2563eb;--accent:#2563eb}
+body{--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5)}
+body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12)}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;min-height:100vh;background:var(--bg);color:var(--text);font:16px/1.6 system-ui,-apple-system,sans-serif;transition:background .2s,color .2s}
+a{color:inherit;text-decoration:none}
+.container{width:min(480px,100%);margin:0 auto;padding:0 16px}
+@media(min-width:768px){
+  .container{width:min(820px,92%)}
+}
+@media(min-width:1100px){
+  .container{width:min(1080px,90%)}
+  .projects{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:18px}
+  .bottom-nav{max-width:520px}
+}
+@media(min-width:1400px){
+  .container{width:min(1200px,88%)}
+}
+.btn{display:inline-block;padding:11px 17px;border:1px solid var(--line);border-radius:10px;font-weight:700;cursor:pointer;background:transparent;color:inherit;font:inherit;transition:transform .12s ease}
+.btn.primary{background:var(--accent);color:#fff;box-shadow:0 4px 18px var(--shadow)}
+.btn:active{transform:scale(.95)}
+header{position:sticky;top:0;z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+.topbar{display:flex;align-items:center;justify-content:space-between;height:64px}
+.logo{display:flex;align-items:center;gap:8px;font-weight:900;font-size:1.1rem}
+.verified-badge{display:inline-flex;align-items:center;justify-content:center;color:#25d366;vertical-align:middle}
+.verified-badge .badge-icon{width:18px;height:18px}
+.verified-badge.owner-role{color:#1d9bf0}
+.topbar-actions{display:flex;align-items:center;gap:8px}
+.owner-badge{font-size:.65rem;font-weight:800;padding:4px 10px;border-radius:20px;border:1px solid var(--line);background:var(--card)}
+.owner-badge.owner-role{background:linear-gradient(110deg,#8a6500 20%,#ffd700 40%,#fff8dc 50%,#ffd700 60%,#8a6500 80%);color:#2a1e00}
+#theme-toggle,#auth-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
+.owner-panel{max-width:480px;margin:0 auto;padding:14px 16px;background:var(--card);border-bottom:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
+.pass-wrap{position:relative}
+.pass-wrap input{width:100%;padding:12px;padding-right:42px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+.pass-eye{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:transparent;border:none;font-size:1.1rem;cursor:pointer;color:var(--text)}
+.gate-error{color:#e23}
+.app{padding:18px 16px 24px}
+.tab{display:none}
+.tab.active{display:block}
+.profile-card{border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:0 4px 18px var(--shadow);padding:18px;margin-bottom:16px}
+.profile-top{display:flex;gap:12px;align-items:center}
+.avatar{width:54px;height:54px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.1rem;flex-shrink:0;overflow:hidden}
+.avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-name{font-weight:900;font-size:1.1rem}
+.profile-bio{color:var(--muted);font-size:.85rem;margin-top:2px}
+.verified-badge2{display:inline-flex;align-items:center;justify-content:center;color:#25d366;vertical-align:middle;margin-left:3px}
+.verified-badge2 .badge-icon{width:16px;height:16px}
+.verified-badge2.owner-role{color:#1d9bf0}
+.stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:16px}
+.stat{text-align:center;border:1px solid var(--line);border-radius:10px;padding:10px 4px;background:var(--bg)}
+.stat b{display:block;font-size:1.3rem}
+.stat span{font-size:.68rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em}
+.banner{display:flex;align-items:center;justify-content:space-between;background:var(--card);border-left:4px solid var(--accent);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:16px;box-shadow:0 4px 18px var(--shadow)}
+.banner-tag{background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;padding:3px 9px;border-radius:12px}
+.banner-title{color:var(--text);font-weight:900;font-size:1.05rem;margin-top:6px}
+.banner-sub{color:var(--muted);font-size:.78rem}
+.banner-icon{font-size:1.8rem}
+.about-block .title{font-size:1.2rem;margin:0 0 10px}
+.muted{color:var(--muted)}
+.quote{margin-top:14px;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--card)}
+.quote p{font-weight:800;font-style:italic;margin:0 0 4px;color:var(--purple)}
+.title{font-size:1.3rem;margin:0 0 16px}
+.projects{display:flex;flex-direction:column;gap:14px}
+.project{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 4px 18px var(--shadow);padding:16px}
+.project-media{border-radius:10px;overflow:hidden;margin-bottom:12px;border:1px solid var(--line)}
+.project-media video{width:100%;display:block;aspect-ratio:16/9;object-fit:cover}
+.project h3{margin:0 0 6px}
+.project p{font-size:.85rem;color:var(--muted);margin:0 0 10px}
+.tag{display:inline-block;background:#2563eb22;border:1px solid #2563eb;color:#ffffff;border-radius:20px;padding:2px 9px;font-size:.72rem;margin:2px 4px 2px 0}
+.project-links a{font-size:.78rem;font-weight:700;padding:6px 12px;border-radius:8px;border:1px solid var(--line);display:inline-block;margin-top:6px}
+.skills{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:24px}
+.skill{border:1px solid var(--line);border-radius:12px;background:var(--card);box-shadow:0 4px 18px var(--shadow);text-align:center;padding:14px 4px;font-size:.78rem;font-weight:700}
+.skill i{display:block;font-size:1.5rem;margin-bottom:5px}
+.contact-block form{display:flex;flex-direction:column;gap:10px;margin-top:12px}
+.contact-block input,.contact-block textarea{padding:12px;border-radius:9px;border:1px solid var(--line);background:var(--card);color:var(--text);font:inherit}
+.contact-block textarea{min-height:100px}
+.contact-block button{border:1px solid var(--line);box-shadow:0 4px 18px var(--shadow);border-radius:9px;padding:12px;font-weight:800;cursor:pointer;background:var(--accent);color:#fff;transition:transform .12s ease}
+.contact-block button:active{transform:scale(.96)}
+#status{font-size:.82rem;color:var(--purple)}
+.tool-card{display:flex;gap:14px;align-items:center;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 4px 18px var(--shadow);padding:16px;margin-bottom:12px}
+.tool-icon{font-size:1.8rem}
+.tool-card h3{margin:0 0 4px}
+.tool-card p{margin:0;font-size:.82rem;color:var(--muted)}
+.bottom-nav{position:fixed;left:16px;right:16px;bottom:16px;z-index:20;display:flex;align-items:flex-end;justify-content:space-around;background:var(--card);border:1px solid var(--line);border-radius:30px;padding:10px 6px;box-shadow:0 8px 24px rgba(0,0,0,.4);max-width:448px;margin:0 auto}
+.nav-btn{background:none;border:none;color:var(--muted);font:inherit;font-size:.62rem;display:flex;flex-direction:column;align-items:center;gap:4px;cursor:pointer;flex:1;padding:4px;transition:margin-top .3s cubic-bezier(.34,1.56,.64,1),color .25s ease}
+.nav-btn span{width:34px;height:34px;display:flex;align-items:center;justify-content:center;border-radius:50%;background:transparent;box-shadow:none;border:3px solid transparent;transition:all .3s cubic-bezier(.34,1.56,.64,1)}
+.nav-btn span .icon{width:22px;height:22px;transition:width .3s ease,height .3s ease}
+.nav-btn.active{color:var(--text);font-weight:700}
+.nav-btn.home{margin-top:-30px;color:var(--text)}
+.nav-btn.home span{width:52px;height:52px;background:var(--accent);color:#fff;box-shadow:0 6px 16px #1d4ed866;border:3px solid var(--bg)}
+.nav-btn.home span .icon{width:24px;height:24px;stroke:#fff}
+#menu-toggle{background:var(--card);border:1px solid var(--line);color:var(--text);border-radius:8px;padding:8px 10px;cursor:pointer;font-size:1rem}
+#menu-toggle .icon{width:18px;height:18px}
+.sidebar-overlay{position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:69;opacity:0;pointer-events:none;transition:opacity .25s ease}
+.sidebar-overlay.active{opacity:1;pointer-events:auto}
+.sidebar{position:fixed;top:0;left:0;bottom:0;width:260px;max-width:82vw;background:var(--card);border-right:1px solid var(--line);z-index:70;transform:translateX(-100%);transition:transform .3s ease;display:flex;flex-direction:column;padding:16px;overflow-y:auto}
+.sidebar.active{transform:translateX(0)}
+.sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:18px;font-weight:900}
+#sidebar-close{background:none;border:none;color:var(--text);cursor:pointer}
+#sidebar-close .icon{width:20px;height:20px}
+.sidebar-nav{display:flex;flex-direction:column;gap:4px}
+.sidebar-nav .nav-btn{flex-direction:row;justify-content:flex-start;align-items:center;gap:12px;width:100%;padding:12px 14px;border-radius:10px;font-size:.92rem;font-weight:600;color:var(--muted);margin-top:0!important}
+.sidebar-nav .nav-btn span{width:22px;height:22px;background:transparent!important;border:none!important;box-shadow:none!important}
+.sidebar-nav .nav-btn.active{background:var(--line);color:var(--text)}
+.sidebar-nav .nav-btn .icon{stroke:currentColor}
+.skill-badge{display:flex;align-items:center;justify-content:center;width:32px;height:32px;border-radius:50%;color:#fff;font-weight:800;font-size:.68rem;margin:0 auto 6px}
+.skill{display:flex;flex-direction:column;align-items:center;justify-content:center}
+.title{position:relative;padding-left:14px}
+.title::before{content:'';position:absolute;left:0;top:3px;bottom:3px;width:4px;border-radius:3px;background:var(--accent)}
+body::before{content:'';position:fixed;top:0;left:0;right:0;height:380px;background:radial-gradient(circle at 20% 0%,rgba(79,70,229,.14),transparent 60%);pointer-events:none;z-index:0}
+.container{position:relative}
+footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px}
+
+.icon{stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;display:block}
+.nav-btn .icon{width:22px;height:22px}
+.nav-btn.home .icon{width:24px;height:24px}
+.tool-icon{color:var(--purple);display:flex}
+.tool-icon .icon{width:26px;height:26px}
+.banner-icon{color:var(--accent)}
+.banner-icon .icon{width:30px;height:30px}
+#theme-toggle .icon,#auth-toggle .icon{width:18px;height:18px}
+.pass-eye .icon{width:18px;height:18px}
+
+.icon-inline{display:inline-flex;vertical-align:-3px;margin-right:5px}
+.icon-inline .icon{width:16px;height:16px}
+.owner-badge .icon{width:12px;height:12px;display:inline-block;vertical-align:-1px;margin-right:3px}
+.verified-badge .icon,.verified-badge2 .icon{width:65%;height:65%;stroke:#fff;stroke-width:3}
+
+.game-frame{width:100%;min-height:72vh;border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:0 4px 18px var(--shadow)}
+.tool-overlay{position:fixed;inset:0;z-index:60;background:var(--bg);display:none;flex-direction:column;overscroll-behavior:contain}
+.tool-overlay.active{display:flex}
+.tool-overlay-bar{padding:12px 16px;border-bottom:1px solid var(--line);background:var(--card)}
+.tool-overlay-bar button{background:none;border:none;color:var(--text);font:inherit;font-weight:700;font-size:.9rem;display:flex;align-items:center;gap:6px;cursor:pointer}
+.tool-overlay-bar button .icon{width:18px;height:18px}
+#toolFrame{flex:1;border:none;width:100%;overscroll-behavior:contain}
+.tool-card{cursor:pointer}
+
+.wa-fab{position:fixed;right:16px;bottom:24px;z-index:25;width:52px;height:52px;border-radius:50%;background:#25d366;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 16px rgba(0,0,0,.45);border:3px solid var(--bg);animation:wa-bounce 2.6s ease-in-out infinite}
+.wa-fab:active{transform:scale(.88)}
+.wa-fab::before{content:'';position:absolute;inset:0;border-radius:50%;background:#25d366;z-index:-1;animation:wa-ping 2.6s cubic-bezier(0,0,.2,1) infinite}
+@keyframes wa-ping{0%{transform:scale(1);opacity:.55}100%{transform:scale(1.9);opacity:0}}
+@keyframes wa-bounce{0%,100%{transform:translateY(0)}50%{transform:translateY(-7px)}}
+.auth-tabs{display:flex;gap:8px}
+.auth-tab{flex:1;padding:8px;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--muted);font:inherit;font-weight:700;cursor:pointer}
+.auth-tab.active{color:var(--text);border-color:var(--purple)}
+.auth-form{display:flex;flex-direction:column;gap:10px}
+.owner-panel input[type="text"],.owner-panel input[type="email"]{width:100%;padding:12px;border-radius:9px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit}
+.badge-avatar{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:var(--accent);color:#fff;font-size:.65rem;font-weight:800;overflow:hidden;vertical-align:-5px;margin-right:6px}
+.badge-avatar img{width:100%;height:100%;object-fit:cover;display:block}
+.avatar-preview-large{width:64px;height:64px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:1.4rem;font-weight:800;overflow:hidden;margin:0 auto 10px}
+.avatar-preview-large img{width:100%;height:100%;object-fit:cover;display:block}
+.profile-editor{display:flex;flex-direction:column;gap:10px;padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:10px}
+</style>
+<style>
+input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
+input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
+</style><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"><style id="mz-bw">
+html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
+html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
+html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
+html body .bottom-nav .nav-btn.home span .icon{stroke:var(--on)!important}
+html body .bottom-nav .nav-btn.home span{box-shadow:0 6px 16px rgba(0,0,0,.35)!important}
+html body .tag{background:rgba(128,128,128,.14)!important;border-color:var(--line)!important;color:var(--text)!important}
+html body::before{background:radial-gradient(circle at 20% 0%,rgba(128,128,128,.12),transparent 60%)!important}
+</style>
+<style id="mz-badge">
+html body .owner-badge{display:inline-flex!important;align-items:center!important;gap:8px!important;padding:4px 14px 4px 4px!important;font-size:.78rem!important;font-weight:700!important;line-height:1!important;white-space:nowrap!important;border-radius:999px!important}
+html body .owner-badge .badge-avatar{width:28px!important;height:28px!important;margin:0!important;vertical-align:baseline!important;font-size:.8rem!important;flex-shrink:0!important}
+html body #badgeText{display:inline-flex!important;align-items:center!important;gap:4px!important;line-height:1!important}
+html body .owner-badge .badge-avatar svg,html body #upAvatar svg{width:58%;height:58%;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
+<style id="mz-login">
+html body .auth-tabs,html body #authLoginForm,html body #authRegisterForm{display:none!important}
+html body .sidebar{overflow:hidden!important}
+html body .sidebar-nav{flex:1 1 auto;min-height:0;overflow-y:auto}
+html body .sidebar-foot{flex-shrink:0;margin-top:12px;padding-top:12px;border-top:1px solid var(--line)}
+html body .sidebar-foot svg{width:20px;height:20px}
+html body .auth-prov{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-weight:700;cursor:pointer}
+html body .auth-prov svg{width:20px;height:20px;flex-shrink:0}
+html body .auth-prov:active{transform:scale(.97)}
+html body .auth-prov:disabled{opacity:.6}
+</style>
+<style id="mz-side">
+html body .sidebar{top:0!important;bottom:auto!important;height:100vh!important;height:100dvh!important;overflow:hidden!important;overscroll-behavior:contain}
+html body .sidebar-head{margin-bottom:10px!important;flex-shrink:0}
+html body .sidebar-nav{flex:0 1 auto!important;min-height:0;overflow-y:auto;overscroll-behavior:contain;gap:2px!important}
+html body .sidebar-nav .nav-btn{flex:0 0 auto!important;padding:10px 12px!important;font-size:.9rem!important;margin-top:0!important}
+html body .sidebar-nav .nav-btn span{width:22px!important;height:22px!important}
+html body .sidebar-foot{margin-top:auto!important;flex-shrink:0}
+html.mz-lock,html.mz-lock body{overflow:hidden!important}
+</style>
+<style id="mz-owner">
+html body .owner-badge.owner-role{background:var(--card)!important;background-image:none!important;color:var(--text)!important;border:1px solid var(--line)!important;animation:none!important;text-shadow:none!important;box-shadow:none!important}
+html body .owner-badge.owner-role *{animation:none!important;text-shadow:none!important}
+</style>
+<style id="mz-border">
+@property --ang{syntax:'<angle>';inherits:false;initial-value:0deg}
+html body #badgeAvatar{--r:1.5px;--r2:2px}
+html body [class*="bd-s-"]{box-shadow:0 0 0 var(--r,3px) var(--bg),0 0 0 calc(var(--r,3px)*2) var(--bc,var(--text))}
+html body .bd-s-mono{--bc:var(--text)}
+html body .bd-s-biru{--bc:#2563eb}
+html body .bd-s-hijau{--bc:#22c55e}
+html body .bd-s-pink{--bc:#ec4899}
+html body .bd-s-ungu{--bc:#8b5cf6}
+html body .bd-s-oranye{--bc:#f97316}
+html body .bd-s-ganda{box-shadow:0 0 0 var(--r,3px) var(--bg),0 0 0 calc(var(--r,3px)*2) var(--text),0 0 0 calc(var(--r,3px)*3) var(--bg),0 0 0 calc(var(--r,3px)*4) var(--text)}
+html body .bd-s-putus{box-shadow:none;outline:var(--r,3px) dashed var(--text);outline-offset:calc(var(--r,3px)*1.2)}
+html body .bd-o-emas,html body .bd-o-pelangi{border:var(--r2,3px) solid transparent!important;animation:mzSpin 3s linear infinite}
+html body .bd-o-emas{background:linear-gradient(var(--accent),var(--accent)) padding-box,conic-gradient(from var(--ang),#8a6500,#ffd700,#fff8dc,#ffd700,#8a6500) border-box!important}
+html body .bd-o-pelangi{background:linear-gradient(var(--accent),var(--accent)) padding-box,conic-gradient(from var(--ang),#ef4444,#f59e0b,#22c55e,#06b6d4,#8b5cf6,#ec4899,#ef4444) border-box!important}
+html body .bd-o-neon{box-shadow:0 0 0 var(--r,3px) var(--bg),0 0 0 calc(var(--r,3px)*2) #22d3ee,0 0 14px 4px rgba(34,211,238,.6);animation:mzPulse 1.6s ease-in-out infinite alternate}
+@keyframes mzSpin{to{--ang:360deg}}
+@keyframes mzPulse{to{box-shadow:0 0 0 var(--r,3px) var(--bg),0 0 0 calc(var(--r,3px)*2) #ec4899,0 0 16px 5px rgba(236,72,153,.6)}}
+html body .bd-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+html body .bd-opt{background:none;border:none;color:var(--text);font:inherit;font-size:.68rem;cursor:pointer;padding:8px 2px;text-align:center;border-radius:10px}
+html body .bd-opt.sel{background:var(--card);outline:1px solid var(--accent)}
+html body .bd-opt.lock{opacity:.45}
+html body .bd-dot{width:38px;height:38px;border-radius:50%;background:var(--accent);color:var(--on);display:flex;align-items:center;justify-content:center;font-weight:800;margin:0 auto 8px;--r:2px;--r2:3px}
+html body .mz-rv{opacity:0;transform:translateY(26px) scale(.98);transition:opacity .6s ease,transform .6s cubic-bezier(.2,.7,.2,1)}
+html body .mz-rv.mz-in{opacity:1;transform:none}
+html body .tab.active{animation:mzTab .4s ease}
+@keyframes mzTab{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+html body header{transition:box-shadow .3s ease}
+html body.mz-scrolled header{box-shadow:0 6px 18px var(--shadow)}
+@media(prefers-reduced-motion:reduce){html body .mz-rv{opacity:1!important;transform:none!important;transition:none!important}html body .tab.active,html body [class*="bd-o-"]{animation:none!important}}
+</style>
+</head>
+<body class="light-mode">
+
+<header>
+<div class="container topbar">
+<a class="logo" href="#"><span>Multifungsi</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></a>
+<div class="topbar-actions">
+<span class="owner-badge" id="ownerBadge"><span class="badge-avatar" id="badgeAvatar">?</span><span id="badgeText">Tamu</span></span>
+<button id="theme-toggle" type="button" aria-label="Ganti tema"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+<button id="menu-toggle" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" class="icon"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+</div>
+</div>
+</header>
+
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
+<aside class="sidebar" id="sidebar">
+<div class="sidebar-head">
+<span class="logo">Multifungsi</span>
+<button id="sidebar-close" type="button" aria-label="Tutup menu"><svg viewBox="0 0 24 24" class="icon"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button>
+</div>
+<nav class="sidebar-nav">
+<button class="nav-btn home active" data-tab="tab-beranda"><span><svg viewBox="0 0 24 24" class="icon"><path d="M3 11l9-8 9 8"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></span>Beranda</button>
+<button class="nav-btn" data-tab="tab-profil"><span><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg></span>Profil</button>
+<button class="nav-btn" data-tab="tab-sosial"><span><svg viewBox="0 0 24 24" class="icon"><circle cx="9" cy="8" r="3"/><path d="M3 19c0-3.3 2.7-6 6-6s6 2.7 6 6"/><circle cx="17" cy="9" r="2.2"/><path d="M15.5 19c.2-2.3 1.7-4 4-4.6"/></svg></span>Sosial</button>
+<button class="nav-btn" data-tab="tab-feed"><span><svg viewBox="0 0 24 24" class="icon"><rect x="4" y="3" width="16" height="18" rx="2"/><line x1="8" y1="8" x2="16" y2="8"/><line x1="8" y1="12" x2="16" y2="12"/><line x1="8" y1="16" x2="12" y2="16"/></svg></span>Feed</button>
+<button class="nav-btn" data-tab="tab-game"><span><svg viewBox="0 0 24 24" class="icon"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="14" r="1"/></svg></span>Game</button>
+<button class="nav-btn" data-tab="tab-alat"><span><svg viewBox="0 0 24 24" class="icon"><path d="M14.7 6.3a4 4 0 00-5.4 5.4L3 18l3 3 6.3-6.3a4 4 0 005.4-5.4l-2.6 2.6-2-2z"/></svg></span>Alat</button>
+</nav>
+<div class="sidebar-foot"><button id="auth-toggle" type="button" style="width:100%;display:flex;align-items:center;justify-content:center;gap:10px;padding:13px 14px;border-radius:10px;background:var(--accent);color:var(--on);border:1px solid var(--line);font:inherit;font-weight:800;font-size:.95rem;cursor:pointer"><svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg><span id="authToggleLabel">Masuk</span></button></div>
+</aside>
+
+<div class="owner-panel" id="authPanel" style="display:none">
+<div style="display:flex;justify-content:flex-end"><button id="authPanel-close" type="button" aria-label="Tutup" style="background:none;border:none;cursor:pointer;color:var(--text);padding:4px"><svg viewBox="0 0 24 24" style="width:20px;height:20px" class="icon"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div>
+<div class="auth-tabs">
+<button type="button" class="auth-tab active" data-auth-tab="login">Masuk</button>
+<button type="button" class="auth-tab" data-auth-tab="register">Daftar</button>
+</div>
+<div class="auth-form" id="authLoginForm">
+<input type="email" id="loginEmail" placeholder="Email">
+<div class="pass-wrap">
+<input type="password" id="loginPass" placeholder="Password">
+<button type="button" class="pass-eye" data-eye-for="loginPass"><svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+</div>
+<button class="btn primary" id="loginSubmit" type="button">Masuk</button>
+</div>
+<div class="auth-form" id="authRegisterForm" style="display:none">
+<input type="text" id="regName" placeholder="Nama">
+<input type="email" id="regEmail" placeholder="Email">
+<div class="pass-wrap">
+<input type="password" id="regPass" placeholder="Password (min 6 karakter)">
+<button type="button" class="pass-eye" data-eye-for="regPass"><svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg></button>
+</div>
+<button class="btn primary" id="registerSubmit" type="button">Daftar</button>
+</div>
+<div id="authProviders" style="display:flex;flex-direction:column;gap:10px">
+<p class="muted" style="margin:0;font-size:.85rem;text-align:center">Pilih akun untuk masuk</p>
+<button type="button" class="auth-prov" data-provider="google"><svg viewBox="0 0 48 48"><path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"/><path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"/><path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"/><path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"/></svg>Lanjutkan dengan Google</button>
+<button type="button" class="auth-prov" data-provider="github"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12c0 5.08 3.29 9.39 7.86 10.91.58.1.79-.25.79-.56v-2c-3.2.7-3.87-1.37-3.87-1.37-.52-1.33-1.28-1.69-1.28-1.69-1.05-.72.08-.7.08-.7 1.16.08 1.77 1.19 1.77 1.19 1.03 1.76 2.7 1.25 3.36.96.1-.75.4-1.25.73-1.54-2.55-.29-5.24-1.28-5.24-5.69 0-1.26.45-2.29 1.19-3.1-.12-.29-.52-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 0 1 5.78 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.19 1.84 1.19 3.1 0 4.42-2.69 5.39-5.25 5.68.41.36.78 1.06.78 2.14v3.17c0 .31.21.67.8.56A11.5 11.5 0 0 0 23.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>Lanjutkan dengan GitHub</button>
+</div>
+<p class="gate-error" id="authError" style="display:none"></p>
+<div class="profile-editor" id="profileEditor" style="display:none">
+<div class="avatar-preview-large" id="profileAvatarPreview">?</div>
+<input type="text" id="profileNameInput" placeholder="Nama tampilan">
+<input type="text" id="profilePhotoInput" style="display:none">
+<input type="file" id="profilePhotoFile" accept="image/*" style="display:none">
+<button class="btn" id="profilePhotoBtn" type="button">Pilih Foto dari Galeri</button>
+<button class="btn" id="profilePhotoRemove" type="button">Hapus Foto</button>
+<p class="muted" id="profilePhotoHint" style="display:none;font-size:.8rem;margin:0"></p>
+<div id="bdPicker" style="display:flex;flex-direction:column;gap:8px">
+<p class="muted" style="margin:0;font-size:.85rem;font-weight:700">Bingkai Avatar</p>
+<div class="bd-grid" id="bdGrid"></div>
+<p class="muted" id="bdHint" style="margin:0;font-size:.78rem;display:none"></p>
+</div>
+<button class="btn primary" id="profileSaveBtn" type="button">Simpan Profil</button>
+<p class="muted" id="profileSavedMsg" style="display:none;font-size:.8rem">Tersimpan.</p>
+</div>
+<button class="btn" id="logoutBtn" type="button" style="display:none">Keluar</button>
+</div>
+
+<main class="app container">
+
+<section class="tab active" id="tab-beranda">
+  <div class="profile-card">
+    <div class="profile-top">
+      <img class="avatar" src="favicon.png" alt="favicon.png" style="width:70px; height:70px; border-radius:50%; object-fit:cover; background:white; padding:5px;">
+      <div>
+        <div class="profile-name">Mann'zz <span style="color:var(--black)">Dev</span><span class="verified-badge2"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></div>
+        <div class="profile-bio">Ngulik bot WhatsApp & website sendirian, belajar dari error satu-satu.</div>
+      </div>
+    </div>
+    <div class="stat-row">
+      <div class="stat"><b>3</b><span>Projects</span></div>
+      <div class="stat"><b>7</b><span>Skills</span></div>
+      <div class="stat"><b>5</b><span>Tools</span></div>
+    </div>
+  </div>
+
+  <a class="banner" href="https://chat.whatsapp.com/LHZP6RqfZeyIc5kp1qdKjn" target="_blank" rel="noopener">
+    <div>
+      <span class="banner-tag">KOMUNITAS</span>
+      <div class="banner-title">Komunitas NUSATECH.ID</div>
+      <div class="banner-sub">Bot · Tools · Komunitas</div>
+    </div>
+    <div class="banner-icon"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12a8 8 0 10-3.3 6.4L21 20l-1.2-3.4A8 8 0 0021 12z"/></svg></div>
+  </a>
+
+  <div class="about-block">
+    <h2 class="title">Tentang Saya</h2>
+    <p class="muted">Berawal dari belajar lewat praktik langsung, saya membangun bot WhatsApp Mann'zz v5.6 dari nol sampai punya ratusan command. Saya fokus menemukan masalah lalu memecahkannya satu per satu, dan percaya cara belajar paling cepat adalah sambil mengerjakan proyek nyata.</p>
+    <div class="quote"><p>"Small steps make big progress."</p><span class="muted">Keep learning, keep building.</span></div>
+  </div>
+
+  <h2 class="title">Projects</h2>
+  <div class="projects">
+    <article class="project">
+      <div></div>
+      <h3>Mann'zz v5.6</h3>
+      <p>Bot WhatsApp multi-fitur dengan sistem plugin modular, dibangun pakai Zapo-js. Punya ratusan command — downloader, fitur grup, sampai command premium.</p>
+      <span class="tag">Node.js</span><span class="tag">Zapo-js</span><span class="tag">Channel</span>
+      <div class="project-links"><a href="https://whatsapp.com/channel/0029VbDsbXE1noz0Tpjb5K1O" target="_blank" rel="noopener">Channel</a></div>
+    </article>
+    <article class="project"><h3>Portfolio Website</h3><p>Website portofolio pribadi dari nol — eksplorasi beberapa arah desain, dark/light mode, sampai deploy otomatis ke Vercel lewat GitHub.</p><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><div><a></a></div></article>
+    <article class="project"><h3>Document Tools</h3><p>Fitur baca & konversi file langsung dari chat WhatsApp — bagian dari sistem plugin Mann'zz v5.6.</p><span class="tag">Node.js</span><span class="tag">File Utility</span><div><a></a></div></article>
+  </div>
+
+  <h1 class="title">Skills</h1>
+  <div class="skills">
+    <div class="skill"><i class="devicon-html5-plain colored"></i>HTML</div>
+    <div class="skill"><i class="devicon-css3-plain colored"></i>CSS</div>
+    <div class="skill"><i class="devicon-javascript-plain colored"></i>JavaScript</div>
+    <div class="skill"><i class="devicon-nodejs-plain colored"></i>Node.js</div>
+    <div class="skill"><i class="devicon-git-plain colored"></i>Git</div>
+    <div class="skill"><i class="devicon-linux-plain" style="color:var(--text)"></i>Linux</div>
+    <div class="skill"><svg width="24" height="24" style="display:block;margin:0 auto 5px;fill:#25d366" viewBox="0 0 448 512"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg>WhatsApp API</div>
+  </div>
+
+  <h2 class="title">Contact</h2>
+  <div class="contact-block">
+    <p class="muted">Punya ide proyek atau ingin bekerja sama?</p>
+    <p><span class="icon-inline"><svg viewBox="0 0 24 24" class="icon"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span>mannzz144hz@gmail.com</p>
+    <form id="form">
+      <input name="name" placeholder="Nama Anda" required>
+      <input name="email" type="email" placeholder="Email Anda" required>
+      <textarea name="message" placeholder="Pesan Anda..." required></textarea>
+      <button type="submit"><span class="icon-inline"><svg viewBox="0 0 24 24" class="icon"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg></span>Kirim Pesan</button>
+      <div id="status" role="status"></div>
+    </form>
+  </div>
+</section>
+
+<section class="tab" id="tab-feed">
+  <h2 class="title">Feed</h2>
+  <p class="muted" id="feed-placeholder">Fitur feed lagi dibangun, bentar lagi nyusul.</p>
+</section>
+
+<section class="tab" id="tab-sosial">
+  <h2 class="title">Chat Global</h2>
+  <section id="gchat">
+<a class="tool-card" href="chat.html"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12a8 8 0 10-3.3 6.4L21 20l-1.2-3.4A8 8 0 0021 12z"/></svg></span><div><h3>Buka Chat Global</h3><p>Ngobrol, story, dan catatan bareng.</p></div></a>
+</section>
+</section><section class="tab" id="tab-game">
+  <h2 class="title">Game</h2>
+  <div class="tool-card" data-tool="games.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1"/><circle cx="18.5" cy="14" r="1"/></svg></span><div><h3>Games</h3><p>Tic Tac Toe, Whack-a-Mole, Reaction Test, Typing Test, Spin Wheel.</p></div></div>
+</section>
+
+<section class="tab" id="tab-alat">
+  <h2 class="title">Alat</h2>
+  <div class="tool-card" data-tool="amprem.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>Alight Motion Premium</h3><p>Panel verifikasi email lewat magic link.</p></div></div>
+  <div class="tool-card" data-tool="downloader.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg></span><div><h3>Downloader</h3><p>Download video/foto dari YouTube, TikTok, Instagram, dll.</p></div></div>
+  <div class="tool-card" data-tool="reactch.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12a8 8 0 10-3.3 6.4L21 20l-1.2-3.4A8 8 0 0021 12z"/></svg></span><div><h3>React Channel</h3><p>Kirim reaksi emoji ke post channel WhatsApp.</p></div></div>
+  <div class="tool-card" data-tool="tempmail.html" role="button" tabindex="0"><span class="tool-icon"><svg viewBox="0 0 24 24" class="icon"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg></span><div><h3>Temp Mail</h3><p>Email sementara, baca pesan masuk tanpa daftar.</p></div></div>
+</section>
+
+<div class="tool-overlay" id="toolOverlay">
+  <div class="tool-overlay-bar"><button id="toolClose" type="button"><svg viewBox="0 0 24 24" class="icon"><path d="M19 12H5"/><path d="M11 6l-6 6 6 6"/></svg> Kembali</button></div>
+  <iframe id="toolFrame" src="" title="tool" loading="lazy"></iframe>
+</div>
+
+<section class="tab" id="tab-profil">
+  <div class="profile-card" id="userProfileCard">
+    <div class="profile-top">
+      <div class="avatar" id="upAvatar" style="width:70px;height:70px;font-size:1.6rem">?</div>
+      <div style="min-width:0">
+        <div class="profile-name"><span id="upName">Tamu</span><span id="upBadge"></span></div>
+        <div class="profile-bio" id="upEmail" style="overflow-wrap:anywhere">Masuk untuk melihat dan mengatur profilmu.</div>
+      </div>
+    </div>
+    <div class="stat-row" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><b id="upRole" style="font-size:1.05rem">Tamu</b><span>Status</span></div>
+      <div class="stat"><b id="upJoined" style="font-size:1.05rem">-</b><span>Bergabung</span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn primary" id="upEdit" type="button">Masuk / Daftar</button>
+      <button class="btn" id="upLogout" type="button" style="display:none">Keluar</button>
+    </div>
+  </div>
+</section>
+</main>
+
+<a class="wa-fab" href="https://wa.me/6282339899845" target="_blank" rel="noopener" aria-label="Chat WhatsApp"><svg viewBox="0 0 448 512" style="width:26px;height:26px;fill:#fff"><path d="M380.9 97.1C339 55.1 283.2 32 223.9 32c-122.4 0-222 99.6-222 222 0 39.1 10.2 77.3 29.6 111L0 480l117.7-30.9c32.4 17.7 68.9 27 106.1 27h.1c122.3 0 224.1-99.6 224.1-222 0-59.3-25.2-115-67.1-157zm-157 341.6c-33.2 0-65.7-8.9-94-25.7l-6.7-4-69.8 18.3L72 359.2l-4.4-7c-18.5-29.4-28.2-63.3-28.2-98.2 0-101.7 82.8-184.5 184.6-184.5 49.3 0 95.6 19.2 130.4 54.1 34.8 34.9 56.2 81.2 56.1 130.5 0 101.8-84.9 184.6-186.6 184.6zm101.2-138.2c-5.5-2.8-32.8-16.2-37.9-18-5.1-1.9-8.8-2.8-12.5 2.8-3.7 5.6-14.3 18-17.6 21.8-3.2 3.7-6.5 4.2-12 1.4-32.6-16.3-54-29.1-75.5-66-5.7-9.8 5.7-9.1 16.3-30.3 1.8-3.7.9-6.9-.5-9.7-1.4-2.8-12.5-30.1-17.1-41.2-4.5-10.8-9.1-9.3-12.5-9.5-3.2-.2-6.9-.2-10.6-.2-3.7 0-9.7 1.4-14.8 6.9-5.1 5.6-19.4 19-19.4 46.3 0 27.3 19.9 53.7 22.6 57.4 2.8 3.7 39.1 59.7 94.8 83.8 35.2 15.2 49 16.5 66.6 13.9 10.7-1.6 32.8-13.4 37.4-26.4 4.6-13 4.6-24.1 3.2-26.4-1.3-2.5-5-3.9-10.5-6.6z"/></svg></a>
+
+
+<footer><div class="container">© <span id="year"></span> Mann'zz. All rights reserved.</div></footer>
+
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyC_iYADCUCDN1pCl3j4-jeZT3pU2XcIydU",
+  authDomain: "manz-4d272.firebaseapp.com",
+  projectId: "manz-4d272",
+  storageBucket: "manz-4d272.firebasestorage.app",
+  messagingSenderId: "431533009387",
+  appId: "1:431533009387:web:72a9855b0bd596f37911ae"
+};
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+</script>
+
+<script>
+const authToggle=document.getElementById('auth-toggle');
+const authPanel=document.getElementById('authPanel');
+const authPanelClose=document.getElementById('authPanel-close');
+if(authPanelClose) authPanelClose.addEventListener('click',()=>{authPanel.style.display='none';});
+document.addEventListener('click',(e)=>{
+if(authPanel.style.display!=='none' && !authPanel.contains(e.target) && !authToggle.contains(e.target)){
+authPanel.style.display='none';
+}
+});
+const authTabs=document.querySelectorAll('.auth-tab');
+const authLoginForm=document.getElementById('authLoginForm');
+const authRegisterForm=document.getElementById('authRegisterForm');
+const loginEmail=document.getElementById('loginEmail');
+const loginPass=document.getElementById('loginPass');
+const loginSubmit=document.getElementById('loginSubmit');
+const regName=document.getElementById('regName');
+const regEmail=document.getElementById('regEmail');
+const regPass=document.getElementById('regPass');
+const registerSubmit=document.getElementById('registerSubmit');
+const authError=document.getElementById('authError');
+const logoutBtn=document.getElementById('logoutBtn');
+const ownerBadge=document.getElementById('ownerBadge');
+const verifiedBadge=document.getElementById('verifiedBadge');
+const EYE_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M1 12s4-7 11-7 11 7 11 7-4 7-11 7-11-7-11-7z"/><circle cx="12" cy="12" r="3"/></svg>';
+const EYEOFF_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M3 3l18 18"/><path d="M9.9 4.2A11 11 0 0112 4c7 0 11 7 11 7a13.6 13.6 0 01-3.4 4.1M6.1 6.1A13.6 13.6 0 001 11s4 7 11 7a10.8 10.8 0 004.9-1.1"/><path d="M9.5 9.9a3 3 0 004.1 4.2"/></svg>';
+const CROWN_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M3 18h18l-1.5-9-4.5 4-3-6-3 6-4.5-4L3 18z"/></svg>';
+
+function showAuthError(msg){ authError.textContent=msg; authError.style.display='block'; }
+function clearAuthError(){ authError.style.display='none'; }
+
+authTabs.forEach(tab=>{
+tab.addEventListener('click',()=>{
+authTabs.forEach(t=>t.classList.toggle('active',t===tab));
+const which=tab.dataset.authTab;
+authLoginForm.style.display=which==='login'?'flex':'none';
+authRegisterForm.style.display=which==='register'?'flex':'none';
+clearAuthError();
+});
+});
+
+authToggle.addEventListener('click',()=>{
+if(typeof closeSidebar==='function') closeSidebar();
+authPanel.style.display = authPanel.style.display==='none' ? 'flex' : 'none';
+});
+
+registerSubmit.addEventListener('click', async ()=>{
+clearAuthError();
+const name=regName.value.trim();
+const email=regEmail.value.trim();
+const pass=regPass.value;
+if(!name||!email||pass.length<6){ showAuthError('Isi nama, email, dan password minimal 6 karakter.'); return; }
+registerSubmit.disabled=true;
+try{
+const cred=await auth.createUserWithEmailAndPassword(email,pass);
+await db.collection('users').doc(cred.user.uid).set({
+name:name, email:email, isAdmin:false, createdAt:firebase.firestore.FieldValue.serverTimestamp()
+});
+}catch(e){ showAuthError(e.message||'Daftar gagal.'); }
+finally{ registerSubmit.disabled=false; }
+});
+
+loginSubmit.addEventListener('click', async ()=>{
+clearAuthError();
+const email=loginEmail.value.trim();
+const pass=loginPass.value;
+if(!email||!pass){ showAuthError('Isi email dan password.'); return; }
+loginSubmit.disabled=true;
+try{ await auth.signInWithEmailAndPassword(email,pass); }
+catch(e){ showAuthError(e.message||'Masuk gagal.'); }
+finally{ loginSubmit.disabled=false; }
+});
+
+logoutBtn.addEventListener('click',()=>{ auth.signOut(); });
+
+document.querySelectorAll('.pass-eye[data-eye-for]').forEach(btn=>{
+btn.addEventListener('click',()=>{
+const input=document.getElementById(btn.dataset.eyeFor);
+const isPass=input.type==='password';
+input.type=isPass?'text':'password';
+btn.innerHTML=isPass?EYEOFF_ICON:EYE_ICON;
+});
+});
+
+const badgeAvatar=document.getElementById('badgeAvatar');
+const badgeText=document.getElementById('badgeText');
+const profileEditor=document.getElementById('profileEditor');
+const profileAvatarPreview=document.getElementById('profileAvatarPreview');
+const profileNameInput=document.getElementById('profileNameInput');
+const profilePhotoInput=document.getElementById('profilePhotoInput');
+const profileSaveBtn=document.getElementById('profileSaveBtn');
+const profileSavedMsg=document.getElementById('profileSavedMsg');
+
+function renderAvatar(container, name, photoURL){
+container.innerHTML='';
+if(photoURL){
+const img=document.createElement('img');
+img.src=photoURL;
+img.alt='avatar';
+img.onerror=function(){ renderAvatar(container, name, ''); };
+container.appendChild(img);
+}else{
+container.textContent=(name||'?').trim().charAt(0).toUpperCase()||'?';
+}
+}
+
+auth.onAuthStateChanged(async (user)=>{
+if(user){
+authPanel.style.display='none';
+logoutBtn.style.display='block';
+profileEditor.style.display='flex';
+authTabs.forEach(t=>t.style.display='none');
+authLoginForm.style.display='none';
+authRegisterForm.style.display='none';
+let isAdmin=false, name=user.email, photoURL='';
+try{
+const doc=await db.collection('users').doc(user.uid).get();
+if(doc.exists){ const data=doc.data(); isAdmin=!!data.isAdmin; name=data.name||name; photoURL=data.photoURL||''; }
+}catch(e){}
+if(isAdmin){
+badgeText.innerHTML=CROWN_ICON+' OWNER';
+ownerBadge.classList.add('owner-role');
+verifiedBadge.classList.add('owner-role');
+}else{
+badgeText.textContent=name;
+ownerBadge.classList.remove('owner-role');
+verifiedBadge.classList.remove('owner-role');
+}
+renderAvatar(badgeAvatar, name, photoURL);
+renderAvatar(profileAvatarPreview, name, photoURL);
+profileNameInput.value=name;
+profilePhotoInput.value=photoURL;
+window.currentUserProfile={uid:user.uid, isAdmin:isAdmin, name:name, photoURL:photoURL};
+}else{
+badgeText.textContent='Tamu';
+badgeAvatar.textContent='?';
+ownerBadge.classList.remove('owner-role');
+verifiedBadge.classList.remove('owner-role');
+logoutBtn.style.display='none';
+profileEditor.style.display='none';
+authTabs.forEach(t=>t.style.display='block');
+authLoginForm.style.display='flex';
+authRegisterForm.style.display='none';
+window.currentUserProfile=null;
+}
+});
+
+profileSaveBtn.addEventListener('click', async ()=>{
+const user=auth.currentUser;
+if(!user) return;
+const newName=profileNameInput.value.trim();
+const newPhoto=profilePhotoInput.value.trim();
+if(!newName){ return; }
+profileSaveBtn.disabled=true;
+try{
+await db.collection('users').doc(user.uid).update({name:newName, photoURL:newPhoto});
+const isAdmin=window.currentUserProfile?window.currentUserProfile.isAdmin:false;
+if(isAdmin){ badgeText.innerHTML=CROWN_ICON+' OWNER'; } else { badgeText.textContent=newName; }
+renderAvatar(badgeAvatar, newName, newPhoto);
+renderAvatar(profileAvatarPreview, newName, newPhoto);
+window.currentUserProfile={uid:user.uid, isAdmin:isAdmin, name:newName, photoURL:newPhoto};
+profileSavedMsg.style.display='block';
+setTimeout(()=>{ profileSavedMsg.style.display='none'; }, 2000);
+}catch(e){
+alert('Gagal simpan profil: '+(e.message||'coba lagi'));
+}finally{
+profileSaveBtn.disabled=false;
+}
+});
+
+const themeToggle=document.getElementById('theme-toggle');
+const SUN_ICON='<svg viewBox="0 0 24 24" class="icon"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg>';
+const MOON_ICON='<svg viewBox="0 0 24 24" class="icon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg>';
+themeToggle.addEventListener('click',()=>{
+const light=document.body.classList.toggle('light-mode');
+themeToggle.innerHTML=light?MOON_ICON:SUN_ICON;
+});
+
+const navBtns=document.querySelectorAll('.nav-btn[data-tab]');
+const tabs=document.querySelectorAll('.tab');
+function showTab(id){
+tabs.forEach(t=>t.classList.toggle('active',t.id===id));
+navBtns.forEach(b=>{b.classList.toggle('active',b.dataset.tab===id);b.classList.toggle('home',b.dataset.tab===id);});
+window.scrollTo({top:0});
+}
+
+const sidebar=document.getElementById('sidebar');
+const sidebarOverlay=document.getElementById('sidebarOverlay');
+const menuToggle=document.getElementById('menu-toggle');
+const sidebarClose=document.getElementById('sidebar-close');
+function openSidebar(){sidebar.classList.add('active');sidebarOverlay.classList.add('active');}
+function closeSidebar(){sidebar.classList.remove('active');sidebarOverlay.classList.remove('active');}
+if(menuToggle) menuToggle.addEventListener('click',openSidebar);
+if(sidebarClose) sidebarClose.addEventListener('click',closeSidebar);
+if(sidebarOverlay) sidebarOverlay.addEventListener('click',closeSidebar);
+
+navBtns.forEach(b=>b.addEventListener('click',()=>{showTab(b.dataset.tab);closeSidebar();}));
+
+const toolCards=document.querySelectorAll('.tool-card[data-tool]');
+const toolOverlay=document.getElementById('toolOverlay');
+const toolFrame=document.getElementById('toolFrame');
+const toolClose=document.getElementById('toolClose');
+toolCards.forEach(c=>{
+c.addEventListener('click',()=>{
+toolFrame.src=c.dataset.tool;
+toolOverlay.classList.add('active');
+document.body.style.overflow='hidden';
+});
+});
+if(toolClose) toolClose.addEventListener('click',()=>{
+toolOverlay.classList.remove('active');
+toolFrame.src='';
+document.body.style.overflow='';
+});
+
+document.getElementById('year').textContent=new Date().getFullYear();
+document.getElementById('form').addEventListener('submit',e=>{
+e.preventDefault();
+const d=new FormData(e.currentTarget);
+const subject=encodeURIComponent('Pesan portofolio dari '+d.get('name'));
+const body=encodeURIComponent('Nama: '+d.get('name')+'\nEmail: '+d.get('email')+'\n\n'+d.get('message'));
+document.getElementById('status').textContent='Membuka aplikasi email...';
+location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
+});
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script id="mz-profile">
+(function(){
+  var els = {
+    avatar: document.getElementById('upAvatar'),
+    name: document.getElementById('upName'),
+    badge: document.getElementById('upBadge'),
+    email: document.getElementById('upEmail'),
+    role: document.getElementById('upRole'),
+    joined: document.getElementById('upJoined'),
+    edit: document.getElementById('upEdit'),
+    logout: document.getElementById('upLogout')
+  };
+  if (!els.avatar || typeof auth === 'undefined') return;
+
+  var BADGE = '<svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg>';
+
+  function render(user, data) {
+    if (!user) {
+      renderAvatar(els.avatar, '?', '');
+      els.name.textContent = 'Tamu';
+      els.badge.innerHTML = '';
+      els.email.textContent = 'Masuk untuk melihat dan mengatur profilmu.';
+      els.role.textContent = 'Tamu';
+      els.joined.textContent = '-';
+      els.edit.textContent = 'Masuk / Daftar';
+      els.logout.style.display = 'none';
+      return;
+    }
+    var name = (data && data.name) || user.displayName || user.email || 'Pengguna';
+    var photo = (data && data.photoURL) || '';
+    var isAdmin = !!(data && data.isAdmin);
+    renderAvatar(els.avatar, name, photo);
+    els.name.textContent = name;
+    els.badge.innerHTML = '<span class="verified-badge2' + (isAdmin ? ' owner-role' : '') + '">' + BADGE + '</span>';
+    els.email.textContent = user.email || '';
+    els.role.textContent = isAdmin ? 'Owner' : 'Member';
+    var d = null;
+    if (data && data.createdAt && data.createdAt.toDate) d = data.createdAt.toDate();
+    else if (user.metadata && user.metadata.creationTime) d = new Date(user.metadata.creationTime);
+    els.joined.textContent = d ? d.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
+    els.edit.textContent = 'Edit Profil';
+    els.logout.style.display = 'inline-block';
+  }
+
+  async function load(user) {
+    if (!user) { render(null, null); return; }
+    var data = null;
+    try {
+      var doc = await db.collection('users').doc(user.uid).get();
+      if (doc.exists) data = doc.data();
+    } catch (e) {}
+    render(user, data);
+  }
+
+  auth.onAuthStateChanged(load);
+
+  var saved = document.getElementById('profileSavedMsg');
+  if (saved) {
+    new MutationObserver(function(){
+      if (saved.style.display === 'block') load(auth.currentUser);
+    }).observe(saved, {attributes:true, attributeFilter:['style']});
+  }
+
+  els.edit.addEventListener('click', function(){
+    setTimeout(function(){
+      window.scrollTo({top:0});
+      var panel = document.getElementById('authPanel');
+      if (panel && panel.style.display === 'none') document.getElementById('auth-toggle').click();
+    }, 0);
+  });
+  els.logout.addEventListener('click', function(){ auth.signOut(); });
+})();
+</script>
+<script id="mz-photo">
+(function(){
+  var btn = document.getElementById('profilePhotoBtn');
+  var rm = document.getElementById('profilePhotoRemove');
+  var file = document.getElementById('profilePhotoFile');
+  var input = document.getElementById('profilePhotoInput');
+  var hint = document.getElementById('profilePhotoHint');
+  var preview = document.getElementById('profileAvatarPreview');
+  var nameInput = document.getElementById('profileNameInput');
+  if (!btn || !file || !input) return;
+
+  function say(msg) {
+    hint.textContent = msg;
+    hint.style.display = msg ? 'block' : 'none';
+  }
+
+  function toSquare(f, size, cb) {
+    var reader = new FileReader();
+    reader.onload = function() {
+      var img = new Image();
+      img.onload = function() {
+        var c = document.createElement('canvas');
+        c.width = c.height = size;
+        var side = Math.min(img.width, img.height);
+        c.getContext('2d').drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, size, size);
+        cb(c.toDataURL('image/jpeg', 0.85));
+      };
+      img.onerror = function() { cb(null); };
+      img.src = reader.result;
+    };
+    reader.onerror = function() { cb(null); };
+    reader.readAsDataURL(f);
+  }
+
+  btn.addEventListener('click', function() { file.click(); });
+
+  file.addEventListener('change', function() {
+    var f = file.files && file.files[0];
+    if (!f) return;
+    if (f.type && f.type.indexOf('image/') !== 0) { say('File harus berupa gambar.'); return; }
+    say('Memproses foto...');
+    toSquare(f, 256, function(data) {
+      file.value = '';
+      if (!data) { say('Foto tidak bisa dibaca. Coba foto lain (JPG atau PNG).'); return; }
+      input.value = data;
+      renderAvatar(preview, nameInput.value, data);
+      say('Foto dipilih. Tekan Simpan Profil.');
+    });
+  });
+
+  rm.addEventListener('click', function() {
+    input.value = '';
+    renderAvatar(preview, nameInput.value, '');
+    say('Foto dihapus. Tekan Simpan Profil.');
+  });
+})();
+</script>
+<script id="mz-badge-js">
+(function(){
+  var PERSON = '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>';
+  ['badgeAvatar','upAvatar'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    function fix(){ if (el.textContent.trim() === '?') el.innerHTML = PERSON; }
+    fix();
+    new MutationObserver(fix).observe(el, {childList:true, characterData:true, subtree:true});
+  });
+})();
+</script>
+<script id="mz-login">
+(function(){
+  if (typeof auth === 'undefined' || typeof firebase === 'undefined') return;
+  var label = document.getElementById('authToggleLabel');
+  var box = document.getElementById('authProviders');
+  var errEl = document.getElementById('authError');
+
+  var MSG = {
+    'auth/operation-not-allowed': 'Metode masuk ini belum diaktifkan di Firebase.',
+    'auth/unauthorized-domain': 'Domain web ini belum didaftarkan di Firebase (Authorized domains).',
+    'auth/network-request-failed': 'Koneksi bermasalah, coba lagi.',
+    'auth/account-exists-with-different-credential': 'Email ini sudah terdaftar lewat metode lain. Masuk pakai metode yang dulu dipakai.',
+    'auth/web-storage-unsupported': 'Browser memblokir penyimpanan. Coba buka di Chrome biasa.'
+  };
+
+  function showErr(m){ errEl.textContent = m; errEl.style.display = 'block'; }
+  function clearErr(){ errEl.style.display = 'none'; }
+  function setBusy(b){
+    document.querySelectorAll('.auth-prov').forEach(function(x){ x.disabled = b; });
+  }
+
+  var makers = {
+    google: function(){
+      var p = new firebase.auth.GoogleAuthProvider();
+      p.setCustomParameters({ prompt: 'select_account' });
+      return p;
+    },
+    github: function(){ return new firebase.auth.GithubAuthProvider(); }
+  };
+
+  async function signIn(provider){
+    clearErr();
+    setBusy(true);
+    try {
+      await auth.signInWithPopup(provider);
+    } catch (e) {
+      if (e.code === 'auth/popup-closed-by-user' || e.code === 'auth/cancelled-popup-request') {
+        // dibatalkan, tidak perlu pesan
+      } else if (e.code === 'auth/popup-blocked') {
+        try { await auth.signInWithRedirect(provider); return; }
+        catch (e2) { showErr(MSG[e2.code] || e2.message || 'Masuk gagal.'); }
+      } else {
+        showErr(MSG[e.code] || e.message || 'Masuk gagal.');
+      }
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  document.querySelectorAll('[data-provider]').forEach(function(b){
+    b.addEventListener('click', function(){
+      var make = makers[b.dataset.provider];
+      if (make) signIn(make());
+    });
+  });
+
+  auth.getRedirectResult().catch(function(e){
+    if (e && e.code) showErr(MSG[e.code] || e.message || 'Masuk gagal.');
+  });
+
+  // Buat profil otomatis saat pertama kali masuk
+  async function ensureProfile(user){
+    try {
+      var ref = db.collection('users').doc(user.uid);
+      var snap = await ref.get();
+      if (snap.exists) return false;
+      await ref.set({
+        name: user.displayName || user.email || 'Pengguna',
+        email: user.email || '',
+        photoURL: user.photoURL || '',
+        isAdmin: false,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+      return true;
+    } catch (e) { return false; }
+  }
+
+  auth.onAuthStateChanged(async function(user){
+    if (label) label.textContent = user ? 'Akun Saya' : 'Masuk';
+    if (box) box.style.display = user ? 'none' : 'flex';
+    if (user) {
+      var created = await ensureProfile(user);
+      if (created) location.reload();
+    }
+  });
+})();
+</script>
+<script id="mz-side-js">
+(function(){
+  var sb = document.getElementById('sidebar');
+  var ov = document.getElementById('sidebarOverlay');
+  if (!sb) return;
+  function sync(){
+    document.documentElement.classList.toggle('mz-lock', sb.classList.contains('active'));
+  }
+  new MutationObserver(sync).observe(sb, {attributes:true, attributeFilter:['class']});
+  if (ov) ov.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+  sync();
+})();
+</script>
+<script id="mz-border-js">
+(function(){
+  if (typeof auth === 'undefined' || typeof db === 'undefined') return;
+  var LIST = [
+    {id:'none', n:'Polos', cls:''},
+    {id:'mono', n:'Hitam/Putih', cls:'bd-s-mono'},
+    {id:'biru', n:'Biru', cls:'bd-s-biru'},
+    {id:'hijau', n:'Hijau', cls:'bd-s-hijau'},
+    {id:'pink', n:'Pink', cls:'bd-s-pink'},
+    {id:'ungu', n:'Ungu', cls:'bd-s-ungu'},
+    {id:'oranye', n:'Oranye', cls:'bd-s-oranye'},
+    {id:'ganda', n:'Ganda', cls:'bd-s-ganda'},
+    {id:'putus', n:'Putus', cls:'bd-s-putus'},
+    {id:'emas', n:'Emas', cls:'bd-o-emas', owner:true},
+    {id:'pelangi', n:'Pelangi', cls:'bd-o-pelangi', owner:true},
+    {id:'neon', n:'Neon', cls:'bd-o-neon', owner:true}
+  ];
+  var MAIN = ['badgeAvatar','upAvatar','profileAvatarPreview'];
+  var cur = 'none', admin = false;
+
+  function find(id){ for (var i=0;i<LIST.length;i++) if (LIST[i].id===id) return LIST[i]; return LIST[0]; }
+  function setCls(el, id){
+    if (!el) return;
+    Array.prototype.slice.call(el.classList).forEach(function(c){ if (c.indexOf('bd-')===0) el.classList.remove(c); });
+    var b = find(id);
+    if (b.cls) el.classList.add(b.cls);
+  }
+  function applyAll(){ MAIN.forEach(function(id){ setCls(document.getElementById(id), cur); }); }
+
+  function hint(m){
+    var h = document.getElementById('bdHint');
+    if (!h) return;
+    h.textContent = m || '';
+    h.style.display = m ? 'block' : 'none';
+  }
+
+  function build(){
+    var grid = document.getElementById('bdGrid');
+    if (!grid) return;
+    var ini = ((document.getElementById('profileNameInput') || {}).value || '?').trim().charAt(0).toUpperCase() || '?';
+    grid.replaceChildren();
+    LIST.forEach(function(b){
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'bd-opt' + (b.id===cur ? ' sel' : '') + ((b.owner && !admin) ? ' lock' : '');
+      var dot = document.createElement('span');
+      dot.className = 'bd-dot' + (b.cls ? ' ' + b.cls : '');
+      dot.textContent = ini;
+      var lab = document.createElement('div');
+      lab.textContent = b.n + (b.owner ? ' ★' : '');
+      btn.append(dot, lab);
+      btn.addEventListener('click', function(){
+        if (b.owner && !admin) { hint('Bingkai bertanda ★ khusus Owner.'); return; }
+        hint('');
+        cur = b.id;
+        setCls(document.getElementById('profileAvatarPreview'), cur);
+        build();
+      });
+      grid.appendChild(btn);
+    });
+  }
+
+  auth.onAuthStateChanged(async function(user){
+    if (!user) { cur = 'none'; admin = false; applyAll(); build(); return; }
+    try {
+      var doc = await db.collection('users').doc(user.uid).get();
+      var d = doc.exists ? doc.data() : {};
+      admin = !!d.isAdmin;
+      var id = d.avatarBorder || 'none';
+      var b = find(id);
+      cur = (b.owner && !admin) ? 'none' : b.id;
+    } catch (e) { cur = 'none'; }
+    applyAll();
+    build();
+  });
+
+  var save = document.getElementById('profileSaveBtn');
+  if (save) save.addEventListener('click', async function(){
+    var user = auth.currentUser;
+    if (!user) return;
+    var b = find(cur);
+    if (b.owner && !admin) return;
+    try {
+      await db.collection('users').doc(user.uid).set({avatarBorder: cur}, {merge:true});
+      applyAll();
+    } catch (e) {}
+  });
+
+  var nm = document.getElementById('profileNameInput');
+  if (nm) nm.addEventListener('input', build);
+})();
+</script>
+<script id="mz-anim-js">
+(function(){
+  var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var sel = '.profile-card,.banner,.about-block,.title,.project,.skill,.contact-block,.tool-card';
+  var els = document.querySelectorAll(sel);
+  if (!reduce && 'IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function(entries){
+      entries.forEach(function(e){
+        if (e.isIntersecting) { e.target.classList.add('mz-in'); io.unobserve(e.target); }
+      });
+    }, {threshold:.12, rootMargin:'0px 0px -6% 0px'});
+    els.forEach(function(el){
+      var idx = Array.prototype.indexOf.call(el.parentNode.children, el);
+      el.style.transitionDelay = ((idx % 4) * 70) + 'ms';
+      el.classList.add('mz-rv');
+      io.observe(el);
+    });
+  }
+  var ticking = false;
+  window.addEventListener('scroll', function(){
+    if (ticking) return;
+    ticking = true;
+    requestAnimationFrame(function(){
+      document.body.classList.toggle('mz-scrolled', window.scrollY > 8);
+      ticking = false;
+    });
+  }, {passive:true});
+})();
+</script>
+</body>
+</html>
