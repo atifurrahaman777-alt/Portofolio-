@@ -167,7 +167,16 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
-</style><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"></head>
+</style><link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"><style id="mz-bw">
+html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
+html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
+html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
+html body .bottom-nav .nav-btn.home span .icon{stroke:var(--on)!important}
+html body .bottom-nav .nav-btn.home span{box-shadow:0 6px 16px rgba(0,0,0,.35)!important}
+html body .tag{background:rgba(128,128,128,.14)!important;border-color:var(--line)!important;color:var(--text)!important}
+html body::before{background:radial-gradient(circle at 20% 0%,rgba(128,128,128,.12),transparent 60%)!important}
+</style>
+</head>
 <body class="light-mode">
 
 <header>
@@ -332,18 +341,21 @@ input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
 </div>
 
 <section class="tab" id="tab-profil">
-  <div class="profile-card">
+  <div class="profile-card" id="userProfileCard">
     <div class="profile-top">
-      <img class="avatar" src="favicon.png" alt="avatar" style="width:70px;height:70px;border-radius:50%;object-fit:cover;background:white;padding:5px;">
-      <div>
-        <div class="profile-name">Mann'zz <span style="color:var(--accent)">Dev</span></div>
-        <div class="profile-bio">Ngulik bot WhatsApp & website sendirian, belajar dari error satu-satu.</div>
+      <div class="avatar" id="upAvatar" style="width:70px;height:70px;font-size:1.6rem">?</div>
+      <div style="min-width:0">
+        <div class="profile-name"><span id="upName">Tamu</span><span id="upBadge"></span></div>
+        <div class="profile-bio" id="upEmail" style="overflow-wrap:anywhere">Masuk untuk melihat dan mengatur profilmu.</div>
       </div>
     </div>
-    <div class="stat-row">
-      <div class="stat"><b>3</b><span>Projects</span></div>
-      <div class="stat"><b>7</b><span>Skills</span></div>
-      <div class="stat"><b>4</b><span>Tools</span></div>
+    <div class="stat-row" style="grid-template-columns:repeat(2,1fr)">
+      <div class="stat"><b id="upRole" style="font-size:1.05rem">Tamu</b><span>Status</span></div>
+      <div class="stat"><b id="upJoined" style="font-size:1.05rem">-</b><span>Bergabung</span></div>
+    </div>
+    <div style="display:flex;gap:10px;margin-top:16px;flex-wrap:wrap">
+      <button class="btn primary" id="upEdit" type="button">Masuk / Daftar</button>
+      <button class="btn" id="upLogout" type="button" style="display:none">Keluar</button>
     </div>
   </div>
 </section>
@@ -596,5 +608,78 @@ document.getElementById('status').textContent='Membuka aplikasi email...';
 location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
 });
 </script>
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script id="mz-profile">
+(function(){
+  var els = {
+    avatar: document.getElementById('upAvatar'),
+    name: document.getElementById('upName'),
+    badge: document.getElementById('upBadge'),
+    email: document.getElementById('upEmail'),
+    role: document.getElementById('upRole'),
+    joined: document.getElementById('upJoined'),
+    edit: document.getElementById('upEdit'),
+    logout: document.getElementById('upLogout')
+  };
+  if (!els.avatar || typeof auth === 'undefined') return;
+
+  var BADGE = '<svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg>';
+
+  function render(user, data) {
+    if (!user) {
+      renderAvatar(els.avatar, '?', '');
+      els.name.textContent = 'Tamu';
+      els.badge.innerHTML = '';
+      els.email.textContent = 'Masuk untuk melihat dan mengatur profilmu.';
+      els.role.textContent = 'Tamu';
+      els.joined.textContent = '-';
+      els.edit.textContent = 'Masuk / Daftar';
+      els.logout.style.display = 'none';
+      return;
+    }
+    var name = (data && data.name) || user.displayName || user.email || 'Pengguna';
+    var photo = (data && data.photoURL) || '';
+    var isAdmin = !!(data && data.isAdmin);
+    renderAvatar(els.avatar, name, photo);
+    els.name.textContent = name;
+    els.badge.innerHTML = '<span class="verified-badge2' + (isAdmin ? ' owner-role' : '') + '">' + BADGE + '</span>';
+    els.email.textContent = user.email || '';
+    els.role.textContent = isAdmin ? 'Owner' : 'Member';
+    var d = null;
+    if (data && data.createdAt && data.createdAt.toDate) d = data.createdAt.toDate();
+    else if (user.metadata && user.metadata.creationTime) d = new Date(user.metadata.creationTime);
+    els.joined.textContent = d ? d.toLocaleDateString('id-ID', {day:'numeric', month:'short', year:'numeric'}) : '-';
+    els.edit.textContent = 'Edit Profil';
+    els.logout.style.display = 'inline-block';
+  }
+
+  async function load(user) {
+    if (!user) { render(null, null); return; }
+    var data = null;
+    try {
+      var doc = await db.collection('users').doc(user.uid).get();
+      if (doc.exists) data = doc.data();
+    } catch (e) {}
+    render(user, data);
+  }
+
+  auth.onAuthStateChanged(load);
+
+  var saved = document.getElementById('profileSavedMsg');
+  if (saved) {
+    new MutationObserver(function(){
+      if (saved.style.display === 'block') load(auth.currentUser);
+    }).observe(saved, {attributes:true, attributeFilter:['style']});
+  }
+
+  els.edit.addEventListener('click', function(){
+    setTimeout(function(){
+      window.scrollTo({top:0});
+      var panel = document.getElementById('authPanel');
+      if (panel && panel.style.display === 'none') document.getElementById('auth-toggle').click();
+    }, 0);
+  });
+  els.logout.addEventListener('click', function(){ auth.signOut(); });
+})();
+</script>
+</body>
 </html>

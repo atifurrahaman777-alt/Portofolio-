@@ -37,6 +37,11 @@ html body:is(.light-mode,:not(.light-mode)) .accent,html body:is(.light-mode,:no
 html body:is(.light-mode,:not(.light-mode)) .sub,html body:is(.light-mode,:not(.light-mode)) .rc-loading,html body:is(.light-mode,:not(.light-mode)) .rc-result p,html body:is(.light-mode,:not(.light-mode)) footer{color:var(--muted)!important;text-shadow:none!important}
 html body:is(.light-mode,:not(.light-mode)) #theme-toggle{background:var(--card)!important;border:1px solid var(--line)!important;color:var(--text)!important;border-radius:8px!important;box-shadow:none!important}
 </style>
+<style id="mz-bw">
+html body:not(.light-mode){--gold:#f5f5f5;--purple:#f5f5f5;--accent:#f5f5f5;--on:#0a0a0a}
+html body.light-mode{--gold:#0a0a0a;--purple:#0a0a0a;--accent:#0a0a0a;--on:#fff}
+html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.light-mode)) .ocean-tab.active,html body:is(.light-mode,:not(.light-mode)) .email-step.active,html body:is(.light-mode,:not(.light-mode)) .game-controls button.active,html body:is(.light-mode,:not(.light-mode)) .status{color:var(--on)!important}
+</style>
 </head>
 <body>
 <main class="wrap">
