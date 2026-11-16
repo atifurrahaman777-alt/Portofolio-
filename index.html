@@ -176,6 +176,12 @@ html body .bottom-nav .nav-btn.home span{box-shadow:0 6px 16px rgba(0,0,0,.35)!i
 html body .tag{background:rgba(128,128,128,.14)!important;border-color:var(--line)!important;color:var(--text)!important}
 html body::before{background:radial-gradient(circle at 20% 0%,rgba(128,128,128,.12),transparent 60%)!important}
 </style>
+<style id="mz-badge">
+html body .owner-badge{display:inline-flex!important;align-items:center!important;gap:8px!important;padding:4px 14px 4px 4px!important;font-size:.78rem!important;font-weight:700!important;line-height:1!important;white-space:nowrap!important;border-radius:999px!important}
+html body .owner-badge .badge-avatar{width:28px!important;height:28px!important;margin:0!important;vertical-align:baseline!important;font-size:.8rem!important;flex-shrink:0!important}
+html body #badgeText{display:inline-flex!important;align-items:center!important;gap:4px!important;line-height:1!important}
+html body .owner-badge .badge-avatar svg,html body #upAvatar svg{width:58%;height:58%;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+</style>
 </head>
 <body class="light-mode">
 
@@ -742,5 +748,16 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   });
 })();
 </script>
-</body>
+<script id="mz-badge-js">
+(function(){
+  var PERSON = '<svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 4-6 8-6s8 2 8 6"/></svg>';
+  ['badgeAvatar','upAvatar'].forEach(function(id){
+    var el = document.getElementById(id);
+    if (!el) return;
+    function fix(){ if (el.textContent.trim() === '?') el.innerHTML = PERSON; }
+    fix();
+    new MutationObserver(fix).observe(el, {childList:true, characterData:true, subtree:true});
+  });
+})();
+</script>\n</body>
 </html>
