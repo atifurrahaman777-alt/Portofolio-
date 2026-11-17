@@ -615,6 +615,11 @@ html body .pf-head>*{pointer-events:auto}
 html body .pf-banner .pf-cam{z-index:6;bottom:14px;right:12px;width:42px;height:42px}
 html body .pf-banner{z-index:1}
 </style>
+<style id="mz-sheetfix">
+html body .pf-sheet{top:0!important;bottom:auto!important;height:100vh!important;height:100dvh!important;overscroll-behavior:contain;touch-action:none}
+html body .pf-sheet-panel{max-height:85vh!important;max-height:85dvh!important;overflow-y:auto;overscroll-behavior:contain;touch-action:pan-y;-webkit-overflow-scrolling:touch}
+html.mz-sheetlock,html.mz-sheetlock body{overflow:hidden!important}
+</style>
 </head>
 <body class="light-mode">
 
@@ -1975,6 +1980,21 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
 
   try { main(); } catch (e) { fail(e); }
+})();
+</script>
+<script id="mz-sheetfix-js">
+(function(){
+  var root = document.documentElement;
+  function sync(){
+    var open = !!document.querySelector('.pf-sheet:not([hidden])');
+    root.classList.toggle('mz-sheetlock', open);
+  }
+  new MutationObserver(sync).observe(document.body, {childList:true, subtree:true, attributes:true, attributeFilter:['hidden']});
+  document.addEventListener('touchmove', function(e){
+    var t = e.target;
+    if (t && t.classList && t.classList.contains('pf-sheet')) e.preventDefault();
+  }, {passive:false});
+  sync();
 })();
 </script>
 </body>
