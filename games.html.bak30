@@ -1,0 +1,1177 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080811">
+<meta name="description" content="Games — koleksi mini game, oleh Mann'zz">
+<link rel="icon" type="image/png" href="favicon.png">
+<title>Games | Mann'zz Tools</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.game-box{max-width:640px;margin:0 auto}
+.game-controls{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:16px}
+.game-controls button{padding:8px 14px;font-size:.82rem}
+.game-controls button.active{outline:3px solid var(--gold)}
+
+/* Tic Tac Toe */
+.ttt-board{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;max-width:280px;margin:0 auto}
+.ttt-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;font-size:2rem;font-weight:900;background:var(--card);border:2px solid #000;border-radius:12px;cursor:pointer;box-shadow:3px 3px 0 var(--gold)}
+.ttt-cell:disabled{cursor:default}
+.ttt-status{text-align:center;margin:14px 0;font-weight:700}
+
+/* Whack a mole */
+.wam-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:320px;margin:0 auto}
+.wam-hole{aspect-ratio:1;background:var(--card);border:2px solid #000;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:2rem;cursor:pointer;box-shadow:3px 3px 0 var(--purple)}
+.wam-hole.up{background:var(--gold)}
+.wam-top{display:flex;justify-content:space-between;max-width:320px;margin:0 auto 14px;font-weight:700}
+
+/* Reaction */
+.rt-area{height:240px;max-width:400px;margin:0 auto;border-radius:16px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:1.1rem;cursor:pointer;background:var(--card);border:2px solid #000;text-align:center;padding:14px}
+.rt-area.wait{background:#8a2020;color:#fff}
+.rt-area.go{background:#2ea055;color:#fff}
+.rt-stats{text-align:center;margin-top:14px;color:var(--muted);text-shadow:none;font-size:.85rem}
+
+/* Typing */
+.typing-text{background:var(--card);border:2px solid #000;border-radius:12px;padding:16px;margin-bottom:12px;line-height:1.8;font-size:1.02rem}
+.typing-text span.correct{color:#55f0a0}
+.typing-text span.wrong{color:#ff6b6b;text-decoration:underline}
+#typing-input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+.typing-stats{display:flex;gap:18px;justify-content:center;margin-top:14px;flex-wrap:wrap}
+.typing-stats div{text-align:center}
+.typing-stats b{display:block;font-size:1.3rem;color:var(--gold)}
+
+/* Spin wheel */
+.wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
+#wheel-canvas{max-width:100%}
+.wheel-pointer{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid var(--gold);margin-bottom:-6px}
+#wheel-options{width:100%;box-sizing:border-box;min-height:80px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+#wheel-result{text-align:center;font-size:1.3rem;font-weight:800;margin-top:8px;min-height:1.6em}
+
+body.light-mode .ttt-cell,
+body.light-mode .wam-hole,
+body.light-mode .rt-area,
+body.light-mode .typing-text,
+body.light-mode #typing-input,
+body.light-mode #wheel-options{background:#fff;color:#111;border-color:#000 !important}
+body.light-mode .rt-area.wait{background:#8a2020;color:#fff}
+body.light-mode .rt-area.go{background:#2ea055;color:#fff}
+body.light-mode .wam-hole.up{background:#ffd700;color:#111}
+body.light-mode .typing-text span{color:#111}
+body.light-mode .typing-text span.correct{color:#1a7a3c}
+body.light-mode .typing-text span.wrong{color:#c0392b}
+
+.ttt-cell,.ttt-cell:disabled{color:#fff;opacity:1;-webkit-text-fill-color:currentColor}
+.wam-hole{border-color:#666;user-select:none;-webkit-user-select:none;touch-action:manipulation}
+.wam-hole.up{color:#111}
+
+.ocean-nav{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:640px;margin:0 auto 18px}
+.ocean-tab{padding:10px 16px;border:2px solid #000;border-radius:999px;background:var(--card);color:inherit;font:inherit;font-size:.85rem;font-weight:800;cursor:pointer;white-space:nowrap;box-shadow:3px 3px 0 var(--purple);transition:transform .12s ease,box-shadow .12s ease;touch-action:manipulation}
+.ocean-tab:hover{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--purple)}
+.ocean-tab.active{background:var(--gold);color:#1a1200}
+body.light-mode .ocean-tab{background:#fff;color:#111}
+body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
+[hidden]{display:none!important}
+</style>
+<link rel="manifest" href="/manifest.json"><meta name="theme-color" content="#080811"><link rel="apple-touch-icon" href="/icon-192.png"><style id="mz-theme">
+html body:not(.light-mode){--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
+html body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
+html body:is(.light-mode,:not(.light-mode)){background:var(--bg)!important;color:var(--text)!important}
+html body:is(.light-mode,:not(.light-mode))::before,html body:is(.light-mode,:not(.light-mode))::after{background:none!important}
+html body:is(.light-mode,:not(.light-mode)) .card,html body:is(.light-mode,:not(.light-mode)) .game-box,html body:is(.light-mode,:not(.light-mode)) .ocean-tab{background:var(--card)!important;border:1px solid var(--line)!important;box-shadow:0 4px 18px var(--shadow)!important;border-radius:14px!important}
+html body:is(.light-mode,:not(.light-mode)) .ocean-tab{color:var(--muted)!important;border-radius:999px!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .ocean-tab.active{background:var(--accent)!important;border-color:var(--accent)!important;color:#fff!important}
+html body:is(.light-mode,:not(.light-mode)) .ttt-cell,html body:is(.light-mode,:not(.light-mode)) .wam-hole,html body:is(.light-mode,:not(.light-mode)) .typing-text{background:var(--bg)!important;border:1px solid var(--line)!important;box-shadow:none!important;border-radius:12px!important}
+html body:is(.light-mode,:not(.light-mode)) .rt-area{border:1px solid var(--line)!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .ttt-cell,html body:is(.light-mode,:not(.light-mode)) .ttt-cell:disabled{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
+html body:is(.light-mode,:not(.light-mode)) .wam-hole.up{background:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button{background:var(--card)!important;color:var(--text)!important;border:1px solid var(--line)!important;box-shadow:none!important;border-radius:10px!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button.active{background:var(--accent)!important;color:#fff!important;border-color:var(--accent)!important;outline:none!important}
+html body:is(.light-mode,:not(.light-mode)) .btn{background:var(--accent)!important;color:#fff!important;border:1px solid var(--line)!important;box-shadow:0 4px 18px var(--shadow)!important;text-shadow:none!important;border-radius:10px!important}
+html body:is(.light-mode,:not(.light-mode)) .game-controls button:not(.active){background:var(--card)!important;color:var(--text)!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) #typing-input,html body:is(.light-mode,:not(.light-mode)) #wheel-options,html body:is(.light-mode,:not(.light-mode)) textarea,html body:is(.light-mode,:not(.light-mode)) input{background:var(--bg)!important;color:var(--text)!important;border:1px solid var(--line)!important;border-radius:9px!important;box-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .typing-stats b{color:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) .wheel-pointer{border-top-color:var(--accent)!important}
+html body:is(.light-mode,:not(.light-mode)) h1,html body:is(.light-mode,:not(.light-mode)) h2,html body:is(.light-mode,:not(.light-mode)) h3,html body:is(.light-mode,:not(.light-mode)) .brand,html body:is(.light-mode,:not(.light-mode)) #wheel-result,html body:is(.light-mode,:not(.light-mode)) .ttt-status,html body:is(.light-mode,:not(.light-mode)) .wam-top{color:var(--text)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .accent,html body:is(.light-mode,:not(.light-mode)) .eyebrow{color:var(--accent)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) .sub,html body:is(.light-mode,:not(.light-mode)) .rt-stats,html body:is(.light-mode,:not(.light-mode)) footer{color:var(--muted)!important;text-shadow:none!important}
+html body:is(.light-mode,:not(.light-mode)) #theme-toggle{background:var(--card)!important;border:1px solid var(--line)!important;color:var(--text)!important;border-radius:8px!important;box-shadow:none!important}
+</style>
+<style id="mz-bw">
+html body:not(.light-mode){--gold:#f5f5f5;--purple:#f5f5f5;--accent:#f5f5f5;--on:#0a0a0a}
+html body.light-mode{--gold:#0a0a0a;--purple:#0a0a0a;--accent:#0a0a0a;--on:#fff}
+html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.light-mode)) .ocean-tab.active,html body:is(.light-mode,:not(.light-mode)) .email-step.active,html body:is(.light-mode,:not(.light-mode)) .game-controls button.active,html body:is(.light-mode,:not(.light-mode)) .status{color:var(--on)!important}
+</style>
+<style id="mz-games2">
+html body .gm-top{display:flex;justify-content:space-between;align-items:center;gap:10px;max-width:320px;margin:0 auto 12px;font-weight:700}
+html body .gm-msg{text-align:center;margin:12px 0;font-weight:700;min-height:1.4em}
+html body .gm-row{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin:12px 0}
+html body .gm-row input{width:150px;text-align:center}
+html body .mem-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:320px;margin:0 auto}
+html body .mem-card{aspect-ratio:1;font-size:1.7rem;font-weight:900;border-radius:12px!important;border:1px solid var(--line)!important;background:var(--card)!important;color:var(--text)!important;box-shadow:none!important;cursor:pointer;display:flex;align-items:center;justify-content:center;touch-action:manipulation;padding:0}
+html body .mem-card.open{background:var(--accent)!important;color:var(--on,#fff)!important}
+html body .mem-card.done{background:var(--bg)!important;opacity:.5}
+html body .g2048-board{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;max-width:320px;margin:0 auto;padding:8px;border-radius:14px;background:var(--line);touch-action:none;user-select:none;-webkit-user-select:none}
+html body .t2048{aspect-ratio:1;border-radius:10px;display:flex;align-items:center;justify-content:center;font-weight:900;font-size:1.4rem;background:var(--bg);color:#776e65}
+html body .t2048.v2{background:#eee4da}
+html body .t2048.v4{background:#ede0c8}
+html body .t2048.v8{background:#f2b179;color:#fff}
+html body .t2048.v16{background:#f59563;color:#fff}
+html body .t2048.v32{background:#f67c5f;color:#fff}
+html body .t2048.v64{background:#f65e3b;color:#fff}
+html body .t2048.v128,html body .t2048.v256,html body .t2048.v512{background:#edcf72;color:#fff;font-size:1.15rem}
+html body .t2048.v1024,html body .t2048.v2048,html body .t2048.vbig{background:#edc22e;color:#fff;font-size:1rem}
+html body #snake-canvas{display:block;margin:0 auto;max-width:100%;border:1px solid var(--line);border-radius:12px;touch-action:none}
+html body .dpad{display:grid;grid-template-columns:repeat(3,58px);grid-template-rows:repeat(2,48px);gap:8px;justify-content:center;margin:14px auto 0}
+html body .dpad button{font-size:1.3rem;font-weight:800;border-radius:12px!important;border:1px solid var(--line)!important;background:var(--card)!important;color:var(--text)!important;box-shadow:none!important;cursor:pointer;touch-action:manipulation;padding:0}
+html body .dpad button:active{background:var(--accent)!important;color:var(--on,#fff)!important}
+html body .dpad .up{grid-column:2;grid-row:1}
+html body .dpad .lf{grid-column:1;grid-row:2}
+html body .dpad .dn{grid-column:2;grid-row:2}
+html body .dpad .rt{grid-column:3;grid-row:2}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="2" y="7" width="20" height="11" rx="5.5"/><line x1="7" y1="10.5" x2="7" y2="14.5"/><line x1="5" y1="12.5" x2="9" y2="12.5"/><circle cx="16" cy="11" r="1" fill="currentColor"/><circle cx="18.5" cy="14" r="1" fill="currentColor"/></svg> Games <span class="accent">Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg></button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">MINI GAMES</div>
+<h1>Santai dulu,<br><span class="accent">main game.</span></h1>
+<p class="sub">Koleksi mini game ringan buat ngabisin waktu. Semua jalan langsung di browser.</p>
+</section>
+
+<nav class="ocean-nav" id="games-nav" aria-label="Navigasi game">
+<button type="button" class="ocean-tab active" data-game-tab="ttt"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="8"/></svg> Tic Tac Toe</button>
+<button type="button" class="ocean-tab" data-game-tab="wam"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 21l7-7"/><path d="M14 4l6 6-3 3-6-6 3-3z"/><path d="M12.5 8.5l-7 7"/></svg> Whack-a-Mole</button>
+<button type="button" class="ocean-tab" data-game-tab="rt"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M13 2L4 14h6l-1 8 9-12h-6l1-8z"/></svg> Reaction</button>
+<button type="button" class="ocean-tab" data-game-tab="typing">⌨ Typing</button>
+<button type="button" class="ocean-tab" data-game-tab="wheel"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="9"/><line x1="12" y1="3" x2="12" y2="21"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="5.5" y1="5.5" x2="18.5" y2="18.5"/><line x1="18.5" y1="5.5" x2="5.5" y2="18.5"/></svg> Spin Wheel</button>
+
+<button type="button" class="ocean-tab" data-game-tab="mem">Memory</button>
+<button type="button" class="ocean-tab" data-game-tab="g2048">2048</button>
+<button type="button" class="ocean-tab" data-game-tab="snake">Snake</button>
+<button type="button" class="ocean-tab" data-game-tab="guess">Tebak Angka</button>
+<button type="button" class="ocean-tab" data-game-tab="rps">Suit</button>
+</nav>
+
+<!-- TIC TAC TOE -->
+<section class="card game-box ocean-view" id="view-ttt" data-view="ttt">
+<h2 style="text-align:center;margin-top:0">Tic Tac Toe vs Bot</h2>
+<div class="game-controls">
+<button type="button" class="btn" data-diff="easy">Easy</button>
+<button type="button" class="btn" data-diff="medium">Medium</button>
+<button type="button" class="btn" data-diff="hard">Hard</button>
+</div>
+<div class="ttt-board" id="ttt-board"></div>
+<p class="ttt-status" id="ttt-status">Pick a difficulty to start.</p>
+<div style="text-align:center"><button type="button" class="btn" id="ttt-reset">Reset</button></div>
+</section>
+
+<!-- WHACK A MOLE -->
+<section class="card game-box ocean-view" id="view-wam" data-view="wam" hidden>
+<h2 style="text-align:center;margin-top:0">Whack-a-Mole</h2>
+<div class="wam-top"><span id="wam-score">Score: 0</span><span id="wam-time">Time: 30s</span></div>
+<div class="wam-grid" id="wam-grid"></div>
+<div style="text-align:center;margin-top:16px"><button type="button" class="btn" id="wam-start">Start</button></div>
+</section>
+
+<!-- REACTION TIME -->
+<section class="card game-box ocean-view" id="view-rt" data-view="rt" hidden>
+<h2 style="text-align:center;margin-top:0">Reaction Time Test</h2>
+<div class="rt-area" id="rt-area">Klik buat mulai</div>
+<p class="rt-stats" id="rt-stats">Belum ada percobaan.</p>
+</section>
+
+<!-- TYPING SPEED -->
+<section class="card game-box ocean-view" id="view-typing" data-view="typing" hidden>
+<h2 style="text-align:center;margin-top:0">Typing Speed Test</h2>
+<div class="typing-text" id="typing-text"></div>
+<textarea id="typing-input" rows="3" placeholder="Mulai ngetik di sini..."></textarea>
+<div class="typing-stats">
+<div><b id="typing-wpm">0</b>WPM</div>
+<div><b id="typing-acc">100%</b>Akurasi</div>
+<div><b id="typing-timer">0s</b>Waktu</div>
+</div>
+<div style="text-align:center;margin-top:12px"><button type="button" class="btn" id="typing-reset">Teks Baru</button></div>
+</section>
+
+<!-- SPIN WHEEL -->
+<section class="card game-box ocean-view" id="view-wheel" data-view="wheel" hidden>
+<h2 style="text-align:center;margin-top:0">Spin Wheel</h2>
+<textarea id="wheel-options" placeholder="Masukkan pilihan, pisahkan dengan koma. Contoh: Hadiah 1, Hadiah 2, Coba Lagi">Hadiah 1, Hadiah 2, Coba Lagi, Hadiah 3, Zonk</textarea>
+<div class="wheel-wrap" style="margin-top:14px">
+<div class="wheel-pointer"></div>
+<canvas id="wheel-canvas" width="320" height="320"></canvas>
+<button type="button" class="btn" id="wheel-spin">Spin</button>
+<div id="wheel-result"></div>
+</div>
+</section>
+
+
+<!-- MEMORY -->
+<section class="card game-box ocean-view" id="view-mem" data-view="mem" hidden>
+<h2 style="text-align:center;margin-top:0">Memory Match</h2>
+<div class="gm-top"><span id="mem-moves">Langkah: 0</span><button type="button" class="btn" id="mem-reset">Ulang</button></div>
+<div class="mem-grid" id="mem-grid"></div>
+<p class="gm-msg" id="mem-msg"></p>
+</section>
+
+<!-- 2048 -->
+<section class="card game-box ocean-view" id="view-g2048" data-view="g2048" hidden>
+<h2 style="text-align:center;margin-top:0">2048</h2>
+<div class="gm-top"><span id="g2048-score">Skor: 0</span><button type="button" class="btn" id="g2048-reset">Ulang</button></div>
+<div class="g2048-board" id="g2048-board"></div>
+<p class="gm-msg" id="g2048-msg">Geser di papan atau pakai tombol arah.</p>
+<div class="dpad" id="g2048-pad">
+<button type="button" class="up" data-d="1">&#8593;</button>
+<button type="button" class="lf" data-d="0">&#8592;</button>
+<button type="button" class="dn" data-d="3">&#8595;</button>
+<button type="button" class="rt" data-d="2">&#8594;</button>
+</div>
+</section>
+
+<!-- SNAKE -->
+<section class="card game-box ocean-view" id="view-snake" data-view="snake" hidden>
+<h2 style="text-align:center;margin-top:0">Snake</h2>
+<div class="gm-top"><span id="snake-score">Skor: 0</span><button type="button" class="btn" id="snake-start">Mulai</button></div>
+<canvas id="snake-canvas" width="300" height="300"></canvas>
+<p class="gm-msg" id="snake-msg">Tekan Mulai, lalu geser di papan atau pakai tombol arah.</p>
+<div class="dpad" id="snake-pad">
+<button type="button" class="up" data-d="1">&#8593;</button>
+<button type="button" class="lf" data-d="0">&#8592;</button>
+<button type="button" class="dn" data-d="3">&#8595;</button>
+<button type="button" class="rt" data-d="2">&#8594;</button>
+</div>
+</section>
+
+<!-- TEBAK ANGKA -->
+<section class="card game-box ocean-view" id="view-guess" data-view="guess" hidden>
+<h2 style="text-align:center;margin-top:0">Tebak Angka</h2>
+<p class="gm-msg" style="margin-top:0">Aku memikirkan angka 1 sampai 100. Coba tebak!</p>
+<div class="gm-row">
+<input id="guess-input" type="number" inputmode="numeric" min="1" max="100" placeholder="1 - 100">
+<button type="button" class="btn" id="guess-btn">Tebak</button>
+</div>
+<p class="gm-msg" id="guess-msg"></p>
+<p class="gm-msg" id="guess-tries">Percobaan: 0</p>
+<div style="text-align:center"><button type="button" class="btn" id="guess-reset">Main Lagi</button></div>
+</section>
+
+<!-- SUIT -->
+<section class="card game-box ocean-view" id="view-rps" data-view="rps" hidden>
+<h2 style="text-align:center;margin-top:0">Suit vs Bot</h2>
+<div class="gm-row">
+<button type="button" class="btn" data-pick="batu">Batu</button>
+<button type="button" class="btn" data-pick="gunting">Gunting</button>
+<button type="button" class="btn" data-pick="kertas">Kertas</button>
+</div>
+<p class="gm-msg" id="rps-msg">Pilih salah satu.</p>
+<p class="gm-msg" id="rps-score">Menang 0 | Kalah 0 | Seri 0</p>
+<div style="text-align:center"><button type="button" class="btn" id="rps-reset">Reset Skor</button></div>
+</section>
+</main>
+<footer>© Mann'zz Tools</footer>
+<script src="app.js"></script>
+<script>
+window.addEventListener('error', function(e) {
+  document.body.insertAdjacentHTML("afterbegin", '<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff2222;color:#fff;padding:12px;font-size:13px;word-break:break-all">ERROR: ' + e.message + ' (line ' + e.lineno + ')</div>');
+});
+</script>
+<script>
+const gtabs = [...document.querySelectorAll('[data-game-tab]')];
+const gviews = [...document.querySelectorAll('.ocean-view')];
+function showGame(name) {
+  gviews.forEach(v => v.hidden = v.dataset.view !== name);
+  gtabs.forEach(t => t.classList.toggle('active', t.dataset.gameTab === name));
+}
+gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)));
+
+/* ===== TIC TAC TOE ===== */
+(() => {
+  const boardEl = document.getElementById('ttt-board');
+  const statusEl = document.getElementById('ttt-status');
+  const resetBtn = document.getElementById('ttt-reset');
+  const diffBtns = document.querySelectorAll('[data-diff]');
+  let board = Array(9).fill(null);
+  let difficulty = null;
+  let gameOver = false;
+
+  const WINS = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
+
+  function checkWinner(b) {
+    for (const [a,c,d] of WINS) {
+      if (b[a] && b[a] === b[c] && b[a] === b[d]) return b[a];
+    }
+    return b.every(Boolean) ? 'draw' : null;
+  }
+
+  function minimax(b, isBot) {
+    const winner = checkWinner(b);
+    if (winner === 'O') return { score: 1 };
+    if (winner === 'X') return { score: -1 };
+    if (winner === 'draw') return { score: 0 };
+
+    const moves = [];
+    for (let i = 0; i < 9; i++) {
+      if (!b[i]) {
+        b[i] = isBot ? 'O' : 'X';
+        const result = minimax(b, !isBot);
+        moves.push({ index: i, score: result.score });
+        b[i] = null;
+      }
+    }
+    if (isBot) {
+      return moves.reduce((best, m) => m.score > best.score ? m : best);
+    }
+    return moves.reduce((best, m) => m.score < best.score ? m : best);
+  }
+
+  function botMove() {
+    const empty = board.map((v,i) => v ? null : i).filter(v => v !== null);
+    if (!empty.length) return;
+
+    if (difficulty === 'easy') {
+      const i = empty[Math.floor(Math.random() * empty.length)];
+      board[i] = 'O';
+    } else if (difficulty === 'medium') {
+      if (Math.random() < 0.5) {
+        const best = minimax([...board], true);
+        board[best.index] = 'O';
+      } else {
+        const i = empty[Math.floor(Math.random() * empty.length)];
+        board[i] = 'O';
+      }
+    } else {
+      const best = minimax([...board], true);
+      board[best.index] = 'O';
+    }
+  }
+
+  function render() {
+    boardEl.innerHTML = '';
+    board.forEach((v, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'ttt-cell';
+      btn.textContent = v || '';
+      btn.disabled = !!v || gameOver || !difficulty;
+      btn.addEventListener('click', () => playerMove(i));
+      boardEl.appendChild(btn);
+    });
+  }
+
+  function endCheck() {
+    const winner = checkWinner(board);
+    if (winner) {
+      gameOver = true;
+      if (winner === 'draw') statusEl.textContent = "It's a draw!";
+      else statusEl.innerHTML = winner === 'X' ? 'You win! <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>' : 'Bot wins!';
+      return true;
+    }
+    return false;
+  }
+
+  function playerMove(i) {
+    if (gameOver || board[i] || !difficulty) return;
+    board[i] = 'X';
+    render();
+    if (endCheck()) return;
+    statusEl.textContent = 'Bot thinking...';
+    setTimeout(() => {
+      botMove();
+      render();
+      if (!endCheck()) statusEl.textContent = 'Your turn.';
+    }, 300);
+  }
+
+  diffBtns.forEach(b => b.addEventListener('click', () => {
+    difficulty = b.dataset.diff;
+    diffBtns.forEach(x => x.classList.toggle('active', x === b));
+    board = Array(9).fill(null);
+    gameOver = false;
+    statusEl.textContent = `Mode: ${difficulty[0].toUpperCase()+difficulty.slice(1)}. Your turn.`;
+    render();
+  }));
+
+  resetBtn.addEventListener('click', () => {
+    board = Array(9).fill(null);
+    gameOver = false;
+    statusEl.textContent = difficulty ? 'Your turn.' : 'Pick a difficulty to start.';
+    render();
+  });
+
+  render();
+})();
+
+/* ===== WHACK A MOLE ===== */
+(() => {
+  const grid = document.getElementById('wam-grid');
+  const scoreEl = document.getElementById('wam-score');
+  const timeEl = document.getElementById('wam-time');
+  const startBtn = document.getElementById('wam-start');
+  let holes = [];
+  let score = 0, timeLeft = 30, moleTimer = null, countdown = null, running = false;
+
+  for (let i = 0; i < 9; i++) {
+    const h = document.createElement('div');
+    h.className = 'wam-hole';
+    h.addEventListener('pointerdown', () => {
+      if (h.classList.contains('up')) {
+        score++;
+        scoreEl.textContent = 'Score: ' + score;
+        h.classList.remove('up');
+        h.textContent = '';
+      }
+    });
+    grid.appendChild(h);
+    holes.push(h);
+  }
+
+  function popRandom() {
+    holes.forEach(h => { h.classList.remove('up'); h.textContent = ''; });
+    const i = Math.floor(Math.random() * holes.length);
+    holes[i].classList.add('up');
+    holes[i].innerHTML = '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;fill:#c68642"><circle cx="12" cy="13" r="7"/><circle cx="7" cy="6" r="3"/><circle cx="17" cy="6" r="3"/><circle cx="9.5" cy="12" r="1" fill="#2a1d14"/><circle cx="14.5" cy="12" r="1" fill="#2a1d14"/></svg>';
+  }
+
+  function start() {
+    if (running) return;
+    running = true;
+    score = 0;
+    timeLeft = 30;
+    scoreEl.textContent = 'Score: 0';
+    timeEl.textContent = 'Time: 30s';
+    startBtn.disabled = true;
+    moleTimer = setInterval(popRandom, 700);
+    countdown = setInterval(() => {
+      timeLeft--;
+      timeEl.textContent = 'Time: ' + timeLeft + 's';
+      if (timeLeft <= 0) stop();
+    }, 1000);
+  }
+
+  function stop() {
+    running = false;
+    clearInterval(moleTimer);
+    clearInterval(countdown);
+    holes.forEach(h => { h.classList.remove('up'); h.textContent = ''; });
+    timeEl.textContent = 'Selesai! Skor: ' + score;
+    startBtn.disabled = false;
+  }
+
+  startBtn.addEventListener('click', start);
+})();
+
+/* ===== REACTION TIME ===== */
+(() => {
+  const area = document.getElementById('rt-area');
+  const stats = document.getElementById('rt-stats');
+  const decoys = [
+    { name: 'MERAH',  bg: '#c0392b' },
+    { name: 'BIRU',   bg: '#2f6fd6' },
+    { name: 'KUNING', bg: '#c99a06' },
+    { name: 'UNGU',   bg: '#8e44ad' },
+    { name: 'ORANYE', bg: '#d9702a' },
+    { name: 'PINK',   bg: '#d6336c' }
+  ];
+  let state = 'idle';
+  let decoyTimer = null, goTimer = null;
+  let startTime = 0, lastIdx = -1;
+  let results = [];
+
+  function resetStyle() { area.style.background = ''; area.style.color = ''; }
+  function clearTimers() { clearTimeout(decoyTimer); clearTimeout(goTimer); }
+
+  function nextDecoy() {
+    let i;
+    do { i = Math.floor(Math.random() * decoys.length); } while (i === lastIdx);
+    lastIdx = i;
+    area.className = 'rt-area';
+    area.style.background = decoys[i].bg;
+    area.style.color = '#fff';
+    area.textContent = decoys[i].name + ' - tunggu HIJAU...';
+    decoyTimer = setTimeout(nextDecoy, 500 + Math.random() * 500);
+  }
+
+  area.addEventListener('click', () => {
+    if (state === 'idle') {
+      state = 'waiting';
+      nextDecoy();
+      goTimer = setTimeout(() => {
+        clearTimeout(decoyTimer);
+        state = 'go';
+        resetStyle();
+        area.className = 'rt-area go';
+        area.textContent = 'HIJAU! KLIK SEKARANG!';
+        startTime = performance.now();
+      }, 2000 + Math.random() * 3500);
+    } else if (state === 'waiting') {
+      clearTimers();
+      state = 'idle';
+      resetStyle();
+      area.className = 'rt-area';
+      area.textContent = 'Kecepetan! Klik buat coba lagi.';
+    } else if (state === 'go') {
+      const reaction = Math.round(performance.now() - startTime);
+      results.push(reaction);
+      const avg = Math.round(results.reduce((a, b) => a + b, 0) / results.length);
+      const best = Math.min(...results);
+      stats.textContent = `Terakhir: ${reaction}ms · Terbaik: ${best}ms · Rata-rata: ${avg}ms (${results.length}x)`;
+      state = 'idle';
+      resetStyle();
+      area.className = 'rt-area';
+      area.textContent = 'Klik buat coba lagi';
+    }
+  });
+})();
+
+/* ===== TYPING SPEED ===== */
+(() => {
+  const sentences = [
+    'Dunia maya memberi kita akses ke informasi tanpa batas.',
+    'Latihan rutin akan membuat kecepatan mengetik semakin baik.',
+    'Teknologi terus berkembang dan mengubah cara kita bekerja.',
+    'Mann zz tools dibuat untuk membantu pekerjaan sehari hari.',
+    'Fokus dan konsistensi adalah kunci untuk mencapai hasil maksimal.',
+    'Setiap pagi matahari terbit dari timur dan membawa harapan baru.',
+    'Belajar pemrograman butuh kesabaran, tapi hasilnya sangat memuaskan.',
+    'Kopi hangat dan musik santai membuat sore hari terasa lebih tenang.',
+    'Jangan takut gagal, karena dari kesalahan kita belajar banyak hal.',
+    'Kecepatan mengetik sepuluh jari sangat berguna untuk pekerjaan kantor.',
+    'Hujan deras turun sejak siang dan jalanan menjadi sedikit tergenang.',
+    'Indonesia memiliki ribuan pulau dengan budaya dan bahasa yang beragam.',
+    'Membaca buku setiap hari dapat memperluas wawasan dan melatih imajinasi.',
+    'Teman yang baik selalu ada saat kita senang maupun saat kita susah.',
+    'Bot WhatsApp bisa membantu mengunduh video, membuat stiker, dan banyak lagi.',
+    'Keamanan akun itu penting, jadi gunakan kata sandi yang kuat dan unik.',
+    'Pasar malam ramai pengunjung yang mencari jajanan khas dan mainan murah.',
+    'Kerja keras hari ini adalah investasi untuk kesuksesan di masa depan.',
+    'Burung berkicau riang di atas pohon sementara angin berhembus pelan.',
+    'Pelan pelan asal terus berjalan, lama lama sampai juga ke tujuan.',
+    'Sebelum mengirim pesan, periksa dulu apakah tulisanmu sudah benar.',
+    'Layar ponsel yang terlalu terang bisa membuat mata cepat lelah.',
+    'Malam ini bulan bersinar terang dan bintang bertebaran di langit.',
+    'Nasi goreng buatan ibu selalu terasa paling enak dibanding yang lain.',
+    'Komputer cepat tidak ada gunanya kalau penggunanya malas belajar hal baru.',
+    'Ketik dengan tenang dan teliti, karena akurasi sama pentingnya dengan kecepatan.',
+    'Internet yang stabil membuat pekerjaan online berjalan lancar tanpa gangguan.',
+    'Liburan akhir pekan terasa singkat, tapi cukup untuk mengisi ulang semangat.',
+    'Programmer hebat bukan yang tidak pernah error, tapi yang tahu cara memperbaikinya.',
+    'Semangat belajar tidak mengenal usia, siapa pun boleh memulai kapan saja.'
+  ];
+  let lastIdx = -1;
+  const textEl = document.getElementById('typing-text');
+  const input = document.getElementById('typing-input');
+  const wpmEl = document.getElementById('typing-wpm');
+  const accEl = document.getElementById('typing-acc');
+  const timerEl = document.getElementById('typing-timer');
+  const resetBtn = document.getElementById('typing-reset');
+
+  let target = '';
+  let startTime = null;
+  let timerInterval = null;
+  let finished = false;
+
+  function loadSentence() {
+    let idx;
+    do { idx = Math.floor(Math.random() * sentences.length); } while (idx === lastIdx);
+    lastIdx = idx;
+    target = sentences[idx];
+    renderTarget('');
+    input.value = '';
+    input.disabled = false;
+    startTime = null;
+    finished = false;
+    clearInterval(timerInterval);
+    wpmEl.textContent = '0';
+    accEl.textContent = '100%';
+    timerEl.textContent = '0s';
+  }
+
+  function renderTarget(typed) {
+    textEl.innerHTML = target.split('').map((ch, i) => {
+      if (i >= typed.length) return `<span>${ch}</span>`;
+      return ch === typed[i]
+        ? `<span class="correct">${ch}</span>`
+        : `<span class="wrong">${ch}</span>`;
+    }).join('');
+  }
+
+  input.addEventListener('input', () => {
+    if (finished) return;
+    const typed = input.value;
+
+    if (!startTime) {
+      startTime = Date.now();
+      timerInterval = setInterval(() => {
+        timerEl.textContent = Math.floor((Date.now() - startTime) / 1000) + 's';
+      }, 200);
+    }
+
+    renderTarget(typed);
+
+    let correctChars = 0;
+    for (let i = 0; i < typed.length; i++) {
+      if (typed[i] === target[i]) correctChars++;
+    }
+    const acc = typed.length ? Math.round((correctChars / typed.length) * 100) : 100;
+    accEl.textContent = acc + '%';
+
+    const elapsedMin = (Date.now() - startTime) / 60000;
+    const words = typed.trim().length ? typed.trim().split(/\s+/).length : 0;
+    wpmEl.textContent = elapsedMin > 0 ? Math.round(words / elapsedMin) : 0;
+
+    if (typed === target) {
+      finished = true;
+      clearInterval(timerInterval);
+      input.disabled = true;
+    }
+  });
+
+  resetBtn.addEventListener('click', loadSentence);
+  loadSentence();
+})();
+
+/* ===== SPIN WHEEL ===== */
+(() => {
+  const canvas = document.getElementById('wheel-canvas');
+  const ctx = canvas.getContext('2d');
+  const optionsInput = document.getElementById('wheel-options');
+  const spinBtn = document.getElementById('wheel-spin');
+  const resultEl = document.getElementById('wheel-result');
+  const colors = ['#ffd700', '#a855f7', '#55f0a0', '#ff6b6b', '#4da3ff', '#ff9f4d'];
+
+  let rotation = 0;
+  let spinning = false;
+
+  function getOptions() {
+    return optionsInput.value.split(',').map(s => s.trim()).filter(Boolean);
+  }
+
+  function drawWheel() {
+    const options = getOptions();
+    if (options.length === 0) {
+      const size = canvas.width;
+      ctx.clearRect(0, 0, size, size);
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(size/2, size/2, size/2-6, 0, Math.PI*2);
+      ctx.fillStyle = '#2a2a3a';
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = '#ffd700';
+      ctx.font = 'bold 14px system-ui, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('Isi pilihan dulu', size/2, size/2);
+      ctx.restore();
+      return;
+    }
+    const n = options.length;
+    const size = canvas.width;
+    const cx = size / 2, cy = size / 2, r = size / 2 - 6;
+
+    ctx.clearRect(0, 0, size, size);
+    ctx.save();
+    ctx.translate(cx, cy);
+    ctx.rotate(rotation);
+
+    for (let i = 0; i < n; i++) {
+      const start = (i / n) * Math.PI * 2;
+      const end = ((i + 1) / n) * Math.PI * 2;
+      ctx.beginPath();
+      ctx.moveTo(0, 0);
+      ctx.arc(0, 0, r, start, end);
+      ctx.closePath();
+      ctx.fillStyle = colors[i % colors.length];
+      ctx.fill();
+      ctx.strokeStyle = '#000';
+      ctx.lineWidth = 2;
+      ctx.stroke();
+
+      ctx.save();
+      ctx.rotate(start + (end - start) / 2);
+      ctx.textAlign = 'right';
+      ctx.fillStyle = '#0c0c18';
+      ctx.font = 'bold 13px system-ui, sans-serif';
+      const label = options[i].length > 14 ? options[i].slice(0, 13) + '…' : options[i];
+      ctx.fillText(label, r - 10, 5);
+      ctx.restore();
+    }
+    ctx.restore();
+  }
+
+  drawWheel();
+  optionsInput.addEventListener('input', () => { if (!spinning) { rotation = 0; drawWheel(); resultEl.textContent=''; } });
+
+  spinBtn.addEventListener('click', () => {
+    const options = getOptions();
+    if (spinning || options.length < 2) {
+      if (options.length < 2) resultEl.textContent = 'Minimal 2 pilihan ya.';
+      return;
+    }
+    spinning = true;
+    resultEl.textContent = '';
+    spinBtn.disabled = true;
+
+    const n = options.length;
+    const targetIndex = Math.floor(Math.random() * n);
+    const sliceAngle = (Math.PI * 2) / n;
+    const centerAngle = targetIndex * sliceAngle + sliceAngle / 2;
+    const base = Math.ceil(rotation / (Math.PI * 2)) * Math.PI * 2;
+    const turns = 6 + Math.floor(Math.random() * 3);
+    const targetRotation = base + turns * Math.PI * 2 + (1.5 * Math.PI - centerAngle);
+
+    const duration = 4000;
+    const startRotation = rotation;
+    const diff = targetRotation - startRotation;
+    const startTime = performance.now();
+
+    function animate(now) {
+      const elapsed = now - startTime;
+      const t = Math.min(elapsed / duration, 1);
+      const eased = 1 - Math.pow(1 - t, 3);
+      rotation = startRotation + diff * eased;
+      drawWheel();
+      if (t < 1) {
+        requestAnimationFrame(animate);
+      } else {
+        spinning = false;
+        spinBtn.disabled = false;
+        resultEl.innerHTML = '<svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg> ' + options[targetIndex];
+      }
+    }
+    requestAnimationFrame(animate);
+  });
+})();
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script>
+(function(){
+  function sync(){
+    try{
+      var pb = window.parent !== window ? window.parent.document.body : null;
+      if(pb) document.body.classList.toggle('light-mode', pb.classList.contains('light-mode'));
+    }catch(e){}
+  }
+  sync();
+  window.addEventListener('load', sync);
+  try{
+    new MutationObserver(sync).observe(window.parent.document.body, {attributes:true, attributeFilter:['class']});
+  }catch(e){}
+})();
+</script>
+<script id="mz-solo">
+(function(){
+  var valid = ['ttt','wam','rt','typing','wheel','mem','g2048','snake','guess','rps'];
+  function go(){
+    var h = (location.hash || '').replace('#','');
+    if (valid.indexOf(h) === -1) return;
+    if (typeof showGame === 'function') showGame(h);
+    var nav = document.getElementById('games-nav');
+    if (nav) nav.style.display = 'none';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'none';
+  }
+  go();
+  window.addEventListener('hashchange', go);
+})();
+</script>
+<script id="mz-games2-js">
+(function(){
+  window.mzSwipe = function(el, cb){
+    var sx = 0, sy = 0;
+    el.addEventListener('touchstart', function(e){ sx = e.touches[0].clientX; sy = e.touches[0].clientY; }, {passive:true});
+    el.addEventListener('touchmove', function(e){ e.preventDefault(); }, {passive:false});
+    el.addEventListener('touchend', function(e){
+      var t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+      if (Math.max(Math.abs(dx), Math.abs(dy)) < 24) return;
+      if (Math.abs(dx) > Math.abs(dy)) cb(dx < 0 ? 0 : 2); else cb(dy < 0 ? 1 : 3);
+    }, {passive:true});
+  };
+
+  /* ===== MEMORY MATCH ===== */
+  (function(){
+    var grid = document.getElementById('mem-grid');
+    var movesEl = document.getElementById('mem-moves');
+    var msg = document.getElementById('mem-msg');
+    var symbols = ['\u25CF','\u25B2','\u25A0','\u25C6','\u2605','\u2665','\u2663','\u2660'];
+    var cards = [], first = null, lock = false, moves = 0, matched = 0;
+    function shuffle(a){
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var tmp = a[i]; a[i] = a[j]; a[j] = tmp;
+      }
+      return a;
+    }
+    function start(){
+      cards = shuffle(symbols.concat(symbols));
+      first = null; lock = false; moves = 0; matched = 0;
+      movesEl.textContent = 'Langkah: 0';
+      msg.textContent = '';
+      grid.replaceChildren();
+      cards.forEach(function(sym, i){
+        var b = document.createElement('button');
+        b.type = 'button';
+        b.className = 'mem-card';
+        b.addEventListener('click', function(){ flip(b, i); });
+        grid.appendChild(b);
+      });
+    }
+    function flip(b, i){
+      if (lock || b.classList.contains('open') || b.classList.contains('done')) return;
+      b.classList.add('open');
+      b.textContent = cards[i];
+      if (first === null) { first = i; return; }
+      moves++;
+      movesEl.textContent = 'Langkah: ' + moves;
+      var a = grid.children[first];
+      if (cards[first] === cards[i]) {
+        a.classList.add('done'); b.classList.add('done');
+        first = null; matched++;
+        if (matched === symbols.length) msg.textContent = 'Selesai dalam ' + moves + ' langkah!';
+      } else {
+        lock = true;
+        setTimeout(function(){
+          a.classList.remove('open'); b.classList.remove('open');
+          a.textContent = ''; b.textContent = '';
+          first = null; lock = false;
+        }, 700);
+      }
+    }
+    document.getElementById('mem-reset').addEventListener('click', start);
+    start();
+  })();
+
+  /* ===== 2048 ===== */
+  (function(){
+    var boardEl = document.getElementById('g2048-board');
+    var scoreEl = document.getElementById('g2048-score');
+    var msg = document.getElementById('g2048-msg');
+    var view = document.getElementById('view-g2048');
+    var g, score, over;
+    function empty(){ var r = []; for (var i = 0; i < 4; i++) r.push([0,0,0,0]); return r; }
+    function addTile(){
+      var e = [];
+      for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) if (!g[r][c]) e.push([r, c]);
+      if (!e.length) return;
+      var p = e[Math.floor(Math.random() * e.length)];
+      g[p[0]][p[1]] = Math.random() < 0.9 ? 2 : 4;
+    }
+    function slide(line){
+      var a = line.filter(Boolean), gained = 0;
+      for (var i = 0; i < a.length - 1; i++) {
+        if (a[i] === a[i + 1]) { a[i] *= 2; gained += a[i]; a.splice(i + 1, 1); }
+      }
+      while (a.length < 4) a.push(0);
+      return {row: a, gained: gained};
+    }
+    function move(dir){
+      if (over) return;
+      var ng = empty(), gain = 0, moved = false, i, j;
+      for (i = 0; i < 4; i++) {
+        var line = [];
+        for (j = 0; j < 4; j++) {
+          line.push(dir === 0 ? g[i][j] : dir === 2 ? g[i][3 - j] : dir === 1 ? g[j][i] : g[3 - j][i]);
+        }
+        var res = slide(line);
+        gain += res.gained;
+        for (j = 0; j < 4; j++) {
+          var v = res.row[j];
+          if (dir === 0) ng[i][j] = v;
+          else if (dir === 2) ng[i][3 - j] = v;
+          else if (dir === 1) ng[j][i] = v;
+          else ng[3 - j][i] = v;
+        }
+      }
+      for (i = 0; i < 4; i++) for (j = 0; j < 4; j++) if (ng[i][j] !== g[i][j]) moved = true;
+      if (!moved) return;
+      g = ng; score += gain;
+      addTile(); render(); check();
+    }
+    function canMove(){
+      for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) {
+        if (!g[r][c]) return true;
+        if (c < 3 && g[r][c] === g[r][c + 1]) return true;
+        if (r < 3 && g[r][c] === g[r + 1][c]) return true;
+      }
+      return false;
+    }
+    function check(){
+      if (!canMove()) { over = true; msg.textContent = 'Game over! Skor: ' + score; return; }
+      for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) if (g[r][c] === 2048) { msg.textContent = 'Kamu dapat 2048! Lanjut terus.'; return; }
+    }
+    function render(){
+      scoreEl.textContent = 'Skor: ' + score;
+      boardEl.replaceChildren();
+      g.forEach(function(row){
+        row.forEach(function(v){
+          var d = document.createElement('div');
+          d.className = 't2048 v' + (v > 2048 ? 'big' : v);
+          d.textContent = v || '';
+          boardEl.appendChild(d);
+        });
+      });
+    }
+    function reset(){
+      g = empty(); score = 0; over = false;
+      msg.textContent = 'Geser di papan atau pakai tombol arah.';
+      addTile(); addTile(); render();
+    }
+    document.getElementById('g2048-reset').addEventListener('click', reset);
+    document.querySelectorAll('#g2048-pad [data-d]').forEach(function(b){
+      b.addEventListener('click', function(){ move(parseInt(b.dataset.d, 10)); });
+    });
+    window.mzSwipe(boardEl, move);
+    document.addEventListener('keydown', function(e){
+      var map = {ArrowLeft:0, ArrowUp:1, ArrowRight:2, ArrowDown:3};
+      if (!(e.key in map) || view.hidden) return;
+      e.preventDefault();
+      move(map[e.key]);
+    });
+    reset();
+  })();
+
+  /* ===== SNAKE ===== */ /*mz-snake2*/
+  (function(){
+    var cv = document.getElementById('snake-canvas');
+    var ctx = cv.getContext('2d');
+    var scoreEl = document.getElementById('snake-score');
+    var msg = document.getElementById('snake-msg');
+    var view = document.getElementById('view-snake');
+    var N = 15, S = cv.width / N, TICK = 150;
+    var DIRS = [{x:-1,y:0},{x:0,y:-1},{x:1,y:0},{x:0,y:3-2}];
+    var snake, prev, dir, queue, food, score, running = false, lastTick = 0, raf = 0;
+
+    function cssv(n, f){
+      var v = getComputedStyle(document.body).getPropertyValue(n).trim();
+      return v || f;
+    }
+    function mod(v){ return ((v % N) + N) % N; }
+
+    function placeFood(){
+      for (var k = 0; k < 500; k++) {
+        var p = {x: Math.floor(Math.random() * N), y: Math.floor(Math.random() * N)};
+        var hit = snake.some(function(s){ return s.x === p.x && s.y === p.y; });
+        if (!hit) { food = p; return; }
+      }
+    }
+
+    function positions(t){
+      var out = [], i;
+      for (i = 0; i < snake.length; i++) {
+        var a = prev[i] || snake[i], b = snake[i];
+        var dx = b.x - a.x, dy = b.y - a.y;
+        if (dx > N / 2) dx -= N; else if (dx < -N / 2) dx += N;
+        if (dy > N / 2) dy -= N; else if (dy < -N / 2) dy += N;
+        out.push({x: a.x + dx * t + 0.5, y: a.y + dy * t + 0.5});
+      }
+      for (i = 1; i < out.length; i++) {
+        var p = out[i - 1], q = out[i];
+        var ex = q.x - p.x, ey = q.y - p.y;
+        ex -= Math.round(ex / N) * N;
+        ey -= Math.round(ey / N) * N;
+        out[i] = {x: p.x + ex, y: p.y + ey};
+      }
+      return out;
+    }
+
+    function draw(t){
+      var bg = cssv('--bg', '#ffffff'), col = cssv('--text', '#111111');
+      ctx.fillStyle = bg;
+      ctx.fillRect(0, 0, cv.width, cv.height);
+
+      var fx = (food.x + 0.5) * S, fy = (food.y + 0.5) * S;
+      ctx.fillStyle = '#ef4444';
+      ctx.beginPath();
+      ctx.arc(fx, fy, S * 0.36, 0, Math.PI * 2);
+      ctx.fill();
+      ctx.fillStyle = 'rgba(255,255,255,.75)';
+      ctx.beginPath();
+      ctx.arc(fx - S * 0.12, fy - S * 0.12, S * 0.08, 0, Math.PI * 2);
+      ctx.fill();
+
+      var pts = positions(t);
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+      ctx.strokeStyle = col;
+      ctx.fillStyle = col;
+      ctx.lineWidth = S * 0.72;
+      var offs = [-N, 0, N], ox, oy;
+      for (ox = 0; ox < 3; ox++) {
+        for (oy = 0; oy < 3; oy++) {
+          var dx = offs[ox], dy = offs[oy];
+          ctx.beginPath();
+          pts.forEach(function(p, i){
+            var x = (p.x + dx) * S, y = (p.y + dy) * S;
+            if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+          });
+          ctx.stroke();
+
+          var hx = (pts[0].x + dx) * S, hy = (pts[0].y + dy) * S;
+          ctx.fillStyle = col;
+          ctx.beginPath();
+          ctx.arc(hx, hy, S * 0.46, 0, Math.PI * 2);
+          ctx.fill();
+
+          var px = -dir.y, py = dir.x;
+          ctx.fillStyle = bg;
+          [-1, 1].forEach(function(sg){
+            var ex = hx + dir.x * S * 0.14 + px * S * 0.19 * sg;
+            var ey = hy + dir.y * S * 0.14 + py * S * 0.19 * sg;
+            ctx.beginPath();
+            ctx.arc(ex, ey, S * 0.1, 0, Math.PI * 2);
+            ctx.fill();
+          });
+        }
+      }
+    }
+
+    function reset(){
+      cancelAnimationFrame(raf);
+      snake = [{x:7,y:7},{x:6,y:7},{x:5,y:7}];
+      prev = snake.slice();
+      dir = DIRS[2]; queue = []; score = 0; running = false;
+      scoreEl.textContent = 'Skor: 0';
+      msg.textContent = 'Tekan Mulai. Tembus tembok boleh, tapi jangan makan badan sendiri.';
+      placeFood();
+      draw(1);
+    }
+
+    function stop(text){
+      running = false;
+      cancelAnimationFrame(raf);
+      if (text) msg.textContent = text;
+      draw(1);
+    }
+
+    function step(){
+      if (queue.length) dir = queue.shift();
+      var h = {x: mod(snake[0].x + dir.x), y: mod(snake[0].y + dir.y)};
+      var eat = (h.x === food.x && h.y === food.y);
+      var body = eat ? snake : snake.slice(0, -1);
+      var hit = body.some(function(s){ return s.x === h.x && s.y === h.y; });
+      if (hit) { stop('Game over! Kamu menabrak dirimu sendiri. Skor: ' + score); return false; }
+      prev = snake.slice();
+      snake.unshift(h);
+      if (eat) {
+        score++;
+        scoreEl.textContent = 'Skor: ' + score;
+        placeFood();
+      } else {
+        snake.pop();
+      }
+      return true;
+    }
+
+    function frame(now){
+      if (!running) return;
+      if (view.hidden) { stop(); return; }
+      if (now - lastTick > TICK * 3) lastTick = now;
+      while (running && now - lastTick >= TICK) {
+        lastTick += TICK;
+        if (!step()) return;
+      }
+      draw(Math.min((now - lastTick) / TICK, 1));
+      raf = requestAnimationFrame(frame);
+    }
+
+    function start(){
+      if (running) return;
+      reset();
+      running = true;
+      msg.textContent = '';
+      lastTick = performance.now();
+      raf = requestAnimationFrame(frame);
+    }
+
+    function turn(i){
+      var d = DIRS[i];
+      var last = queue.length ? queue[queue.length - 1] : dir;
+      if (d.x === -last.x && d.y === -last.y) return;
+      if (d.x === last.x && d.y === last.y) return;
+      if (queue.length < 2) queue.push(d);
+    }
+
+    document.getElementById('snake-start').addEventListener('click', start);
+    document.querySelectorAll('#snake-pad [data-d]').forEach(function(b){
+      b.addEventListener('click', function(){ turn(parseInt(b.dataset.d, 10)); });
+    });
+    window.mzSwipe(cv, turn);
+    document.addEventListener('keydown', function(e){
+      var map = {ArrowLeft:0, ArrowUp:1, ArrowRight:2, ArrowDown:3};
+      if (!(e.key in map) || view.hidden) return;
+      e.preventDefault();
+      turn(map[e.key]);
+    });
+    reset();
+  })();
+
+  /* ===== TEBAK ANGKA ===== */
+  (function(){
+    var input = document.getElementById('guess-input');
+    var btn = document.getElementById('guess-btn');
+    var msg = document.getElementById('guess-msg');
+    var triesEl = document.getElementById('guess-tries');
+    var target, tries, done;
+    function reset(){
+      target = 1 + Math.floor(Math.random() * 100);
+      tries = 0; done = false;
+      msg.textContent = '';
+      triesEl.textContent = 'Percobaan: 0';
+      input.value = '';
+    }
+    function guess(){
+      if (done) return;
+      var v = parseInt(input.value, 10);
+      if (isNaN(v) || v < 1 || v > 100) { msg.textContent = 'Masukkan angka 1 sampai 100.'; return; }
+      tries++;
+      triesEl.textContent = 'Percobaan: ' + tries;
+      if (v === target) { done = true; msg.textContent = 'Benar! Angkanya ' + target + '.'; }
+      else if (v > target) msg.textContent = v + ' terlalu besar.';
+      else msg.textContent = v + ' terlalu kecil.';
+      input.value = '';
+    }
+    btn.addEventListener('click', guess);
+    input.addEventListener('keydown', function(e){ if (e.key === 'Enter') guess(); });
+    document.getElementById('guess-reset').addEventListener('click', reset);
+    reset();
+  })();
+
+  /* ===== SUIT ===== */
+  (function(){
+    var msg = document.getElementById('rps-msg');
+    var scoreEl = document.getElementById('rps-score');
+    var names = {batu:'Batu', gunting:'Gunting', kertas:'Kertas'};
+    var beats = {batu:'gunting', gunting:'kertas', kertas:'batu'};
+    var keys = ['batu', 'gunting', 'kertas'];
+    var w = 0, l = 0, d = 0;
+    function show(){ scoreEl.textContent = 'Menang ' + w + ' | Kalah ' + l + ' | Seri ' + d; }
+    document.querySelectorAll('[data-pick]').forEach(function(b){
+      b.addEventListener('click', function(){
+        var me = b.dataset.pick;
+        var bot = keys[Math.floor(Math.random() * 3)];
+        var out;
+        if (me === bot) { d++; out = 'Seri!'; }
+        else if (beats[me] === bot) { w++; out = 'Kamu menang!'; }
+        else { l++; out = 'Kamu kalah.'; }
+        msg.textContent = 'Kamu: ' + names[me] + ' | Bot: ' + names[bot] + '. ' + out;
+        show();
+      });
+    });
+    document.getElementById('rps-reset').addEventListener('click', function(){
+      w = 0; l = 0; d = 0; msg.textContent = 'Pilih salah satu.'; show();
+    });
+    show();
+  })();
+})();
+</script>
+</body>
+</html>
