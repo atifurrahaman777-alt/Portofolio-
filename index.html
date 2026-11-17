@@ -609,6 +609,12 @@ html body .pf-banner .pf-media{position:absolute;inset:0;width:100%;height:100%;
 html body .pf-up{height:6px;border-radius:99px;background:var(--line);overflow:hidden;margin-top:12px}
 html body .pf-up i{display:block;height:100%;width:0;background:var(--accent);transition:width .2s}
 </style>
+<style id="mz-camfix">
+html body .pf-head{pointer-events:none}
+html body .pf-head>*{pointer-events:auto}
+html body .pf-banner .pf-cam{z-index:6;bottom:14px;right:12px;width:42px;height:42px}
+html body .pf-banner{z-index:1}
+</style>
 </head>
 <body class="light-mode">
 
