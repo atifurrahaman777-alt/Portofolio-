@@ -672,5 +672,21 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   }catch(e){}
 })();
 </script>
+<script id="mz-solo">
+(function(){
+  var valid = ['ttt','wam','rt','typing','wheel'];
+  function go(){
+    var h = (location.hash || '').replace('#','');
+    if (valid.indexOf(h) === -1) return;
+    if (typeof showGame === 'function') showGame(h);
+    var nav = document.getElementById('games-nav');
+    if (nav) nav.style.display = 'none';
+    var hero = document.querySelector('.hero');
+    if (hero) hero.style.display = 'none';
+  }
+  go();
+  window.addEventListener('hashchange', go);
+})();
+</script>
 </body>
 </html>
