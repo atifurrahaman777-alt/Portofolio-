@@ -1117,14 +1117,14 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       if (!data) { say('Foto tidak bisa dibaca. Coba foto lain (JPG atau PNG).'); return; }
       input.value = data;
       renderAvatar(preview, nameInput.value, data);
-      say('Foto dipilih. Tekan Simpan Profil.');
+      say('Foto disimpan.'); var sv = document.getElementById('profileSaveBtn'); if (sv) sv.click();
     });
   });
 
   rm.addEventListener('click', function() {
     input.value = '';
     renderAvatar(preview, nameInput.value, '');
-    say('Foto dihapus. Tekan Simpan Profil.');
+    say('Foto dihapus.'); var sv = document.getElementById('profileSaveBtn'); if (sv) sv.click();
   });
 })();
 </script>
@@ -1304,6 +1304,22 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
   function applyAll(){ MAIN.forEach(function(id){ setCls(document.getElementById(id), cur); }); }
 
+  /*mz-autosave*/
+  async function saveBorder(){
+    var user = auth.currentUser;
+    if (!user) return;
+    var b = find(cur);
+    if (b.owner && !admin) return;
+    applyAll();
+    try {
+      await db.collection('users').doc(user.uid).set({avatarBorder: cur}, {merge:true});
+      hint('Bingkai disimpan.');
+      setTimeout(function(){ hint(''); }, 1600);
+    } catch (e) {
+      hint('Gagal menyimpan bingkai, coba lagi.');
+    }
+  }
+
   function hint(m){
     var h = document.getElementById('bdHint');
     if (!h) return;
@@ -1331,6 +1347,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
         hint('');
         cur = b.id;
         setCls(document.getElementById('profileAvatarPreview'), cur);
+        saveBorder();
         build();
       });
       grid.appendChild(btn);
