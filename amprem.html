@@ -1,6 +1,39 @@
 <!doctype html>
 <html lang="id">
 <head>
+<script id="mz-guard">
+(function(){
+  var root = document.documentElement;
+  root.style.visibility = 'hidden';
+  var CFG = {apiKey:"AIzaSyC_iYADCUCDN1pCl3j4-jeZT3pU2XcIydU",authDomain:"manz-4d272.firebaseapp.com",projectId:"manz-4d272",appId:"1:431533009387:web:72a9855b0bd596f37911ae"};
+  function lock(msg){
+    document.body.innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:24px;text-align:center;font-family:system-ui,sans-serif"><h2>Masuk dulu</h2><p>' + msg + '</p><a href="/" style="display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:#111;color:#fff;text-decoration:none;font-weight:700">Ke beranda</a></div>';
+    root.style.visibility = 'visible';
+  }
+  function load(src, cb){
+    var sc = document.createElement('script');
+    sc.src = src; sc.onload = cb;
+    sc.onerror = function(){ lock('Gagal memeriksa login. Muat ulang halaman.'); };
+    document.head.appendChild(sc);
+  }
+  function run(){
+    try { if (!firebase.apps.length) firebase.initializeApp(CFG); } catch (e) {}
+    firebase.auth().onAuthStateChanged(function(u){
+      if (u) root.style.visibility = 'visible';
+      else lock('Fitur ini hanya untuk pengguna yang sudah login. Tamu hanya bisa memakai Game dan Musik.');
+    });
+  }
+  function go(){
+    if (window.firebase && firebase.auth) { run(); return; }
+    load('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js', function(){
+      load('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js', run);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  setTimeout(function(){ if (root.style.visibility === 'hidden') lock('Pemeriksaan login terlalu lama. Muat ulang halaman.'); }, 12000);
+})();
+</script>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#080811">

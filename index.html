@@ -725,10 +725,11 @@ html body .mzs-yt iframe{position:absolute;left:0;top:0;width:100%;height:100%;b
 html body .mz-offp{position:fixed!important;left:-9999px;top:0;width:320px;pointer-events:none}
 html.mz-musiclock,html.mz-musiclock body{overflow:hidden!important}
 </style>
-<style id="mz-ch">
-html body .mz-sidelinks.mz-ch .mz-sl{flex-direction:column;gap:5px;padding:10px 4px;font-size:.72rem;line-height:1.15;text-align:center;white-space:nowrap}
+<style id="mz-ch2">
+html body .mz-sidelinks.mz-ch{flex-direction:column;gap:8px}
+html body .mz-sidelinks.mz-ch .mz-sl{flex:none;width:100%;flex-direction:row;justify-content:center;gap:10px;padding:13px 14px;font-size:.95rem;line-height:1.2;white-space:nowrap;border-radius:10px;background:var(--card);border:1px solid var(--line)}
 html body .mz-sidelinks.mz-ch .mz-sl svg{width:20px;height:20px}
-html body .mz-sidelinks.mz-ch .mz-sl span{display:block;max-width:100%;overflow:hidden;text-overflow:ellipsis}
+html body .mz-sidelinks.mz-ch .mz-sl span{display:inline;overflow:visible}
 </style>
 </head>
 <body class="light-mode">
@@ -2351,6 +2352,42 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     if ($('mzBar')) $('mzBar').style.width = '0';
     renderList();
   }
+})();
+</script>
+<script id="mz-gate-js">
+(function(){
+  if (typeof auth === 'undefined') return;
+  var LOCK = { 'tab-sosial': 1, 'tab-feed': 1, 'tab-alat': 1 };
+  var known = false, user = null;
+  auth.onAuthStateChanged(function(u){ known = true; user = u; });
+
+  function ask(msg){
+    setTimeout(function(){
+      if (typeof closeSidebar === 'function') closeSidebar();
+      var panel = document.getElementById('authPanel'), tog = document.getElementById('auth-toggle');
+      if (panel && panel.style.display === 'none' && tog) tog.click();
+      var er = document.getElementById('authError');
+      if (er) { er.textContent = msg; er.style.display = 'block'; }
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }, 0);
+  }
+  window.mzNeedLogin = ask;
+
+  var orig = window.showTab;
+  if (typeof orig !== 'function') return;
+  window.showTab = function(id){
+    if (LOCK[id] && !user) {
+      ask(known ? 'Masuk dulu untuk memakai fitur ini. Tamu hanya bisa Game dan Musik.' : 'Memeriksa login... coba lagi sebentar.');
+      return;
+    }
+    return orig.apply(this, arguments);
+  };
+  auth.onAuthStateChanged(function(u){
+    if (!u) {
+      var act = document.querySelector('.tab.active');
+      if (act && LOCK[act.id]) orig('tab-beranda');
+    }
+  });
 })();
 </script>
 </body>
