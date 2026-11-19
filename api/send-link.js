@@ -34,3 +34,20 @@ module.exports = async function handler(req, res) {
     });
   }
 };
+
+/*mz-cors*/
+const __mzOrig = module.exports;
+if (typeof __mzOrig === 'function') {
+  module.exports = async function (req, res) {
+    const o = String((req.headers && req.headers.origin) || '');
+    if (o === 'https://localhost' || o === 'capacitor://localhost' || o === 'http://localhost') {
+      res.setHeader('Access-Control-Allow-Origin', o);
+      res.setHeader('Vary', 'Origin');
+      res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
+      res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+      res.setHeader('Access-Control-Max-Age', '86400');
+    }
+    if (req.method === 'OPTIONS') { res.statusCode = 204; return res.end(); }
+    return __mzOrig(req, res);
+  };
+}

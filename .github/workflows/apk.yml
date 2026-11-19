@@ -1,0 +1,79 @@
+name: Build APK
+on:
+  workflow_dispatch:
+permissions:
+  contents: write
+jobs:
+  apk:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    env:
+      WEB_BASE: https://privat-project.vercel.app
+      APP_ID: id.mannzz.multifungsi
+      APP_NAME: Multifungsi
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+      - name: Salin file web
+        run: |
+          mkdir -p app-build/www
+          for f in index.html games.html amprem.html downloader.html reactch.html tempmail.html chat.html chat.css chat.js app.js style.css manifest.json favicon.png tab-icon.png tab-icon.svg icon-192.png icon-512.png; do
+            if [ -f "$f" ]; then cp "$f" app-build/www/; fi
+          done
+          ls app-build/www
+      - name: Arahkan /api ke server Vercel
+        run: |
+          python3 - <<'PY'
+          import re, glob, os
+          BASE = os.environ['WEB_BASE']
+          for p in glob.glob('app-build/www/*.html') + glob.glob('app-build/www/*.js'):
+              s = open(p, encoding='utf-8').read()
+              s2 = re.sub(r'([\'"`])/api/', lambda m: m.group(1) + BASE + '/api/', s)
+              if s2 != s:
+                  open(p, 'w', encoding='utf-8').write(s2)
+                  print('diubah:', p)
+          PY
+      - name: Siapkan Capacitor
+        working-directory: app-build
+        run: |
+          npm init -y > /dev/null
+          npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          cat > capacitor.config.json <<EOF
+          {"appId":"$APP_ID","appName":"$APP_NAME","webDir":"www","server":{"androidScheme":"https"}}
+          EOF
+          npx cap add android
+          npx cap sync android
+      - name: Izin mikrofon dan ikon
+        working-directory: app-build
+        run: |
+          sed -i 's#</manifest>#    <uses-permission android:name="android.permission.RECORD_AUDIO" />\n    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />\n</manifest>#' android/app/src/main/AndroidManifest.xml
+          pip install pillow > /dev/null
+          python3 - <<'PY'
+          import os, shutil
+          from PIL import Image
+          if os.path.exists('../tab-icon.png'):
+              src = Image.open('../tab-icon.png').convert('RGBA')
+              res = 'android/app/src/main/res'
+              for d, sz in {'mdpi': 48, 'hdpi': 72, 'xhdpi': 96, 'xxhdpi': 144, 'xxxhdpi': 192}.items():
+                  im = src.resize((sz, sz), Image.LANCZOS)
+                  for n in ('ic_launcher.png', 'ic_launcher_round.png', 'ic_launcher_foreground.png'):
+                      im.save(res + '/mipmap-' + d + '/' + n)
+              shutil.rmtree(res + '/mipmap-anydpi-v26', ignore_errors=True)
+              print('ikon diganti')
+          PY
+      - name: Bangun APK
+        working-directory: app-build/android
+        run: |
+          chmod +x gradlew
+          ./gradlew assembleDebug --no-daemon
+      - name: Terbitkan APK
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh release create "apk-${{ github.run_number }}" app-build/android/app/build/outputs/apk/debug/app-debug.apk --title "Multifungsi APK #${{ github.run_number }}" --notes "APK debug. Pasang manual (izinkan sumber tidak dikenal)."
