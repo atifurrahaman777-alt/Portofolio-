@@ -20,13 +20,39 @@ jobs:
         with:
           distribution: temurin
           java-version: 17
+      - name: Keystore tetap
+        run: |
+          mkdir -p apk
+          if [ ! -f apk/debug.keystore ]; then
+            keytool -genkeypair -v -keystore apk/debug.keystore -storepass android -alias androiddebugkey -keypass android -keyalg RSA -keysize 2048 -validity 10000 -dname "CN=Android Debug,O=Android,C=US"
+            git config user.name "github-actions"
+            git config user.email "actions@users.noreply.github.com"
+            git add apk/debug.keystore
+            git commit -m "keystore debug tetap"
+            git push
+          fi
+          mkdir -p ~/.android
+          cp apk/debug.keystore ~/.android/debug.keystore
+          SHA1=$(keytool -list -v -keystore apk/debug.keystore -storepass android -alias androiddebugkey | grep -m1 "SHA1:" | sed 's/.*SHA1: //')
+          echo "## SHA-1 untuk Firebase" >> $GITHUB_STEP_SUMMARY
+          echo "$SHA1" >> $GITHUB_STEP_SUMMARY
+          echo "SHA1: $SHA1"
       - name: Salin file web
         run: |
           mkdir -p app-build/www
           for f in index.html games.html amprem.html downloader.html reactch.html tempmail.html chat.html chat.css chat.js app.js style.css manifest.json favicon.png tab-icon.png tab-icon.svg icon-192.png icon-512.png; do
             if [ -f "$f" ]; then cp "$f" app-build/www/; fi
           done
-          ls app-build/www
+          cp apk/native-login.js app-build/www/native-login.js
+          python3 - <<'PY'
+          p = 'app-build/www/index.html'
+          s = open(p, encoding='utf-8').read()
+          i = s.rfind('</body>')
+          if i >= 0 and 'native-login.js' not in s:
+              s = s[:i] + '<script src="native-login.js"></script>\n' + s[i:]
+              open(p, 'w', encoding='utf-8').write(s)
+              print('native-login disisipkan')
+          PY
       - name: Arahkan /api ke server Vercel
         run: |
           python3 - <<'PY'
@@ -43,12 +69,26 @@ jobs:
         working-directory: app-build
         run: |
           npm init -y > /dev/null
-          npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6
+          npm i @capacitor/core@6 @capacitor/cli@6 @capacitor/android@6 @capacitor-firebase/authentication@6 firebase@10
           cat > capacitor.config.json <<EOF
-          {"appId":"$APP_ID","appName":"$APP_NAME","webDir":"www","server":{"androidScheme":"https"}}
+          {"appId":"$APP_ID","appName":"$APP_NAME","webDir":"www","server":{"androidScheme":"https"},"plugins":{"FirebaseAuthentication":{"skipNativeAuth":true,"providers":["google.com"]}}}
           EOF
           npx cap add android
           npx cap sync android
+      - name: Konfigurasi Firebase Android
+        working-directory: app-build
+        run: |
+          GS=""
+          for f in ../apk/google-services.json ../google-services.json; do
+            if [ -f "$f" ]; then GS="$f"; break; fi
+          done
+          if [ -n "$GS" ]; then
+            cp "$GS" android/app/google-services.json
+            echo "google-services.json dipasang dari $GS"
+          else
+            echo "PERINGATAN: google-services.json belum ada, login Google belum aktif."
+          fi
+          sed -i 's/minSdkVersion = 2[0-2]/minSdkVersion = 23/' android/variables.gradle || true
       - name: Izin mikrofon dan ikon
         working-directory: app-build
         run: |
