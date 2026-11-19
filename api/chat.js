@@ -4,7 +4,7 @@ const URL_ = process.env.UPSTASH_REDIS_REST_URL || process.env.KV_REST_API_URL;
 const TOKEN = process.env.UPSTASH_REDIS_REST_TOKEN || process.env.KV_REST_API_TOKEN;
 const KEY = 'chat:global', ONLINE = 'chat:online', STORIES = 'chat:stories', NOTES = 'chat:notes', BANS = 'chat:bans';
 const DAY = 86400000;
-const API_KEY = process.env.FIREBASE_API_KEY || 'AIzaSyC_iYADCUCDN1pCl3j4-jeZT3pU2XcIydU';
+const API_KEY = process.env.FIREBASE_API_KEY || 'AIzaSyArfUhdOVfyIsjKjfD_9BkbixxNa6XRvsM';
 const OWNERS = String(process.env.OWNER_EMAILS || '').split(',').map(s => s.trim().toLowerCase()).filter(Boolean);
 const SALT = process.env.CHAT_SALT || TOKEN || 'chat';
 const ID_RE = /^[a-z0-9]{1,20}$/i;
