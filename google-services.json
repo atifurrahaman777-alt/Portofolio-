@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "453551390624",
+    "project_id": "manz-954c7",
+    "storage_bucket": "manz-954c7.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:453551390624:android:e231595e9288f8152baec5",
+        "android_client_info": {
+          "package_name": "id.mannzz.multifungsi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "453551390624-32emma6tqnvog9sg0dq61l1e1r6amoo3.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "id.mannzz.multifungsi",
+            "certificate_hash": "bff6d7499a0ed8ba9a85243bfe357923be7becfa"
+          }
+        },
+        {
+          "client_id": "453551390624-4qsl117u7ql9en3q1t8kfg45v0k4tsha.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAzc-0NfPgpuAPwj-nA7nQxquoMfvXgdD4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "453551390624-4qsl117u7ql9en3q1t8kfg45v0k4tsha.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
