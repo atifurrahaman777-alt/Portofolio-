@@ -119,17 +119,30 @@ module.exports = async function handler(req, res) {
     }
 
     if (req.method === 'POST') {
+      const clen = parseInt(req.headers['content-length'], 10) || 0; /* MZ-SEC */
+      if (clen > 460000) return res.status(413).json({ message: 'Data terlalu besar.' });
       const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      if (!body.audio && clen > 8000) return res.status(413).json({ message: 'Data terlalu besar.' });
       const cid = cleanCid(body.cid);
       const oh = ownerHash(cid);
       const me = await who(req);
       const owner = !!(me && me.isOwner);
       const action = ['delete', 'ban', 'unban'].includes(body.type) ? body.type : '';
 
+      if (!action && !me) return res.status(401).json({ message: 'Masuk dulu untuk ikut ngobrol (login Google di halaman utama).' });
       if (!owner) {
         const ip = String(req.headers['x-forwarded-for'] || 'x').split(',')[0].trim();
-        const rl = await redis([['SET', `chat:rl:${ip}`, '1', 'EX', 2, 'NX']]);
+        const minute = Math.floor(Date.now() / 60000);
+        const who_ = me ? 'u:' + me.uid : 'i:' + ip;
+        const rl = await redis([
+          ['SET', `chat:rl:${who_}`, '1', 'EX', 2, 'NX'],
+          ['INCR', `chat:rw:${who_}:${minute}`],
+          ['EXPIRE', `chat:rw:${who_}:${minute}`, 90],
+          ['INCR', `chat:ri:${ip}:${minute}`],
+          ['EXPIRE', `chat:ri:${ip}:${minute}`, 90]
+        ]);
         if (rl[0].result !== 'OK') return res.status(429).json({ message: 'Pelan-pelan, tunggu sebentar.' });
+        if ((rl[1].result || 0) > 20 || (rl[3].result || 0) > 60) return res.status(429).json({ message: 'Terlalu banyak pesan, tunggu semenit.' });
       }
       const bans = parse((await redis([['HVALS', BANS]]))[0].result);
 
@@ -176,13 +189,29 @@ module.exports = async function handler(req, res) {
       }
 
       const type = ['story', 'note'].includes(body.type) ? body.type : 'msg';
-      const name = String(body.name || '').trim().slice(0, 20);
-      const text = String(body.text || '').trim().slice(0, type === 'note' ? 60 : type === 'story' ? 140 : 300);
+      const strip = (v, hard) => String(v || '').replace(hard ? /[\u0000-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g : /[\u0000-\u001F\u007F\u200B\u200E\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g, ' ').replace(/\s+/g, ' ').trim();
+      const name = strip(String(body.name || '').normalize('NFKC'), true).slice(0, 20);
+      const text = strip(body.text, false).slice(0, type === 'note' ? 60 : type === 'story' ? 140 : 300);
       const audio = type === 'msg' && typeof body.audio === 'string' && body.audio.length < 400000 && /^data:audio\/(webm|ogg|mp4|mpeg|aac)[a-z0-9;=.,+-]*;base64,[A-Za-z0-9+\/=]+$/.test(body.audio) ? body.audio : '';
       const dur = Math.max(1, Math.min(60, parseInt(body.dur, 10) || 1));
       if (!name || (type !== 'note' && !text && !audio)) return res.status(400).json({ message: 'Nama dan isi wajib diisi.' });
       if (isBanned(bans, { oh, name, uid: me && me.uid })) {
         return res.status(403).json({ banned: true, message: 'Akunmu diblokir dari chat.' });
+      }
+      {
+        const key = name.normalize('NFKC').toLowerCase();
+        const reserved = String(process.env.RESERVED_NAMES || 'owner,admin,administrator,mod,moderator,system').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
+        if (!owner && reserved.includes(key)) return res.status(403).json({ message: 'Nama itu khusus Owner.' });
+        const got = await redis([['HGET', 'chat:names', key], ['HGET', 'chat:unames', me.uid]]);
+        const holder = got[0].result, prev = got[1].result;
+        if (holder && holder !== me.uid && !owner) {
+          return res.status(403).json({ message: 'Nama "' + name + '" sudah dipakai orang lain. Ganti nama di profil chat.' });
+        }
+        if (holder !== me.uid) {
+          const cmds = [['HSET', 'chat:names', key, me.uid], ['HSET', 'chat:unames', me.uid, key]];
+          if (prev && prev !== key) cmds.push(['HDEL', 'chat:names', prev]);
+          await redis(cmds);
+        }
       }
 
       const avatar = cleanAvatar(body.avatar);
