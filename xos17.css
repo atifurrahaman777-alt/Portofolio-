@@ -1,14 +1,14 @@
-/* XOS 17 (Infinix) inspired — palet biru/cyan/ungu, kartu kaca, dan sudut melengkung. */
+/* XOS 17 (Infinix) inspired — gelembung transparan, biru/cyan, tanpa ungu. */
 :root {
-  --xos-blue: #4f7cff;
+  --xos-blue: #2f7bff;
   --xos-cyan: #22d3ee;
-  --xos-purple: #a855f7;
-  --xos-pink: #ec4899;
+  --xos-mint: #5eead4;
+  --xos-sky: #7dd3fc;
 }
 
 html body {
   font-family: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  scrollbar-color: rgba(135, 164, 255, .35) transparent;
+  scrollbar-color: rgba(125, 211, 252, .45) transparent;
   scrollbar-width: thin;
 }
 
@@ -19,29 +19,33 @@ html body:is(.light-mode, :not(.light-mode))::after {
 
 html body:not(.light-mode) {
   color-scheme: dark;
-  --bg: #070b1b;
-  --card: rgba(18, 26, 52, .78);
-  --line: rgba(135, 164, 255, .22);
-  --text: #f4f7ff;
-  --muted: #9aa8cc;
-  --shadow: rgba(3, 8, 26, .55);
-  --purple: #a855f7;
-  --accent: #4f7cff;
-  --gold: #22d3ee;
+  --bg: #061020;
+  --card: rgba(18, 42, 70, .46);
+  --line: rgba(190, 230, 255, .24);
+  --text: #f2fbff;
+  --muted: #a9c4d8;
+  --shadow: rgba(2, 12, 28, .45);
+  --glass-highlight: rgba(255, 255, 255, .12);
+  /* Kompatibel dengan CSS lama: tetap biru/cyan, bukan ungu. */
+  --purple: #38bdf8;
+  --accent: #2f7bff;
+  --gold: #5eead4;
   --on: #fff;
-  --err: #ff6b8a;
-  --warn: #ffc857;
-  --k: #c4b5fd;
-  --s: #67e8b0;
-  --n: #ffc078;
-  --c: #7482ad;
-  --t: #7dd3fc;
-  --a: #67e8f9;
-  --d: #f0abfc;
+  --err: #ff7089;
+  --warn: #ffc95c;
+  --k: #7dd3fc;
+  --s: #86efac;
+  --n: #fcd34d;
+  --c: #91a9bd;
+  --t: #67e8f9;
+  --a: #7dd3fc;
+  --d: #a5f3fc;
   background:
-    radial-gradient(circle at 8% -8%, rgba(79, 124, 255, .42), transparent 34rem),
-    radial-gradient(circle at 92% 0%, rgba(168, 85, 247, .34), transparent 32rem),
-    radial-gradient(circle at 52% 108%, rgba(34, 211, 238, .20), transparent 38rem),
+    radial-gradient(circle at 18% 12%, rgba(125, 211, 252, .18) 0 3rem, transparent 7rem),
+    radial-gradient(circle at 84% 24%, rgba(94, 234, 212, .14) 0 4rem, transparent 9rem),
+    radial-gradient(circle at 8% -8%, rgba(47, 123, 255, .40), transparent 34rem),
+    radial-gradient(circle at 94% 2%, rgba(34, 211, 238, .26), transparent 32rem),
+    radial-gradient(circle at 52% 108%, rgba(94, 234, 212, .16), transparent 38rem),
     var(--bg) !important;
   background-attachment: fixed !important;
   color: var(--text) !important;
@@ -50,34 +54,38 @@ html body:not(.light-mode) {
 
 html body:not(.light-mode)::before,
 html body:not(.light-mode)::after {
-  background: radial-gradient(circle at 50% 0%, rgba(79, 124, 255, .16), transparent 60%) !important;
+  background: radial-gradient(circle at 50% 0%, rgba(125, 211, 252, .14), transparent 60%) !important;
 }
 
 html body.light-mode {
   color-scheme: light;
-  --bg: #f3f6ff;
-  --card: rgba(255, 255, 255, .84);
-  --line: rgba(53, 77, 145, .18);
-  --text: #172046;
-  --muted: #66739c;
-  --shadow: rgba(37, 59, 122, .18);
-  --purple: #7c3aed;
-  --accent: #3158ff;
-  --gold: #0891b2;
+  --bg: #e8f6ff;
+  --card: rgba(255, 255, 255, .50);
+  --line: rgba(38, 104, 160, .20);
+  --text: #123047;
+  --muted: #5b7a90;
+  --shadow: rgba(20, 80, 130, .16);
+  --glass-highlight: rgba(255, 255, 255, .78);
+  /* Kompatibel dengan CSS lama: tetap biru/cyan, bukan ungu. */
+  --purple: #0284c7;
+  --accent: #1677ff;
+  --gold: #06b6d4;
   --on: #fff;
   --err: #d92d5a;
   --warn: #a16207;
-  --k: #7c3aed;
+  --k: #0369a1;
   --s: #15803d;
   --n: #b45309;
   --c: #64748b;
-  --t: #0369a1;
-  --a: #0e7490;
-  --d: #a21caf;
+  --t: #0e7490;
+  --a: #0369a1;
+  --d: #0f766e;
   background:
-    radial-gradient(circle at 8% -8%, rgba(79, 124, 255, .22), transparent 34rem),
-    radial-gradient(circle at 92% 0%, rgba(168, 85, 247, .16), transparent 32rem),
-    radial-gradient(circle at 52% 108%, rgba(34, 211, 238, .16), transparent 38rem),
+    radial-gradient(circle at 16% 10%, rgba(255, 255, 255, .90) 0 3rem, transparent 7rem),
+    radial-gradient(circle at 86% 24%, rgba(255, 255, 255, .68) 0 4rem, transparent 9rem),
+    radial-gradient(circle at 6% -8%, rgba(47, 123, 255, .20), transparent 34rem),
+    radial-gradient(circle at 94% 2%, rgba(34, 211, 238, .18), transparent 32rem),
+    radial-gradient(circle at 52% 108%, rgba(94, 234, 212, .16), transparent 38rem),
     var(--bg) !important;
   background-attachment: fixed !important;
   color: var(--text) !important;
@@ -86,23 +94,60 @@ html body.light-mode {
 
 html body.light-mode::before,
 html body.light-mode::after {
-  background: radial-gradient(circle at 50% 0%, rgba(79, 124, 255, .10), transparent 60%) !important;
+  background: radial-gradient(circle at 50% 0%, rgba(125, 211, 252, .14), transparent 60%) !important;
 }
 
-/* Header dan panel seperti lapisan kaca XOS. */
+/* Header utama: kaca tipis, bukan kotak tebal. */
 html body header {
-  background: rgba(10, 16, 38, .72) !important;
+  background: rgba(10, 30, 55, .42) !important;
   border-bottom: 1px solid var(--line) !important;
-  -webkit-backdrop-filter: blur(20px) saturate(160%);
-  backdrop-filter: blur(20px) saturate(160%);
-  box-shadow: 0 12px 30px rgba(3, 8, 26, .18);
+  -webkit-backdrop-filter: blur(20px) saturate(150%);
+  backdrop-filter: blur(20px) saturate(150%);
+  box-shadow: 0 10px 28px rgba(2, 12, 28, .12);
 }
 
 html body.light-mode header {
-  background: rgba(255, 255, 255, .76) !important;
-  box-shadow: 0 10px 28px rgba(37, 59, 122, .10);
+  background: rgba(255, 255, 255, .55) !important;
+  box-shadow: 0 8px 24px rgba(20, 80, 130, .10);
 }
 
+/* Halaman tools: judul dan tombol tema jadi dua gelembung terpisah, bukan satu kotak panjang. */
+html body main.wrap > header {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+  padding: 0;
+  margin-bottom: 12px;
+}
+
+html body main.wrap > header .brand,
+html body main.wrap > header > div:last-child {
+  background: var(--card) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 999px !important;
+  box-shadow: inset 0 1px 1px var(--glass-highlight), 0 10px 24px var(--shadow) !important;
+  -webkit-backdrop-filter: blur(18px) saturate(150%);
+  backdrop-filter: blur(18px) saturate(150%);
+}
+
+html body main.wrap > header .brand {
+  padding: 8px 16px !important;
+}
+
+html body main.wrap > header > div:last-child {
+  padding: 4px 8px !important;
+}
+
+html body main.wrap > header #theme-toggle {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 10px !important;
+}
+
+/* Permukaan gelembung transparan. */
 html body:is(.light-mode, :not(.light-mode)) :is(
   .card,
   .profile-card,
@@ -123,7 +168,6 @@ html body:is(.light-mode, :not(.light-mode)) :is(
   .mzm,
   .mzs-panel,
   .keys,
-  .stat,
   #out,
   #side,
   .top,
@@ -153,9 +197,9 @@ html body:is(.light-mode, :not(.light-mode)) :is(
 ) {
   background: var(--card) !important;
   border: 1px solid var(--line) !important;
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, .06), 0 14px 32px var(--shadow) !important;
-  -webkit-backdrop-filter: blur(18px) saturate(150%);
-  backdrop-filter: blur(18px) saturate(150%);
+  box-shadow: inset 0 1px 1px var(--glass-highlight), 0 18px 40px var(--shadow) !important;
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  backdrop-filter: blur(22px) saturate(150%);
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(
@@ -174,28 +218,28 @@ html body:is(.light-mode, :not(.light-mode)) :is(
   .about-card,
   .profile
 ) {
-  border-radius: 20px !important;
+  border-radius: 26px !important;
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(.tm-mail, .tm-item, .tm-body, .tm-raw, .dl-format, .keys, #out, #side, .top, .con, .ftabs, .tools) {
-  border-radius: 14px !important;
+  border-radius: 18px !important;
 }
 
 html body .bottom-nav {
   background: var(--card) !important;
   border: 1px solid var(--line) !important;
-  border-radius: 24px !important;
-  box-shadow: 0 16px 40px var(--shadow) !important;
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  border-radius: 28px !important;
+  box-shadow: inset 0 1px 1px var(--glass-highlight), 0 18px 44px var(--shadow) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
 }
 
 html body .sidebar {
   background: var(--card) !important;
   border-right: 1px solid var(--line) !important;
-  border-radius: 0 22px 22px 0 !important;
-  -webkit-backdrop-filter: blur(22px) saturate(160%);
-  backdrop-filter: blur(22px) saturate(160%);
+  border-radius: 0 26px 26px 0 !important;
+  -webkit-backdrop-filter: blur(24px) saturate(160%);
+  backdrop-filter: blur(24px) saturate(160%);
 }
 
 html body .sidebar-overlay {
@@ -204,33 +248,33 @@ html body .sidebar-overlay {
 }
 
 html body .tool-overlay {
-  background: rgba(7, 11, 27, .86) !important;
+  background: rgba(6, 16, 32, .86) !important;
   -webkit-backdrop-filter: blur(18px);
   backdrop-filter: blur(18px);
 }
 
 html body.light-mode .tool-overlay {
-  background: rgba(243, 246, 255, .90) !important;
+  background: rgba(232, 246, 255, .90) !important;
 }
 
 html body .title::before {
-  background: linear-gradient(90deg, var(--accent), var(--purple)) !important;
-  box-shadow: 0 0 14px rgba(79, 124, 255, .45);
+  background: linear-gradient(90deg, var(--accent), var(--gold)) !important;
+  box-shadow: 0 0 14px rgba(47, 123, 255, .40);
 }
 
 html body .pf-banner {
-  background: linear-gradient(120deg, var(--accent), var(--purple) 55%, var(--gold)) !important;
+  background: linear-gradient(120deg, var(--accent), var(--gold) 55%, var(--xos-sky)) !important;
   border: 0 !important;
-  box-shadow: inset 0 0 46px rgba(255, 255, 255, .14);
+  box-shadow: inset 0 0 46px rgba(255, 255, 255, .20);
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(.pf-bar i, .pf-up i, .mzm-bar i, .gc-track i) {
-  background: linear-gradient(90deg, var(--accent), var(--gold), var(--purple)) !important;
+  background: linear-gradient(90deg, var(--accent), var(--gold), var(--xos-sky)) !important;
 }
 
-/* Aksen teks memakai gradasi khas XOS. */
+/* Aksen teks: biru -> cyan, tanpa ungu. */
 html body:is(.light-mode, :not(.light-mode)) :is(.accent, .eyebrow) {
-  background: linear-gradient(100deg, var(--accent), var(--gold), var(--purple)) !important;
+  background: linear-gradient(100deg, var(--accent), var(--gold), var(--xos-sky)) !important;
   -webkit-background-clip: text !important;
   background-clip: text !important;
   color: transparent !important;
@@ -238,12 +282,12 @@ html body:is(.light-mode, :not(.light-mode)) :is(.accent, .eyebrow) {
   text-shadow: none !important;
 }
 
-/* Tombol utama: gradasi biru -> ungu dengan kilau cyan. */
+/* Tombol utama: gradasi biru/cyan. */
 html body:is(.light-mode, :not(.light-mode)) :is(.btn, .btn.primary, .btn.pri, .contact-block button, .keys button.sg) {
-  background: linear-gradient(110deg, var(--accent), var(--purple)) !important;
+  background: linear-gradient(110deg, var(--accent), var(--gold)) !important;
   color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, .22) !important;
-  box-shadow: 0 10px 24px rgba(79, 124, 255, .28) !important;
+  border: 1px solid rgba(255, 255, 255, .28) !important;
+  box-shadow: 0 10px 24px rgba(47, 123, 255, .28) !important;
   text-shadow: none !important;
 }
 
@@ -256,18 +300,18 @@ html body:is(.light-mode, :not(.light-mode)) :is(
   .dpad button:active,
   .status
 ) {
-  background: linear-gradient(110deg, var(--accent), var(--purple)) !important;
+  background: linear-gradient(110deg, var(--accent), var(--gold)) !important;
   color: #fff !important;
   border-color: var(--accent) !important;
-  box-shadow: 0 10px 24px rgba(79, 124, 255, .28) !important;
+  box-shadow: 0 10px 24px rgba(47, 123, 255, .28) !important;
   text-shadow: none !important;
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(#auth-toggle, #mzPlay) {
-  background: linear-gradient(110deg, var(--accent), var(--purple)) !important;
+  background: linear-gradient(110deg, var(--accent), var(--gold)) !important;
   color: #fff !important;
-  border: 1px solid rgba(255, 255, 255, .22) !important;
-  box-shadow: 0 10px 24px rgba(79, 124, 255, .28) !important;
+  border: 1px solid rgba(255, 255, 255, .28) !important;
+  box-shadow: 0 10px 24px rgba(47, 123, 255, .28) !important;
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(#theme-toggle, #menu-toggle) {
@@ -297,7 +341,7 @@ html body:is(.light-mode, :not(.light-mode)) .btn.warn {
   border-color: var(--err) !important;
 }
 
-/* Chip, tab, dan tautan sekunder. */
+/* Chip, tab, dan tautan sekunder berbentuk gelembung kecil. */
 html body:is(.light-mode, :not(.light-mode)) :is(
   .platform-chip,
   .ocean-tab,
@@ -318,7 +362,7 @@ html body:is(.light-mode, :not(.light-mode)) :is(
   border: 1px solid var(--line) !important;
   color: var(--muted) !important;
   border-radius: 999px !important;
-  box-shadow: none !important;
+  box-shadow: inset 0 1px 1px var(--glass-highlight) !important;
   text-shadow: none !important;
   -webkit-backdrop-filter: blur(12px);
   backdrop-filter: blur(12px);
@@ -340,7 +384,7 @@ html body:is(.light-mode, :not(.light-mode)) :is(input, textarea, .input-field, 
   background: var(--bg) !important;
   color: var(--text) !important;
   border: 1px solid var(--line) !important;
-  border-radius: 12px !important;
+  border-radius: 14px !important;
   box-shadow: none !important;
   text-shadow: none !important;
 }
@@ -356,7 +400,7 @@ html body:is(.light-mode, :not(.light-mode)) #gc-input {
 html body:is(.light-mode, :not(.light-mode)) :is(input, textarea, .input-field, .in, #gc-input):focus {
   outline: none !important;
   border-color: var(--accent) !important;
-  box-shadow: 0 0 0 3px rgba(79, 124, 255, .22) !important;
+  box-shadow: 0 0 0 3px rgba(47, 123, 255, .22) !important;
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(h1, h2, h3, .brand, .logo, .title, .profile-name, .pf-name, .ttt-status, .wam-top, #wheel-result) {
@@ -377,16 +421,16 @@ html body:is(.light-mode, :not(.light-mode)) :is(#status, .gc-quote b, .gc-reply
 
 /* Navigasi bawah dan sidebar. */
 html body .bottom-nav .nav-btn.active:not(.home) {
-  background: rgba(79, 124, 255, .16);
+  background: rgba(47, 123, 255, .16);
   color: var(--text);
-  border-radius: 14px;
+  border-radius: 16px;
 }
 
 html body .bottom-nav .nav-btn.home span {
-  background: linear-gradient(135deg, var(--accent), var(--purple)) !important;
+  background: linear-gradient(135deg, var(--accent), var(--gold)) !important;
   color: #fff !important;
   border: 3px solid var(--bg) !important;
-  box-shadow: 0 10px 24px rgba(79, 124, 255, .45) !important;
+  box-shadow: 0 10px 24px rgba(47, 123, 255, .45) !important;
 }
 
 html body .bottom-nav .nav-btn.home span .icon {
@@ -394,8 +438,8 @@ html body .bottom-nav .nav-btn.home span .icon {
 }
 
 html body .sidebar-nav .nav-btn.active {
-  background: rgba(79, 124, 255, .16) !important;
-  border-radius: 14px !important;
+  background: rgba(47, 123, 255, .16) !important;
+  border-radius: 16px !important;
   color: var(--text) !important;
 }
 
@@ -408,32 +452,32 @@ html body .owner-badge.owner-role {
 /* Chat Global memakai palet yang sama tanpa mengubah logika tema chat. */
 html body .gc {
   --bg: transparent;
-  --head: rgba(12, 20, 45, .76);
-  --panel: rgba(23, 34, 65, .78);
-  --bub: rgba(39, 52, 88, .82);
-  --me: linear-gradient(135deg, #315dff, #8b5cf6);
-  --txt: #f4f7ff;
-  --mut: #9aa8cc;
-  --line: rgba(135, 164, 255, .22);
-  --acc: #3ee0ff;
-  --inp: rgba(10, 18, 40, .78);
-  --q: rgba(79, 124, 255, .16);
+  --head: rgba(10, 30, 55, .62);
+  --panel: rgba(20, 48, 78, .64);
+  --bub: rgba(32, 66, 100, .66);
+  --me: linear-gradient(135deg, #1677ff, #06b6d4);
+  --txt: #f2fbff;
+  --mut: #a9c4d8;
+  --line: rgba(190, 230, 255, .24);
+  --acc: #5eead4;
+  --inp: rgba(8, 24, 44, .62);
+  --q: rgba(47, 123, 255, .14);
   background: transparent !important;
   -webkit-backdrop-filter: blur(6px);
   backdrop-filter: blur(6px);
 }
 
 html body .gc.light {
-  --head: rgba(255, 255, 255, .80);
-  --panel: rgba(255, 255, 255, .72);
-  --bub: rgba(255, 255, 255, .88);
-  --me: linear-gradient(135deg, #3158ff, #7c3aed);
-  --txt: #172046;
-  --mut: #66739c;
-  --line: rgba(53, 77, 145, .18);
-  --acc: #0891b2;
-  --inp: rgba(255, 255, 255, .86);
-  --q: rgba(79, 124, 255, .10);
+  --head: rgba(255, 255, 255, .66);
+  --panel: rgba(255, 255, 255, .58);
+  --bub: rgba(255, 255, 255, .72);
+  --me: linear-gradient(135deg, #1677ff, #22d3ee);
+  --txt: #123047;
+  --mut: #5b7a90;
+  --line: rgba(38, 104, 160, .20);
+  --acc: #06b6d4;
+  --inp: rgba(255, 255, 255, .72);
+  --q: rgba(47, 123, 255, .10);
 }
 
 html body:is(.light-mode, :not(.light-mode)) :is(.gc-head, .gc-bar) {
@@ -453,8 +497,8 @@ html body:is(.light-mode, :not(.light-mode)) :is(.gc-notes, .gc-replybar, .gc-em
 html body .gc-bub {
   background: var(--bub) !important;
   border: 1px solid var(--line) !important;
-  border-radius: 16px !important;
-  box-shadow: 0 8px 20px rgba(3, 8, 26, .18);
+  border-radius: 18px !important;
+  box-shadow: inset 0 1px 1px var(--glass-highlight), 0 8px 20px rgba(2, 12, 28, .16);
 }
 
 html body .gc-row.me .gc-bub {
@@ -472,7 +516,7 @@ html body .gc-plus {
   color: #04122e !important;
 }
 
-/* Editor: permukaan workspace dan warna sintaks. */
+/* Editor: permukaan workspace dan warna sintaks tanpa ungu. */
 html body:is(.light-mode, :not(.light-mode)) :is(#bar, .top, .keys, .stat, #out, #side, .con, .ftabs, .tools, #msg) {
   background: var(--card) !important;
   border-color: var(--line) !important;
@@ -489,7 +533,7 @@ html body .tab.on,
 html body .ftabs button.on,
 html body .seg button.on {
   color: var(--text) !important;
-  background: rgba(79, 124, 255, .16) !important;
+  background: rgba(47, 123, 255, .16) !important;
   border-bottom-color: var(--accent) !important;
 }
 
