@@ -31,7 +31,7 @@
     'fig': ['figure', []],
     'figc': ['figcaption', []]
   };
-  var NAMES = TAGS.concat(Object.keys(ALIAS).filter(function (k) { return !KNOWN[k]; })).concat(['html:5']);
+  var NAMES = TAGS.concat(Object.keys(ALIAS).filter(function (k) { return !KNOWN[k]; })).concat(['html:5', 'doc']);
 
   function parseAttrs(s) {
     var out = [], re = /([\w:@-]+)(?:=(?:"([^"]*)"|'([^']*)'|([^\s"']+)))?/g, m;
@@ -182,23 +182,40 @@
     var all = out.every(function (x) { return x.inline && x.text.indexOf('\n') < 0; });
     return finish(out.map(function (x) { return x.text; }).join(all ? '' : '\n'));
   }
+  function firstOpen(s, ch, from) {
+    var q = '';
+    for (var i = from || 0; i < s.length; i++) {
+      var c = s.charAt(i);
+      if (q) { if (c === q) q = ''; }
+      else if (c === '"' || c === "'") q = c;
+      else if (c === ch) return i;
+    }
+    return -1;
+  }
   function extract(before) {
-    var lt = before.lastIndexOf('<'), gt = before.lastIndexOf('>');
-    var depth = 0, i = before.length;
+    var depth = 0, i = before.length, quote = '';
+    // spasi di dalam nilai atribut berkutip bukan pemisah singkatan
+    // contoh: <div class="foo">ul>li  ->  ul>li
     while (i > 0) {
       var c = before[i - 1];
-      if (c === ']' || c === '}') depth++;
+      if (quote) {
+        if (c === quote) quote = '';
+      } else if (c === '"' || c === "'") quote = c;
+      else if (c === ']' || c === '}') depth++;
       else if (c === '[' || c === '{') depth = Math.max(0, depth - 1);
       else if (/\s/.test(c) && depth === 0) break;
       i--;
     }
     var chunk = before.slice(i);
+    var lt = i > 0 ? before.lastIndexOf('<', i - 1) : -1;
     if (chunk.indexOf('<') >= 0) {
-      var l = chunk.lastIndexOf('<'), gg = chunk.indexOf('>', l);
+      var gg = firstOpen(chunk, '>', chunk.lastIndexOf('<') + 1);
       if (gg < 0) return null;
       chunk = chunk.slice(gg + 1);
-    } else if (lt > gt && before.slice(lt).indexOf(' ') >= 0) {
-      return null;
+    } else if (lt >= 0 && firstOpen(before.slice(lt, i), '>', 0) < 0) {
+      var g = firstOpen(chunk, '>', 0); // '>' pertama menutup tag yang belum selesai
+      if (g < 0) return null;
+      chunk = chunk.slice(g + 1);
     }
     return chunk;
   }
@@ -220,7 +237,7 @@
     cands.sort(function (a, b) { return (a === abbr ? -1 : b === abbr ? 1 : a < b ? -1 : 1); });
     cands.slice(0, 10).forEach(function (n) {
       var r2 = expand(n);
-      if (r2) out.push({ abbr: n, label: n + '  \u2192  ' + (n === 'html:5' || n === '!' ? 'kerangka HTML5' : preview(r2)), res: r2 });
+      if (r2) out.push({ abbr: n, label: n + '  \u2192  ' + (n === 'html:5' || n === 'doc' || n === '!' ? 'kerangka HTML5' : preview(r2)), res: r2 });
     });
     return out;
   }

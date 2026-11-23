@@ -3,6 +3,8 @@
   var I = window.IDE, S = I.S;
   var $ = function (i) { return document.getElementById(i); };
   var out = $('out'), con = $('con'), frame = $('frame');
+  var stampN = 0;
+  function stamp() { return '<!--' + Date.now() + '-' + (++stampN) + '-->'; }
 
   function show(tab) {
     out.classList.remove('off');
@@ -43,20 +45,30 @@
   function buildHtml(path) {
     var src = S.files[path] || '';
     var dir = path.indexOf('/') >= 0 ? path.slice(0, path.lastIndexOf('/')) : '';
-    src = src.replace(/<link\b[^>]*>/gi, function (tag) {
-      if (!/rel=["']?stylesheet/i.test(tag)) return tag;
-      var m = /href=["']([^"']+)["']/i.exec(tag);
-      if (!m) return tag;
-      var p = norm(dir, m[1]);
-      return p && S.files[p] !== undefined ? '<style>' + S.files[p] + '</style>' : tag;
-    });
-    src = src.replace(/<script\b([^>]*)\bsrc=["']([^"']+)["']([^>]*)>\s*<\/script>/gi, function (all, a, ref, b) {
+    src = src.replace(/<link\b((?:"[^"]*"|'[^']*'|[^'">])*)>/gi, function (all, attrs) {
+      var rm = /(?:^|\s)rel\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(attrs);
+      var rel = rm ? (rm[1] !== undefined ? rm[1] : (rm[2] !== undefined ? rm[2] : rm[3])) : '';
+      if (!/stylesheet/i.test(rel)) return all;
+      var hm = /(?:^|\s)href\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(attrs);
+      if (!hm) return all;
+      var ref = hm[1] !== undefined ? hm[1] : (hm[2] !== undefined ? hm[2] : hm[3]);
       var p = norm(dir, ref);
-      return p && S.files[p] !== undefined ? '<script' + a + b + '>' + S.files[p].replace(/<\/script/gi, '<\\/script') + '<\/script>' : all;
+      return p && S.files[p] !== undefined ? '<style>' + S.files[p] + '</style>' : all;
     });
-    if (/<head[^>]*>/i.test(src)) src = src.replace(/<head[^>]*>/i, function (m) { return m + BRIDGE; });
-    else src = BRIDGE + src;
-    return src + '<!--' + Date.now() + '-->';
+    src = src.replace(/<script\b((?:"[^"]*"|'[^']*'|[^'">])*)>\s*<\/script\s*>/gi, function (all, attrs) {
+      var m = /(?:^|\s)src\s*=\s*(?:"([^"]*)"|'([^']*)'|([^\s>]+))/i.exec(attrs);
+      if (!m) return all;
+      var ref = m[1] !== undefined ? m[1] : (m[2] !== undefined ? m[2] : m[3]);
+      var p = norm(dir, ref);
+      if (!p || S.files[p] === undefined) return all;
+      var rest = attrs.replace(/(?:^|\s)src\s*=\s*(?:"[^"]*"|'[^']*'|[^\s>]+)/i, '');
+      return '<script' + rest + '>' + S.files[p].replace(/<\/script/gi, '<\\/script') + '<\/script>';
+    });
+    var mark = stamp();
+    if (/<head[^>]*>/i.test(src)) src = src.replace(/<head[^>]*>/i, function (m) { return m + mark + BRIDGE; });
+    else if (/<!doctype[^>]*>/i.test(src)) src = src.replace(/<!doctype[^>]*>/i, function (m) { return m + mark + BRIDGE; });
+    else src = mark + BRIDGE + src;
+    return src;
   }
   function runHtml(path) {
     con.textContent = '';
@@ -66,7 +78,7 @@
   function runJs(path) {
     con.textContent = '';
     var code = (S.files[path] || '').replace(/<\/script/gi, '<\\/script');
-    frame.srcdoc = '<!doctype html><html><head><meta charset="utf-8">' + BRIDGE + '</head><body><script>' + code + '<\/script></body></html><!--' + Date.now() + '-->';
+    frame.srcdoc = '<!doctype html><html><head>' + stamp() + '<meta charset="utf-8">' + BRIDGE + '</head><body><script>' + code + '<\/script></body></html>';
     show('con');
     log('info', '\u25B6 ' + path);
   }

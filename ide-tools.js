@@ -43,6 +43,11 @@
   $('fp').addEventListener('click', function () { setFs(ui.fs + 1); });
   $('thm').addEventListener('click', function () { ui.dark = !ui.dark; saveUi(); applyTheme(); });
   applyTheme();
+  try {
+    if (window.parent !== window && window.parent.document && window.parent.document.body) {
+      new MutationObserver(applyTheme).observe(window.parent.document.body, { attributes: true, attributeFilter: ['class'] });
+    }
+  } catch (e) {}
   setFs(ui.fs);
 
   /* ----- Konteks ----- */

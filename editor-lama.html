@@ -160,8 +160,14 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
   $('fp').addEventListener('click', function(){ setFs(fs + 1); });
 
   function getCode(){ return { html: docs.html.getValue(), css: docs.css.getValue(), js: docs.js.getValue() }; }
-  var tm = 0;
-  cm.on('change', function(){ clearTimeout(tm); tm = setTimeout(function(){ ls.set(K.d, JSON.stringify(getCode())); }, 500); });
+  var tm = 0, dirty = true, lastCode = '';
+  cm.on('change', function(){
+    dirty = true;
+    clearTimeout(tm); tm = setTimeout(function(){ ls.set(K.d, JSON.stringify(getCode())); }, 500);
+  });
+  function flushDraft(){ clearTimeout(tm); tm = 0; ls.set(K.d, JSON.stringify(getCode())); }
+  window.addEventListener('pagehide', flushDraft);
+  window.addEventListener('beforeunload', flushDraft);
 
   function setFile(f){
     cur = f;
@@ -199,9 +205,10 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
   /* ----- Hasil dan konsol ----- */
   var BRIDGE = '<script>(function(){function s(t,a){try{parent.postMessage({mzc:1,t:t,m:a.map(function(x){try{return typeof x==="object"?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(" ")},"*")}catch(e){}}["log","info","warn","error"].forEach(function(k){var o=console[k];console[k]=function(){s(k,[].slice.call(arguments));try{o.apply(console,arguments)}catch(e){}}});window.addEventListener("error",function(e){s("error",[e.message+(e.lineno?" (baris "+e.lineno+")":"")])});window.addEventListener("unhandledrejection",function(e){s("error",["Promise ditolak: "+(e.reason&&e.reason.message||e.reason)])})})();<\/script>';
   function safeJs(js){ return js.replace(/<\/script/gi, '<\\/script'); }
+  var stampN = 0;
   function build(c){
-    return '<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + BRIDGE +
-      '<style>' + c.css + '</style></head><body>' + c.html + '<script>' + safeJs(c.js) + '<\/script></body></html><!--' + Date.now() + '-->';
+    return '<!doctype html><html><head><!--' + Date.now() + '-' + (++stampN) + '--><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + BRIDGE +
+      '<style>' + c.css + '</style></head><body>' + c.html + '<script>' + safeJs(c.js) + '<\/script></body></html>';
   }
   function exportDoc(c){
     return '<!doctype html>\n<html lang="id">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Proyek</title>\n<style>\n' +
@@ -224,17 +231,22 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
     addLog(String(d.t), String(d.m).slice(0, 2000));
   });
   $('conClear').addEventListener('click', function(){ $('con').textContent = ''; });
-  function render(){
+  function render(force){
+    var c = getCode(), key = JSON.stringify(c);
+    if (!force && !dirty) return; // kode belum berubah: jangan muat ulang pratinjau
+    if (!force && key === lastCode) { dirty = false; return; }
+    lastCode = key;
+    dirty = false;
     $('con').textContent = '';
-    frame.srcdoc = build(getCode());
+    frame.srcdoc = build(c);
   }
-  function view(v){
+  function view(v, force){
     ['kode', 'hasil'].forEach(function(x){ $('v-' + x).classList.toggle('on', x === v); });
     $('seg').querySelectorAll('[data-v]').forEach(function(b){ b.classList.toggle('on', b.dataset.v === v); });
-    if (v === 'hasil') render(); else cm.refresh();
+    if (v === 'hasil') render(force); else cm.refresh();
   }
   $('seg').querySelectorAll('[data-v]').forEach(function(b){ b.addEventListener('click', function(){ view(b.dataset.v); }); });
-  $('run').addEventListener('click', function(){ view('hasil'); });
+  $('run').addEventListener('click', function(){ view('hasil', true); });
 
   /* ----- Panel bawah ----- */
   function closeSheet(){ $('sheet').classList.add('off'); }

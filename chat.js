@@ -57,30 +57,48 @@
   let cid = ls.get('chat_cid') || '';
   if (!cid) { cid = Math.random().toString(36).slice(2, 12) + Date.now().toString(36); ls.set('chat_cid', cid); }
 
-  function profile() {
-    let name = ls.get('chat_name'), avatar = ls.get('chat_avatar') || '';
+  const HTTPS_IMG = /^https:\/\/[^\s"'<>]{1,280}$/;
+  function authProfile() {
+    let name = '', avatar = '';
     try {
-      for (let i = 0; i < localStorage.length; i++) {
-        const v = localStorage.getItem(localStorage.key(i));
-        if (!v || v[0] !== '{') continue;
-        try {
-          const o = JSON.parse(v);
-          const n = o.displayName || o.name || o.username || o.nama;
-          const a = o.avatar || o.photo || o.foto || o.photoURL || o.image || o.pfp || o.avatarUrl;
-          if (!name && typeof n === 'string' && n.trim()) name = n.trim().slice(0, 20);
-          if (!avatar && typeof a === 'string' && /^https:\/\//.test(a)) avatar = a;
-        } catch {}
+      const p = window.currentUserProfile;
+      if (p && typeof p === 'object') {
+        if (typeof p.name === 'string') name = p.name.trim().slice(0, 20);
+        if (typeof p.photoURL === 'string' && HTTPS_IMG.test(p.photoURL)) avatar = p.photoURL;
+      }
+    } catch {}
+    try {
+      if (window.firebase && firebase.apps && firebase.apps.length) {
+        const u = firebase.auth().currentUser;
+        if (u) {
+          if (!name && typeof u.displayName === 'string') name = u.displayName.trim().slice(0, 20);
+          if (!avatar && typeof u.photoURL === 'string' && HTTPS_IMG.test(u.photoURL)) avatar = u.photoURL;
+        }
       }
     } catch {}
     return { name, avatar };
+  }
+  function profile() {
+    let name = ls.get('chat_name');
+    let avatar = ls.get('chat_avatar') || '';
+    if (avatar && !HTTPS_IMG.test(avatar)) avatar = '';
+    if (!name || !avatar) {
+      const auth = authProfile();
+      if (!name) name = auth.name;
+      if (!avatar) avatar = auth.avatar;
+    }
+    return { name, avatar };
+  }
+  function saveName(name) {
+    const n = String(name || '').trim().slice(0, 20);
+    if (n) ls.set('chat_name', n);
   }
   function ensureProfile() {
     const p = profile();
     if (!p.name) {
       const n = (prompt('Nama buat chat:') || '').trim().slice(0, 20);
       if (!n) return null;
-      ls.set('chat_name', n);
-      p.name = n;
+      p.name = n; // hanya disimpan setelah server menerima (lihat post())
     }
     return p;
   }
@@ -91,7 +109,7 @@
   let bellOn = ls.get('chat_bell') !== '0';
   let clearTs = parseInt(ls.get('chat_clear'), 10) || 0;
   let ac = null, rec = null, recording = false;
-  let isOwner = false, banned = false, bans = [], lastTs = 0;
+  let isOwner = false, banned = false, bans = [], lastTs = 0, sending = false;
 
   $('gc-users').innerHTML = ic('users');
   $('gc-back').innerHTML = ic('back');
@@ -115,10 +133,20 @@
   if (ls.get('chat_hidetop') === '1') $('gc-top').style.display = 'none';
   syncBell(); syncTheme(); renderMe(); syncAct();
 
-  function beep() {
+  function initAudio() {
     try {
       const A = window.AudioContext || window.webkitAudioContext;
-      ac = ac || new A();
+      if (!A) return;
+      if (!ac) ac = new A();
+      if (ac.state === 'suspended' && ac.resume) {
+        const p = ac.resume();
+        if (p && p.catch) p.catch(() => {});
+      }
+    } catch {}
+  }
+  function tone() {
+    try {
+      if (!ac) return;
       const o = ac.createOscillator(), g = ac.createGain();
       o.connect(g); g.connect(ac.destination);
       o.frequency.value = 880;
@@ -127,14 +155,42 @@
       o.start(); o.stop(ac.currentTime + 0.25);
     } catch {}
   }
+  function beep() {
+    initAudio();
+    if (ac && ac.state === 'suspended' && ac.resume) {
+      const p = ac.resume();
+      if (p && p.then) { p.then(tone).catch(() => {}); return; }
+    }
+    tone();
+  }
+  // AudioContext hanya dibuat/dibangkitkan saat ada gerakan pengguna
+  document.addEventListener('click', initAudio, { once: true });
+  document.addEventListener('keydown', initAudio, { once: true });
 
+  let authPrompted = false;
+  async function needLogin() {
+    status.textContent = 'Sesi berakhir. Silakan masuk lagi.';
+    if (authPrompted) return;
+    authPrompted = true;
+    if (confirm('Sesi berakhir. Masuk lagi sekarang?')) {
+      try {
+        if (window.firebase && firebase.apps && firebase.apps.length) await firebase.auth().signOut();
+      } catch {}
+      location.href = '/';
+    }
+  }
   async function post(body) {
     try {
       const r = await fetch('/api/chat', { method: 'POST', headers: Object.assign({ 'Content-Type': 'application/json' }, await authHeaders()), body: JSON.stringify(Object.assign({ cid }, body)) });
       const d = await r.json().catch(() => ({}));
-      if (!r.ok) { if (d.banned) setBanned(true); status.textContent = d.message || 'Gagal.'; return false; }
+      if (!r.ok) {
+        if (d.banned) setBanned(true);
+        if (r.status === 401) { await needLogin(); return false; }
+        status.textContent = d.message || 'Gagal.';
+        return false;
+      }
       status.textContent = '';
-      return true;
+      return d;
     } catch { status.textContent = 'Koneksi bermasalah.'; return false; }
   }
   // === akhir bagian 2 ===
@@ -262,12 +318,13 @@
       busy = true;
       go.disabled = true;
       hint.textContent = '';
-      if (!p0.name) ls.set('chat_name', name);
-      const ok = await o.send(name, p0.avatar, t, bg);
+      const res = await o.send(name, p0.avatar, t, bg);
       busy = false;
       go.disabled = false;
-      if (ok) { close(); renderMe(); }
-      else hint.textContent = status.textContent || 'Gagal, coba lagi.';
+      if (res) {
+        if (!p0.name) saveName(res.name || name);
+        close(); renderMe();
+      } else hint.textContent = status.textContent || 'Gagal, coba lagi.';
     };
 
     if (o.removable) {
@@ -297,9 +354,9 @@
       title: 'Story baru', cta: 'Kirim story', max: 140, colors: true,
       placeholder: 'Apa yang lagi kamu pikirin?',
       send: async (name, avatar, text, bg) => {
-        const ok = await post({ type: 'story', name, avatar, text, bg });
-        if (ok) { storySig = null; load(); }
-        return ok;
+        const d = await post({ type: 'story', name, avatar, text, bg });
+        if (d) { storySig = null; load(); }
+        return d;
       }
     });
   }
@@ -308,9 +365,9 @@
       title: 'Catatan', cta: 'Simpan', max: 60, initial: current || '',
       allowEmpty: true, removable: !!current, placeholder: 'Tulis catatan singkat...',
       send: async (name, avatar, text) => {
-        const ok = await post({ type: 'note', name, avatar, text });
-        if (ok) { noteSig = null; load(); }
-        return ok;
+        const d = await post({ type: 'note', name, avatar, text });
+        if (d) { noteSig = null; load(); }
+        return d;
       }
     });
   }
@@ -334,10 +391,11 @@
     const me = profile();
     const box = $('gc-stories');
     box.textContent = '';
+    const mine = data.stories.find(s => s.mine) || null;
     const byUser = new Map();
-    data.stories.forEach(s => { if (!byUser.has(s.name)) byUser.set(s.name, s); });
-    box.appendChild(storyItem(me.name || 'Kamu', me.avatar, me.name ? byUser.get(me.name) : null, true));
-    byUser.forEach((s, name) => { if (name !== me.name) box.appendChild(storyItem(name, s.avatar, s, false)); });
+    data.stories.filter(s => !s.mine).forEach(s => { if (!byUser.has(s.name)) byUser.set(s.name, s); });
+    box.appendChild(storyItem(me.name || 'Kamu', me.avatar, mine, true));
+    byUser.forEach((s, name) => box.appendChild(storyItem(name, s.avatar, s, false)));
   }
 
   function noteItem(name, avatar, note, own) {
@@ -357,9 +415,9 @@
     const me = profile();
     const box = $('gc-notes');
     box.textContent = '';
-    const mine = me.name ? data.notes.find(n => n.name === me.name) : null;
+    const mine = data.notes.find(n => n.mine) || null;
     box.appendChild(noteItem(me.name || 'Kamu', me.avatar, mine, true));
-    data.notes.filter(n => n.name !== me.name).forEach(n => box.appendChild(noteItem(n.name, n.avatar, n, false)));
+    data.notes.filter(n => !n.mine).forEach(n => box.appendChild(noteItem(n.name, n.avatar, n, false)));
   }
   // === akhir bagian 3 ===
 
@@ -424,7 +482,7 @@
   function openMsgMenu(m) {
     const mine = !!m.mine;
     const canDel = mine || isOwner;
-    const canBan = isOwner && !mine && m.name !== (profile().name || '');
+    const canBan = isOwner && !mine;
     const sh = openSheet(m.name);
     const prev = el('div', '', (m.text || '🎤 Pesan suara').slice(0, 100));
     prev.style.cssText = 'color:' + sh.C.mu + ';font-size:.9rem;overflow-wrap:anywhere';
@@ -500,7 +558,6 @@
   $('gc-rx').addEventListener('click', clearReply);
 
   function renderMessages() {
-    const me = profile().name;
     const msgs = data.messages.filter(m => m.ts > clearTs);
     const near = list.scrollHeight - list.scrollTop - list.clientHeight < 100;
     list.textContent = '';
@@ -513,7 +570,7 @@
         list.appendChild(el('div', 'gc-day', key === new Date().toDateString() ? 'Hari ini'
           : d.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' })));
       }
-      const mine = m.name === me;
+      const mine = !!m.mine;
       const first = !prev || prev.name !== m.name;
       const row = el('div', 'gc-row' + (mine ? ' me' : '') + (first ? ' first' : ''));
       if (!mine) row.appendChild(first ? avatarEl(m.name, m.avatar, 36) : el('div', 'gc-sp'));
@@ -550,12 +607,11 @@
       if (banned) status.textContent = 'Akunmu diblokir dari chat oleh admin.';
       $('gc-online').textContent = data.online + ' online';
 
-      const last = data.messages[data.messages.length - 1];
       const sig = data.messages.map(m => m.id).join(',') + '|' + isOwner;
       if (sig !== msgSig) {
-        const me = profile().name;
-        if (loadedOnce && bellOn && last && last.name !== me && last.ts > lastTs) beep();
-        if (last) lastTs = Math.max(lastTs, last.ts);
+        const fresh = data.messages.filter(m => m.ts > lastTs && !m.mine);
+        if (loadedOnce && bellOn && fresh.length) beep();
+        data.messages.forEach(m => { if (m.ts > lastTs) lastTs = m.ts; });
         msgSig = sig;
         renderMessages();
       }
@@ -568,19 +624,25 @@
   }
 
   async function sendMsg() {
-    if (banned) return;
+    if (sending || banned || recording) return;
     const text = input.value.trim();
     if (!text) return;
     const p = ensureProfile();
     if (!p) return;
+    sending = true;
+    input.value = ''; syncAct();
     act.disabled = true;
-    if (await post({ name: p.name, text, avatar: p.avatar, reply: replyTo })) {
-      input.value = ''; clearReply(); force = true; msgSig = null;
-      $('gc-emoji').classList.remove('on');
-      renderMe(); await load();
+    try {
+      const d = await post({ name: p.name, text, avatar: p.avatar, reply: replyTo });
+      if (d) {
+        saveName(d.name || p.name);
+        clearReply(); force = true; msgSig = null;
+        $('gc-emoji').classList.remove('on');
+        renderMe(); await load();
+      } else if (!input.value) input.value = text;
+    } finally {
+      sending = false; act.disabled = false; syncAct();
     }
-    act.disabled = false;
-    syncAct();
   }
 
   let mr = null, chunks = [], recStart = 0, recTick = null, recCancel = false, recStream = null;
@@ -592,7 +654,7 @@
     stopTracks(); syncAct();
   }
   async function toggleVoice() {
-    if (recording) { if (mr && mr.state === 'recording') mr.stop(); return; }
+    if (recording) { if (mr && mr.state !== 'inactive') mr.stop(); else endRec(); return; }
     if (!navigator.mediaDevices || !window.MediaRecorder) { status.textContent = 'Browser ini belum mendukung rekam suara.'; return; }
     const p = ensureProfile();
     if (!p) return;
@@ -605,23 +667,30 @@
     try { mr = new MediaRecorder(recStream, mime ? { mimeType: mime, audioBitsPerSecond: 24000 } : { audioBitsPerSecond: 24000 }); }
     catch { stopTracks(); status.textContent = 'Gagal memulai rekaman.'; return; }
     mr.ondataavailable = e => { if (e.data && e.data.size) chunks.push(e.data); };
+    mr.onerror = () => { recCancel = true; endRec(); status.textContent = 'Rekam suara gagal. Coba lagi.'; };
     mr.onstop = async () => {
       const dur = Math.max(1, Math.round((Date.now() - recStart) / 1000));
       const type = mr.mimeType || mime || 'audio/webm';
       endRec();
-      if (recCancel || !chunks.length) return;
-      const blob = new Blob(chunks, { type });
-      if (blob.size > 280000) { status.textContent = 'Rekaman terlalu besar, coba lebih pendek.'; return; }
-      const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => res(''); r.readAsDataURL(blob); });
-      if (!dataUrl) { status.textContent = 'Gagal membaca rekaman.'; return; }
+      if (recCancel || !chunks.length || sending) return;
+      sending = true;
       act.disabled = true;
-      if (await post({ name: p.name, text: '', avatar: p.avatar, reply: replyTo, audio: dataUrl, dur })) {
-        clearReply(); force = true; msgSig = null; await load();
+      try {
+        const blob = new Blob(chunks, { type });
+        if (blob.size > 280000) { status.textContent = 'Rekaman terlalu besar, coba lebih pendek.'; return; }
+        const dataUrl = await new Promise(res => { const r = new FileReader(); r.onload = () => res(r.result); r.onerror = () => res(''); r.readAsDataURL(blob); });
+        if (!dataUrl) { status.textContent = 'Gagal membaca rekaman.'; return; }
+        const d = await post({ name: p.name, text: '', avatar: p.avatar, reply: replyTo, audio: dataUrl, dur });
+        if (d) {
+          saveName(d.name || p.name);
+          clearReply(); force = true; msgSig = null; await load();
+        }
+      } finally {
+        sending = false; act.disabled = false; syncAct();
       }
-      act.disabled = false; syncAct();
     };
     recStart = Date.now(); recording = true;
-    input.readOnly = true; syncAct();
+    input.value = ''; input.readOnly = true; syncAct();
     recTick = setInterval(() => {
       const t = Math.round((Date.now() - recStart) / 1000);
       input.placeholder = '🔴 Merekam ' + fmt(t) + ' · ketuk di sini untuk batal';
@@ -675,9 +744,19 @@
   }
   // === akhir bagian 4 ===
 
-  act.addEventListener('click', () => { if (input.value.trim()) sendMsg(); else toggleVoice(); });
+  act.addEventListener('click', () => {
+    if (recording) { toggleVoice(); return; }
+    if (sending) return;
+    if (input.value.trim()) sendMsg(); else toggleVoice();
+  });
   input.addEventListener('input', syncAct);
-  input.addEventListener('keydown', e => { if (e.key === 'Enter') { e.preventDefault(); sendMsg(); } });
+  input.addEventListener('keydown', e => {
+    if (e.key !== 'Enter') return;
+    e.preventDefault();
+    if (recording) { toggleVoice(); return; }
+    if (sending) return;
+    sendMsg();
+  });
 
   $('gc-back').addEventListener('click', () => { if (history.length > 1) history.back(); else location.href = '/'; });
   $('gc-theme').addEventListener('click', () => {
@@ -731,7 +810,7 @@
     if (a !== null) {
       const u = a.trim();
       if (!u) ls.del('chat_avatar');
-      else if (/^https:\/\/[^\s"'<>]{1,280}$/.test(u)) ls.set('chat_avatar', u);
+      else if (HTTPS_IMG.test(u)) ls.set('chat_avatar', u);
       else { status.textContent = 'Link harus diawali https://'; return; }
     }
     status.textContent = '';

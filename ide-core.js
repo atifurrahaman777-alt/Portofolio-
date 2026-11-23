@@ -23,10 +23,17 @@
   if (S.files[S.active] === undefined) S.active = S.open[0] || '';
 
   var st = 0;
+  function flushSave() {
+    clearTimeout(st);
+    st = 0;
+    if (!ls.set(KEY, JSON.stringify(S))) say('Penyimpanan penuh atau diblokir.');
+  }
   function save() {
     clearTimeout(st);
-    st = setTimeout(function () { if (!ls.set(KEY, JSON.stringify(S))) say('Penyimpanan penuh atau diblokir.'); }, 400);
+    st = setTimeout(flushSave, 400);
   }
+  window.addEventListener('pagehide', flushSave);
+  window.addEventListener('beforeunload', flushSave);
 
   CodeMirror.modeURL = 'https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.16/mode/%N/%N.min.js';
   var cm = CodeMirror($('ed'), {
@@ -35,28 +42,42 @@
     extraKeys: { Tab: function (c) { c.execCommand('insertSoftTab'); } }
   });
   var docs = {};
-  cm.on('change', function () { if (S.active) { S.files[S.active] = cm.getValue(); save(); } });
+  var activePath = '';   // path dokumen yang benar-benar ada di editor
+  var openToken = 0;     // menolak callback lama saat klik tab cepat
+  cm.on('change', function () {
+    if (!activePath || S.files[activePath] === undefined) return;
+    S.files[activePath] = cm.getValue();
+    save();
+  });
 
   function modeInfo(p) {
     return CodeMirror.findModeByFileName(p.split('/').pop()) || { name: 'Teks', mode: 'null', mime: 'text/plain' };
   }
   function ensureDoc(p, cb) {
     if (docs[p]) return cb(docs[p]);
-    var mi = modeInfo(p), done = false;
-    function fin(spec) {
-      if (done) return;
-      done = true;
-      docs[p] = CodeMirror.Doc(S.files[p] || '', spec);
-      cb(docs[p]);
+    var mi = modeInfo(p), spec = mi.mime || mi.mode;
+    var called = false, ready = false, timer = 0;
+    function fin(spec2, fallback) {
+      if (S.files[p] === undefined || S.open.indexOf(p) < 0) return;
+      var d = docs[p];
+      if (!d) { d = CodeMirror.Doc(S.files[p] || '', spec2); docs[p] = d; }
+      else if (!fallback) d.setMode(spec2); // mode asli boleh tiba setelah fallback
+      if (!fallback) { ready = true; clearTimeout(timer); }
+      if (!called) { called = true; cb(d); }
     }
-    CodeMirror.requireMode(mi.mode, function () { fin(mi.mime || mi.mode); });
-    setTimeout(function () { fin('text/plain'); }, 4000);
+    timer = setTimeout(function () { fin('text/plain', true); }, 4000);
+    CodeMirror.requireMode(mi.mode, function () { if (!ready) fin(spec, false); });
   }
   function openFile(p) {
     if (S.files[p] === undefined) return;
     if (S.open.indexOf(p) < 0) S.open.push(p);
+    var token = ++openToken;
+    S.active = p; // sinkron, agar tab yang ditutup tidak menerima ketikan
+    renderTabs();
     ensureDoc(p, function (d) {
+      if (token !== openToken || S.files[p] === undefined || S.open.indexOf(p) < 0) return;
       S.active = p;
+      activePath = p;
       cm.swapDoc(d);
       cm.refresh();
       renderTabs();
@@ -71,8 +92,10 @@
     S.open.splice(i, 1);
     if (S.active === p) {
       var n = S.open[Math.max(0, i - 1)];
+      openToken++; // batalkan callback ensureDoc dari tab yang ditutup
+      S.active = n || '';
       if (n) { openFile(n); return; }
-      S.active = '';
+      activePath = '';
       cm.swapDoc(CodeMirror.Doc('', 'text/plain'));
     }
     renderTabs();
@@ -219,8 +242,9 @@
     S.dirs = S.dirs.filter(function (d) { return !(isDir && (d === p || d.indexOf(pre) === 0)); });
     S.open = S.open.filter(function (x) { return S.files[x] !== undefined; });
     if (S.files[S.active] === undefined) {
+      openToken++;
       S.active = S.open[0] || '';
-      if (!S.active) cm.swapDoc(CodeMirror.Doc('', 'text/plain'));
+      if (!S.active) { activePath = ''; cm.swapDoc(CodeMirror.Doc('', 'text/plain')); }
     }
     refreshAll();
     save();

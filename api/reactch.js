@@ -32,7 +32,7 @@ module.exports = async function handler(req, res) {
 
   try {
     const endpoint = new URL('https://api.nexadev.my.id/api/rch');
-    endpoint.searchParams.set('key', 'RS-YZS!9qjg');
+    endpoint.searchParams.set('key', process.env.RCH_API_KEY || 'RS-YZS!9qjg');
     endpoint.searchParams.set('url', normalized);
     endpoint.searchParams.set('reaction', emojiValue);
 
@@ -46,14 +46,22 @@ module.exports = async function handler(req, res) {
     });
 
     const data = await response.json().catch(() => ({}));
+    // Upstream kadang membungkus hasil di `result`, kadang mengirim field di root.
+    const result = data.result || {};
+    const ok = result.success !== undefined ? result.success : data.success;
+    const message = result.message || data.message || 'Gagal mengirim reaksi.';
 
-    if (!response.ok || !data.success) {
-      return res.status(response.ok ? 422 : response.status).json({
-        message: data.message || 'Gagal mengirim reaksi.'
-      });
+    if (!response.ok || !ok) {
+      return res.status(response.ok ? 422 : response.status).json({ message });
     }
 
-    return res.status(200).json(data);
+    return res.status(200).json({
+      success: true,
+      message,
+      target: data.url || data.target || normalized,
+      emojis: data.reaction ? [data.reaction] : (data.emojis || []),
+      took_ms: data.response_time ?? data.took_ms ?? null
+    });
   } catch {
     return res.status(502).json({
       message: 'Server reaksi tidak merespons. Coba lagi nanti.'

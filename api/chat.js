@@ -56,6 +56,9 @@ function isBanned(bans, who_) {
   const n = String(who_.name || '').trim().toLowerCase();
   return bans.some(b => (b.o && who_.oh && b.o === who_.oh) || (b.u && who_.uid && b.u === who_.uid) || (b.n && n && b.n === n));
 }
+// kepemilikan baru berdasarkan uid yang disimpan server; o (hash cid) hanya untuk pesan tamu lawas
+const mineOf = (x, me, oh) => !!((x.o && oh && x.o === oh) || (me && x.u && x.u === me.uid));
+const mineLegacy = (x, authName) => !!(authName && !x.u && !x.o && String(x.name || '').toLowerCase() === authName);
 
 async function findMsg(id) {
   const out = await redis([['LRANGE', KEY, 0, 99]]);
@@ -91,24 +94,29 @@ module.exports = async function handler(req, res) {
       ix.stories = cmds.push(['LRANGE', STORIES, 0, 39]) - 1;
       ix.notes = cmds.push(['HGETALL', NOTES]) - 1;
       ix.bans = cmds.push(['HVALS', BANS]) - 1;
+      if (me) ix.uname = cmds.push(['HGET', 'chat:unames', me.uid]) - 1;
       const out = await redis(cmds);
 
+      // nama resmi diambil dari server, bukan dari query klien yang bisa diganti lokal
+      const authName = me && ix.uname !== undefined ? out[ix.uname].result || '' : '';
       const messages = parse(out[ix.msgs].result).reverse().map(m => {
-        const mine = !!((m.o && oh && m.o === oh) || (me && m.u && m.u === me.uid));
+        const mine = mineOf(m, me, oh);
         const { o, u, ...rest } = m;
         return { ...rest, mine };
       });
-      const stories = parse(out[ix.stories].result).filter(s => now - s.ts < DAY);
+      const stories = parse(out[ix.stories].result).filter(s => now - s.ts < DAY)
+        .map(s => ({ ...s, mine: mineOf(s, me, oh) || mineLegacy(s, authName) }));
       const raw = out[ix.notes].result;
       let pairs = [];
       if (Array.isArray(raw)) { for (let i = 0; i < raw.length; i += 2) pairs.push([raw[i], raw[i + 1]]); }
       else if (raw && typeof raw === 'object') pairs = Object.entries(raw);
       const notes = pairs.map(([, v]) => { try { return JSON.parse(v); } catch { return null; } })
-        .filter(x => x && now - x.ts < DAY);
+        .filter(x => x && now - x.ts < DAY)
+        .map(n => ({ ...n, mine: mineOf(n, me, oh) || mineLegacy(n, authName) }));
 
       const bans = parse(out[ix.bans].result);
       const owner = !!(me && me.isOwner);
-      const banned = isBanned(bans, { oh, name, uid: me && me.uid });
+      const banned = isBanned(bans, { oh, name: authName || name, uid: me && me.uid });
       return res.status(200).json({
         messages, stories, notes,
         online: out[ix.online].result || 1,
@@ -121,37 +129,58 @@ module.exports = async function handler(req, res) {
     if (req.method === 'POST') {
       const clen = parseInt(req.headers['content-length'], 10) || 0; /* MZ-SEC */
       if (clen > 460000) return res.status(413).json({ message: 'Data terlalu besar.' });
-      const body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {});
+      let body;
+      try { body = typeof req.body === 'string' ? JSON.parse(req.body || '{}') : (req.body || {}); }
+      catch { return res.status(400).json({ message: 'Data tidak valid.' }); }
+      if (!body || typeof body !== 'object' || Array.isArray(body)) return res.status(400).json({ message: 'Data tidak valid.' });
       if (!body.audio && clen > 8000) return res.status(413).json({ message: 'Data terlalu besar.' });
       const cid = cleanCid(body.cid);
       const oh = ownerHash(cid);
       const me = await who(req);
+      // semua aksi yang mengubah data wajib login (termasuk delete/ban/unban)
+      if (!me) return res.status(401).json({ message: 'Sesi berakhir. Masuk lagi untuk ikut ngobrol.' });
       const owner = !!(me && me.isOwner);
       const action = ['delete', 'ban', 'unban'].includes(body.type) ? body.type : '';
+      const type = ['story', 'note'].includes(body.type) ? body.type : 'msg';
+      const strip = (v, hard) => String(v || '').replace(hard ? /[\u0000-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g : /[\u0000-\u001F\u007F\u200B\u200E\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g, ' ').replace(/\s+/g, ' ').trim();
+      const name = strip(String(body.name || '').normalize('NFKC'), true).slice(0, 20);
+      const text = strip(body.text, false).slice(0, type === 'note' ? 60 : type === 'story' ? 140 : 300);
+      const audio = type === 'msg' && typeof body.audio === 'string' && body.audio.length < 400000 && /^data:audio\/(webm|ogg|mp4|mpeg|aac)[a-z0-9;=.,+-]*;base64,[A-Za-z0-9+\/=]+$/.test(body.audio) ? body.audio : '';
+      const dur = Math.max(1, Math.min(60, parseInt(body.dur, 10) || 1));
 
-      if (!action && !me) return res.status(401).json({ message: 'Masuk dulu untuk ikut ngobrol (login Google di halaman utama).' });
-      if (!owner) {
-        const ip = String(req.headers['x-forwarded-for'] || 'x').split(',')[0].trim();
-        const minute = Math.floor(Date.now() / 60000);
-        const who_ = me ? 'u:' + me.uid : 'i:' + ip;
-        const rl = await redis([
-          ['SET', `chat:rl:${who_}`, '1', 'EX', 2, 'NX'],
-          ['INCR', `chat:rw:${who_}:${minute}`],
-          ['EXPIRE', `chat:rw:${who_}:${minute}`, 90],
-          ['INCR', `chat:ri:${ip}:${minute}`],
-          ['EXPIRE', `chat:ri:${ip}:${minute}`, 90]
-        ]);
-        if (rl[0].result !== 'OK') return res.status(429).json({ message: 'Pelan-pelan, tunggu sebentar.' });
-        if ((rl[1].result || 0) > 20 || (rl[3].result || 0) > 60) return res.status(429).json({ message: 'Terlalu banyak pesan, tunggu semenit.' });
+      // ban dicek lebih dulu, dengan nama resmi dari chat:unames (bukan nama bebas dari klien)
+      const pre = await redis([['HVALS', BANS], ['HGET', 'chat:unames', me.uid]]);
+      const bans = parse(pre[0].result);
+      const authName = pre[1].result || '';
+      if (isBanned(bans, { oh, name: authName || name, uid: me.uid })) {
+        return res.status(403).json({ banned: true, message: 'Akunmu diblokir dari chat.' });
       }
-      const bans = parse((await redis([['HVALS', BANS]]))[0].result);
+
+      if (!action) {
+        if (!name || (type !== 'note' && !text && !audio)) return res.status(400).json({ message: 'Nama dan isi wajib diisi.' });
+        if (!owner) {
+          const ip = String(req.headers['x-forwarded-for'] || 'x').split(',')[0].trim();
+          const minute = Math.floor(Date.now() / 60000);
+          const who_ = 'u:' + me.uid;
+          const rl = await redis([
+            ['SET', `chat:rl:${who_}`, '1', 'EX', 2, 'NX'],
+            ['INCR', `chat:rw:${who_}:${minute}`],
+            ['EXPIRE', `chat:rw:${who_}:${minute}`, 90],
+            ['INCR', `chat:ri:${ip}:${minute}`],
+            ['EXPIRE', `chat:ri:${ip}:${minute}`, 90]
+          ]);
+          if (rl[0].result !== 'OK') return res.status(429).json({ message: 'Pelan-pelan, tunggu sebentar.' });
+          if ((rl[1].result || 0) > 20 || (rl[3].result || 0) > 60) return res.status(429).json({ message: 'Terlalu banyak pesan, tunggu semenit.' });
+        }
+      }
 
       if (action === 'delete') {
         const id = String(body.id || '');
         if (!ID_RE.test(id)) return res.status(400).json({ message: 'ID pesan tidak valid.' });
         const f = await findMsg(id);
         if (!f) return res.status(404).json({ message: 'Pesan tidak ditemukan (mungkin sudah terhapus).' });
-        const own = (f.m.o && oh && f.m.o === oh) || (me && f.m.u && f.m.u === me.uid);
+        // hak utama dari uid; fallback hanya untuk pesan tamu lawas tanpa 'u' (cid pemilik + login)
+        const own = !!(me && f.m.u && f.m.u === me.uid) || !!(!f.m.u && oh && f.m.o && f.m.o === oh);
         if (!own && !owner) return res.status(403).json({ message: 'Kamu tidak boleh menghapus pesan ini.' });
         const cmds = [['LREM', KEY, 1, f.raw]];
         if (f.m.aud) cmds.push(['DEL', 'chat:a:' + id]);
@@ -165,16 +194,22 @@ module.exports = async function handler(req, res) {
         if (!ID_RE.test(id)) return res.status(400).json({ message: 'ID pesan tidak valid.' });
         const f = await findMsg(id);
         if (!f) return res.status(404).json({ message: 'Pesan tidak ditemukan.' });
-        if ((f.m.o && f.m.o === oh) || (f.m.u && f.m.u === me.uid)) {
-          return res.status(400).json({ message: 'Kamu tidak bisa mem-ban dirimu sendiri.' });
+        const targetUid = f.m.u || '';
+        const self = targetUid ? targetUid === me.uid : !!(oh && f.m.o && f.m.o === oh);
+        if (self) return res.status(400).json({ message: 'Kamu tidak bisa mem-ban dirimu sendiri.' });
+        const targetOh = targetUid ? '' : (f.m.o || '');
+        let targetName = String(f.m.name || '').slice(0, 20);
+        if (targetUid) {
+          const got = await redis([['HGET', 'chat:unames', targetUid]]);
+          if (got[0].result) targetName = String(got[0].result).slice(0, 20);
         }
-        const nl = String(f.m.name || '').trim().toLowerCase();
-        const dup = bans.some(b => (f.m.o && b.o === f.m.o) || (f.m.u && b.u === f.m.u) || (b.n && b.n === nl));
+        const nl = targetName.toLowerCase();
+        const dup = bans.some(b => (targetUid && b.u === targetUid) || (targetOh && b.o === targetOh) || (b.n && b.n === nl));
         if (!dup) {
           const banId = Date.now().toString(36) + Math.random().toString(36).slice(2, 6);
           await redis([['HSET', BANS, banId, JSON.stringify({
-            id: banId, name: String(f.m.name || '').slice(0, 20), n: nl,
-            o: f.m.o || '', u: f.m.u || '', ts: Date.now()
+            id: banId, name: targetName, n: nl,
+            o: targetOh, u: targetUid, ts: Date.now()
           })]]);
         }
         return res.status(200).json({ ok: true });
@@ -188,27 +223,24 @@ module.exports = async function handler(req, res) {
         return res.status(200).json({ ok: true });
       }
 
-      const type = ['story', 'note'].includes(body.type) ? body.type : 'msg';
-      const strip = (v, hard) => String(v || '').replace(hard ? /[\u0000-\u001F\u007F\u200B-\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g : /[\u0000-\u001F\u007F\u200B\u200E\u200F\u202A-\u202E\u2028\u2029\uFEFF]/g, ' ').replace(/\s+/g, ' ').trim();
-      const name = strip(String(body.name || '').normalize('NFKC'), true).slice(0, 20);
-      const text = strip(body.text, false).slice(0, type === 'note' ? 60 : type === 'story' ? 140 : 300);
-      const audio = type === 'msg' && typeof body.audio === 'string' && body.audio.length < 400000 && /^data:audio\/(webm|ogg|mp4|mpeg|aac)[a-z0-9;=.,+-]*;base64,[A-Za-z0-9+\/=]+$/.test(body.audio) ? body.audio : '';
-      const dur = Math.max(1, Math.min(60, parseInt(body.dur, 10) || 1));
-      if (!name || (type !== 'note' && !text && !audio)) return res.status(400).json({ message: 'Nama dan isi wajib diisi.' });
-      if (isBanned(bans, { oh, name, uid: me && me.uid })) {
-        return res.status(403).json({ banned: true, message: 'Akunmu diblokir dari chat.' });
-      }
       {
         const key = name.normalize('NFKC').toLowerCase();
         const reserved = String(process.env.RESERVED_NAMES || 'owner,admin,administrator,mod,moderator,system').split(',').map(x => x.trim().toLowerCase()).filter(Boolean);
         if (!owner && reserved.includes(key)) return res.status(403).json({ message: 'Nama itu khusus Owner.' });
         const got = await redis([['HGET', 'chat:names', key], ['HGET', 'chat:unames', me.uid]]);
         const holder = got[0].result, prev = got[1].result;
-        if (holder && holder !== me.uid && !owner) {
+        if (holder && holder !== me.uid) {
           return res.status(403).json({ message: 'Nama "' + name + '" sudah dipakai orang lain. Ganti nama di profil chat.' });
         }
-        if (holder !== me.uid) {
-          const cmds = [['HSET', 'chat:names', key, me.uid], ['HSET', 'chat:unames', me.uid, key]];
+        if (holder === me.uid) {
+          if (prev !== key) await redis([['HSET', 'chat:unames', me.uid, key]]);
+        } else {
+          // HSETNX membuat klaim nama atomik untuk dua request bersamaan
+          const claim = await redis([['HSETNX', 'chat:names', key, me.uid]]);
+          if (claim[0].result !== 1 && claim[0].result !== '1') {
+            return res.status(403).json({ message: 'Nama "' + name + '" sudah dipakai orang lain. Ganti nama di profil chat.' });
+          }
+          const cmds = [['HSET', 'chat:unames', me.uid, key]];
           if (prev && prev !== key) cmds.push(['HDEL', 'chat:names', prev]);
           await redis(cmds);
         }
@@ -219,13 +251,15 @@ module.exports = async function handler(req, res) {
 
       if (type === 'story') {
         const bg = Math.max(0, Math.min(5, parseInt(body.bg, 10) || 0));
-        await redis([['LPUSH', STORIES, JSON.stringify({ id, name, avatar, text, bg, ts: Date.now() })], ['LTRIM', STORIES, 0, 49]]);
-        return res.status(200).json({ ok: true });
+        await redis([['LPUSH', STORIES, JSON.stringify({ id, name, avatar, text, bg, ts: Date.now(), u: me.uid, o: oh })], ['LTRIM', STORIES, 0, 49]]);
+        return res.status(200).json({ ok: true, name });
       }
       if (type === 'note') {
-        if (!text) await redis([['HDEL', NOTES, name]]);
-        else await redis([['HSET', NOTES, name, JSON.stringify({ name, avatar, text, ts: Date.now() })]]);
-        return res.status(200).json({ ok: true });
+        // catatan kini dikunci per uid agar tidak hilang saat nama ditampilkan ulang
+        const noteKey = 'u:' + me.uid;
+        if (!text) await redis([['HDEL', NOTES, noteKey]]);
+        else await redis([['HSET', NOTES, noteKey, JSON.stringify({ name, avatar, text, ts: Date.now(), u: me.uid, o: oh })]]);
+        return res.status(200).json({ ok: true, name });
       }
       let reply = null;
       if (body.reply && typeof body.reply === 'object') {
@@ -242,7 +276,7 @@ module.exports = async function handler(req, res) {
         ...(me ? { u: me.uid } : {}),
         ...(audio ? { aud: 1, dur } : {})
       })], ['LTRIM', KEY, 0, 99]]);
-      return res.status(200).json({ ok: true });
+      return res.status(200).json({ ok: true, name });
     }
 
     res.setHeader('Allow', 'GET, POST');

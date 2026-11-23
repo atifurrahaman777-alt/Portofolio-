@@ -282,11 +282,6 @@ html body .dpad .rt{grid-column:3;grid-row:2}
 <footer>© Mann'zz Tools</footer>
 <script src="app.js"></script>
 <script>
-window.addEventListener('error', function(e) {
-  document.body.insertAdjacentHTML("afterbegin", '<div style="position:fixed;top:0;left:0;right:0;z-index:9999;background:#ff2222;color:#fff;padding:12px;font-size:13px;word-break:break-all">ERROR: ' + e.message + ' (line ' + e.lineno + ')</div>');
-});
-</script>
-<script>
 const gtabs = [...document.querySelectorAll('[data-game-tab]')];
 const gviews = [...document.querySelectorAll('.ocean-view')];
 function showGame(name) {
