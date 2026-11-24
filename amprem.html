@@ -64,6 +64,20 @@
 
 .ocean-view[hidden]{display:none}
 
+.amfind-result{display:grid;gap:14px;margin-top:18px}
+.amfind-video{display:flex;gap:14px;align-items:center}
+.amfind-video img{width:88px;height:118px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--card-2)}
+.amfind-meta{display:grid;gap:5px;min-width:0}
+.amfind-title{font-weight:700;overflow-wrap:anywhere}
+.amfind-kw{display:flex;flex-wrap:wrap;gap:6px;margin-top:6px}
+.amfind-kw span{font-size:.75rem;border:1px solid var(--line);border-radius:10px;padding:4px 8px;color:var(--muted)}
+.amfind-links{display:flex;flex-wrap:wrap;gap:8px}
+.amfind-links a{text-decoration:none}
+.amfind-presets{display:grid;gap:8px}
+.amfind-preset{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card-2)}
+.amfind-preset b{display:block;margin-bottom:4px}
+.amfind-preset a{font-size:.82rem;text-decoration:underline}
+
 .about-card{max-width:560px;margin:0 auto 26px;padding:22px;border-radius:18px;background:var(--card);border:2px solid #000;box-shadow:5px 5px 0 var(--purple)}
 .about-kicker{font-size:.68rem;font-weight:800;letter-spacing:3px;color:var(--purple);margin-bottom:10px}
 .about-card h2{margin:0 0 10px;font-size:1.3rem}
@@ -153,7 +167,7 @@ html body.light-mode{--gold:#0a0a0a;--purple:#0a0a0a;--accent:#0a0a0a;--on:#fff}
 html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.light-mode)) .ocean-tab.active,html body:is(.light-mode,:not(.light-mode)) .email-step.active,html body:is(.light-mode,:not(.light-mode)) .game-controls button.active,html body:is(.light-mode,:not(.light-mode)) .status{color:var(--on)!important}
 </style>
 <link rel="icon" type="image/png" href="icon-192.png?v=7">
-<link rel="stylesheet" href="/pro.css?v=1">
+<link rel="stylesheet" href="/pro.css?v=2">
 </head>
 <body>
 <main class="wrap">
@@ -191,6 +205,7 @@ html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.
 <nav class="ocean-nav" id="ocean-nav" aria-label="Navigasi utama">
 <button type="button" class="ocean-tab active" data-ocean-tab="home"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M3 11l9-8 9 8M5 10v10h5v-6h4v6h5V10"/></svg> Beranda</button>
 <button type="button" class="ocean-tab" data-ocean-tab="email"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3 7l9 6 9-6"/></svg> Email</button>
+<button type="button" class="ocean-tab" data-ocean-tab="amfind"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg> AMFind</button>
 <button type="button" class="ocean-tab" data-ocean-tab="activity"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><polyline points="3 17 9 11 13 15 21 6"/><polyline points="14 6 21 6 21 13"/></svg> Aktivitas</button>
 <button type="button" class="ocean-tab" data-ocean-tab="security"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg> Keamanan</button>
 </nav>
@@ -205,6 +220,27 @@ html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.
 <div class="about-tip">Tips keamanan: jangan bagikan magic link kepada orang lain. Pastikan kamu mengenali layanan yang menerima email dan tautanmu.</div>
 </section>
 </div>
+
+<section class="email-section ocean-view" id="ocean-amfind" data-view="amfind">
+<div class="email-heading">
+<span class="email-kicker">AMFIND</span>
+<h2><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg> Cari Preset Alight Motion</h2>
+<p>Tempel satu link TikTok. AMFind akan membaca judul video, mengambil kata kunci, lalu mencari preset Alight Motion yang cocok.</p>
+</div>
+
+<article class="email-card">
+<div class="email-icon"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+<h3>Link TikTok</h3>
+<p>Gunakan link video TikTok, bukan link profil atau link musik.</p>
+<form id="amfind-form">
+<label for="amfind-url">URL TikTok</label>
+<input class="input-field" id="amfind-url" name="url" type="url" placeholder="https://www.tiktok.com/@user/video/1234567890" autocomplete="url" required>
+<button type="submit" class="btn">Cari Preset <span><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M4 12l5 5L20 6"/></svg></span></button>
+</form>
+<p class="note" id="amfind-status" role="status" aria-live="polite" style="margin-top:12px"></p>
+<div class="amfind-result" id="amfind-result" hidden></div>
+</article>
+</section>
 
 <section class="email-section ocean-view" id="email-management" data-view="email">
 <div class="email-heading">
@@ -481,6 +517,147 @@ setInterval(loadAmprem, 60000);
   const nav = document.getElementById("ocean-nav");
   if (nav) nav.setAttribute("role", "tablist");
   showTab("home");
+})();
+</script>
+<script>
+(() => {
+  const form = document.getElementById('amfind-form');
+  if (!form) return;
+  const input = document.getElementById('amfind-url');
+  const out = document.getElementById('amfind-result');
+  const status = document.getElementById('amfind-status');
+
+  function tiktokUrl(raw) {
+    try {
+      const u = new URL(raw);
+      if (u.protocol !== 'https:') return null;
+      const h = u.hostname.toLowerCase();
+      if (h !== 'tiktok.com' && h !== 'www.tiktok.com' && h !== 'vm.tiktok.com' && h !== 'vt.tiktok.com') return null;
+      return u;
+    } catch (e) { return null; }
+  }
+
+  function extractKeywords(text) {
+    const clean = String(text || '').replace(/https?:\/\/\S+/g, ' ').replace(/[|•]/g, ' ').trim();
+    const tags = (clean.match(/#[\w\u00c0-\u024f]+/gi) || []).map(s => s.slice(1).toLowerCase());
+    const words = clean
+      .replace(/#[\w\u00c0-\u024f]+/gi, ' ')
+      .replace(/[^a-z0-9\s]/gi, ' ')
+      .split(/\s+/)
+      .filter(w => w.length > 2 && !/^(dan|yang|dengan|untuk|dari|ini|itu|the|for|with|video|tiktok)$/i.test(w))
+      .map(w => w.toLowerCase());
+    const seen = new Set();
+    return [...tags, ...words].filter(w => {
+      if (!w || seen.has(w)) return false;
+      seen.add(w);
+      return true;
+    }).slice(0, 8);
+  }
+
+  function node(tag, cls, text) {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text !== undefined) el.textContent = text;
+    return el;
+  }
+
+  async function loadCatalog() {
+    try {
+      const r = await fetch('amfind-presets.json', { cache: 'no-store' });
+      if (!r.ok) return [];
+      const data = await r.json();
+      return Array.isArray(data) ? data : [];
+    } catch (e) { return []; }
+  }
+
+  function render(data, keywords) {
+    out.textContent = '';
+    const video = node('div', 'amfind-video');
+    if (data.thumbnail_url) {
+      const img = document.createElement('img');
+      img.src = data.thumbnail_url;
+      img.alt = 'Pratinjau video TikTok';
+      video.appendChild(img);
+    }
+    const meta = node('div', 'amfind-meta');
+    meta.appendChild(node('div', 'amfind-title', data.title || 'Video TikTok tanpa judul'));
+    meta.appendChild(node('div', 'label', data.author_name ? '@' + data.author_name : 'Penulis tidak tersedia'));
+    const id = data.embed_product_id || (String(input.value).match(/\/video\/(\d+)/) || [])[1] || '-';
+    meta.appendChild(node('div', 'label', 'ID video: ' + id));
+    if (keywords.length) {
+      const kw = node('div', 'amfind-kw');
+      keywords.forEach(k => kw.appendChild(node('span', '', '#' + k)));
+      meta.appendChild(kw);
+    }
+    video.appendChild(meta);
+    out.appendChild(video);
+
+    const links = node('div', 'amfind-links');
+    const q = encodeURIComponent((keywords.length ? keywords.join(' ') : 'alight motion effect') + ' alight motion preset');
+    [
+      ['Cari di Google', 'https://www.google.com/search?q=' + q],
+      ['Cari di YouTube', 'https://www.youtube.com/results?search_query=' + q],
+      ['Cari di TikTok', 'https://www.tiktok.com/search?q=' + q],
+      ['Cari di Pinterest', 'https://www.pinterest.com/search/pins/?q=' + q]
+    ].forEach(function (item) {
+      const a = node('a', 'btn ghost', item[0]);
+      a.href = item[1];
+      a.target = '_blank';
+      a.rel = 'noopener noreferrer';
+      links.appendChild(a);
+    });
+    out.appendChild(links);
+
+    loadCatalog().then(function (items) {
+      const hay = (keywords.join(' ') + ' ' + (data.title || '')).toLowerCase();
+      const found = items.filter(function (p) {
+        const text = String(p.keywords || ((p.title || '') + ' ' + String(p.tags || ''))).toLowerCase();
+        return keywords.some(function (k) { return text.includes(k.toLowerCase()); }) || text.includes('alight');
+      });
+      const catalog = node('div', 'amfind-presets');
+      if (!found.length) {
+        catalog.appendChild(node('p', 'note', 'Belum ada preset di katalog lokal. Gunakan tautan pencarian di atas.'));
+        out.appendChild(catalog);
+        return;
+      }
+      found.slice(0, 10).forEach(function (p) {
+        const card = node('div', 'amfind-preset');
+        card.appendChild(node('b', '', p.title || 'Preset Alight Motion'));
+        if (p.description) card.appendChild(node('p', 'note', p.description));
+        if (p.url) {
+          const a = node('a', '', 'Buka preset');
+          a.href = p.url;
+          a.target = '_blank';
+          a.rel = 'noopener noreferrer';
+          card.appendChild(a);
+        }
+        catalog.appendChild(card);
+      });
+      out.appendChild(catalog);
+    });
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    out.hidden = true;
+    out.textContent = '';
+    status.textContent = '';
+    const raw = input.value.trim();
+    if (!tiktokUrl(raw)) { status.textContent = 'Masukkan link video TikTok yang valid.'; return; }
+    status.textContent = 'Membaca video TikTok...';
+    try {
+      const res = await fetch('https://www.tiktok.com/oembed?url=' + encodeURIComponent(raw));
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      const data = await res.json();
+      const keywords = extractKeywords(data.title || '');
+      render(data, keywords);
+      out.hidden = false;
+      status.textContent = 'Selesai. Berikut info video dan pencarian presetnya.';
+    } catch (err) {
+      status.textContent = 'Gagal membaca video. Pastikan link benar dan video tidak privat.';
+      console.error('AMFind:', err);
+    }
+  });
 })();
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script>

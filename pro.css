@@ -177,6 +177,15 @@ html body :is(
   color: var(--muted) !important;
 }
 
+/* Satu-satunya pengecualian teks berwarna: centang verifikasi biru. */
+html body :is(.verified-badge, .verified-badge2,
+  .verified-badge.owner-role, .verified-badge2.owner-role,
+  .verified-badge .badge-icon, .verified-badge2 .badge-icon) {
+  color: #1d9bf0 !important;
+  -webkit-text-fill-color: #1d9bf0 !important;
+  text-shadow: none !important;
+}
+
 /* Tombol utama memakai aksen, teks tetap netral (putih). */
 html body :is(
   .btn, .btn.primary, .btn.pri, .contact-block button, .keys button.sg,
