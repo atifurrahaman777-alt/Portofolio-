@@ -128,9 +128,7 @@
   /* ----- Favicon mengikuti jenis berkas aktif ----- */
   var favicon = $('favicon');
   function svgIcon(inner) {
-    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
-      + '<circle cx="32" cy="32" r="29" fill="#061020" stroke="#22d3ee" stroke-width="2"/>'
-      + inner + '</svg>';
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">' + inner + '</svg>';
     return 'data:image/svg+xml,' + encodeURIComponent(svg);
   }
   function fileIcon(p) {
@@ -148,17 +146,19 @@
       '<rect x="12" y="12" width="40" height="40" rx="9" fill="#f7df1e"/>'
       + '<text x="32" y="42" ' + t + ' font-size="23" fill="#10131f">JS</text>');
     if (e === 'py') return svgIcon(
-      '<rect x="10" y="12" width="44" height="40" rx="10" fill="#3776ab"/>'
-      + '<text x="32" y="43" ' + t + ' font-size="25" fill="#ffd43b">Py</text>');
+      '<svg x="3" y="3" width="58" height="58" viewBox="0.21 -0.077 110 110">'
+      + '<path fill="#3776ab" d="M55.023-0.077c-25.971,0-26.25,10.081-26.25,12.156c0,3.148,0,12.594,0,12.594h26.75v3.781 c0,0-27.852,0-37.375,0c-7.949,0-17.938,4.833-17.938,26.25c0,19.673,7.792,27.281,15.656,27.281c2.335,0,9.344,0,9.344,0 s0-9.765,0-13.125c0-5.491,2.721-15.656,15.406-15.656c15.91,0,19.971,0,26.531,0c3.902,0,14.906-1.696,14.906-14.406 c0-13.452,0-17.89,0-24.219C82.054,11.426,81.515-0.077,55.023-0.077z M40.273,8.392c2.662,0,4.813,2.15,4.813,4.813 c0,2.661-2.151,4.813-4.813,4.813s-4.813-2.151-4.813-4.813C35.46,10.542,37.611,8.392,40.273,8.392z"/>'
+      + '<path fill="#ffd43b" d="M55.397,109.923c25.959,0,26.282-10.271,26.282-12.156c0-3.148,0-12.594,0-12.594H54.897v-3.781 c0,0,28.032,0,37.375,0c8.009,0,17.938-4.954,17.938-26.25c0-23.322-10.538-27.281-15.656-27.281c-2.336,0-9.344,0-9.344,0 s0,10.216,0,13.125c0,5.491-2.631,15.656-15.406,15.656c-15.91,0-19.476,0-26.532,0c-3.892,0-14.906,1.896-14.906,14.406 c0,14.475,0,18.265,0,24.219C28.366,100.497,31.562,109.923,55.397,109.923z M70.148,101.454c-2.662,0-4.813-2.151-4.813-4.813 s2.15-4.813,4.813-4.813c2.661,0,4.813,2.151,4.813,4.813S72.809,101.454,70.148,101.454z"/>'
+      + '</svg>');
     if (e === 'svg') return svgIcon(
       '<circle cx="23" cy="22" r="5" fill="#ffd43b"/>'
-      + '<path d="M8 50l15-17 10 11 8-9 15 15z" fill="#22d3ee"/>');
+      + '<path d="M8 50l15-17 10 11 8-9 15 15z" fill="#0891b2"/>');
     if (e === 'json') return svgIcon(
-      '<text x="32" y="44" ' + t + ' font-size="30" fill="#9ece6a">{}</text>');
+      '<text x="32" y="44" ' + t + ' font-size="30" fill="#16a34a">{}</text>');
     if (e === 'md') return svgIcon(
-      '<text x="32" y="43" ' + t + ' font-size="26" fill="#7dcfff">M</text>');
+      '<text x="32" y="43" ' + t + ' font-size="26" fill="#0891b2">M</text>');
     return svgIcon(
-      '<text x="32" y="43" ' + t + ' font-size="25" fill="#7dcfff">&lt;/&gt;</text>');
+      '<text x="32" y="43" ' + t + ' font-size="25" fill="#0891b2">&lt;/&gt;</text>');
   }
   function updateFavicon() {
     if (favicon) favicon.href = fileIcon(S.active || '');
