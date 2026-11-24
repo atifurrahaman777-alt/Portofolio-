@@ -513,7 +513,14 @@ setInterval(loadAmprem, 60000);
 
   const nav = document.getElementById("ocean-nav");
   if (nav) nav.setAttribute("role", "tablist");
-  showTab("home");
+
+  function tabFromHash() {
+    const hash = String(location.hash || "").replace(/^#/, "");
+    return tabs.some(tab => tab.dataset.oceanTab === hash) ? hash : "home";
+  }
+
+  showTab(tabFromHash());
+  window.addEventListener("hashchange", () => showTab(tabFromHash()));
 })();
 </script>
 <script>
