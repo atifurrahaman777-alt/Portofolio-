@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="id">
+<head>
+<script id="mz-guard">
+(function(){
+  var root = document.documentElement;
+  root.style.visibility = 'hidden';
+  var CFG = {apiKey:"AIzaSyArfUhdOVfyIsjKjfD_9BkbixxNa6XRvsM",authDomain:"manz-web.firebaseapp.com",projectId:"manz-web",appId:"1:178479215158:web:265819c21836b2116f5e97"};
+  function lock(msg){
+    document.body.innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:24px;text-align:center;font-family:system-ui,sans-serif"><h2>Masuk dulu</h2><p>' + msg + '</p><a href="/" style="display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:#111;color:#fff;text-decoration:none;font-weight:700">Ke beranda</a></div>';
+    root.style.visibility = 'visible';
+  }
+  function load(src, cb){
+    var sc = document.createElement('script');
+    sc.src = src; sc.onload = cb;
+    sc.onerror = function(){ lock('Gagal memeriksa login. Muat ulang halaman.'); };
+    document.head.appendChild(sc);
+  }
+  function run(){
+    try { if (!firebase.apps.length) firebase.initializeApp(CFG); } catch (e) {}
+    firebase.auth().onAuthStateChanged(function(u){
+      if (u) root.style.visibility = 'visible';
+      else lock('Fitur ini hanya untuk pengguna yang sudah login. Tamu hanya bisa memakai Game dan Musik.');
+    });
+  }
+  function go(){
+    if (window.firebase && firebase.auth) { run(); return; }
+    load('https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js', function(){
+      load('https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js', run);
+    });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', go); else go();
+  setTimeout(function(){ if (root.style.visibility === 'hidden') lock('Pemeriksaan login terlalu lama. Muat ulang halaman.'); }, 12000);
+})();
+</script>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#0d1117">
+<meta name="description" content="AMFind — cari preset Alight Motion dari link video TikTok, oleh Mann'zz">
+<title>AMFind | Mann'zz Tools</title>
+<link rel="stylesheet" href="/style.css">
+<link rel="stylesheet" href="/pro.css?v=2">
+<link rel="manifest" href="/manifest.json?v=7">
+<link rel="apple-touch-icon" href="/icon-192.png?v=7">
+<link rel="icon" type="image/png" href="/icon-192.png?v=7">
+
+<style>
+.amfind-result{display:grid;gap:14px;margin-top:18px}
+.btn .spinner[hidden]{display:none}
+.amfind-video{display:flex;gap:14px;align-items:center}
+.amfind-video img{width:88px;height:118px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--card-2)}
+.amfind-meta{display:grid;gap:5px;min-width:0}
+.amfind-title{font-weight:700;overflow-wrap:anywhere}
+.amfind-presets{display:grid;gap:8px}
+.amfind-preset{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card-2)}
+.amfind-preset b{display:block;margin-bottom:4px}
+.amfind-preset a{display:block;padding:8px 0;font-size:.9rem;text-decoration:underline;overflow-wrap:anywhere}
+@media(max-width:520px){.amfind-video{align-items:flex-start}.amfind-video img{width:70px;height:94px}}
+</style>
+</head>
+<body>
+<main class="wrap">
+
+<header>
+<div class="brand"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg> AMFind <span class="accent">by Mann'zz</span></div>
+<div style="display:flex;align-items:center;gap:10px">
+<a class="back-link" href="/">Beranda</a>
+<div class="pill">Preset Finder</div>
+<button id="theme-toggle" type="button" aria-label="Ganti mode terang/gelap" title="Ganti mode terang/gelap"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="12" cy="12" r="4"/><line x1="12" y1="2" x2="12" y2="4"/><line x1="12" y1="20" x2="12" y2="22"/><line x1="4" y1="12" x2="2" y2="12"/><line x1="22" y1="12" x2="20" y2="12"/><line x1="5" y1="5" x2="6.4" y2="6.4"/><line x1="17.6" y1="17.6" x2="19" y2="19"/><line x1="5" y1="19" x2="6.4" y2="17.6"/><line x1="17.6" y1="6.4" x2="19" y2="5"/></svg></button>
+</div>
+</header>
+
+<section class="hero">
+<div class="eyebrow">ALIGHT MOTION PRESET FINDER</div>
+<h1>Cari preset dari <span class="accent">TikTok.</span></h1>
+<p class="sub">Tempel satu link video TikTok. AMFind akan memindai kolom komentar untuk menemukan link preset Alight Motion yang dibagikan di sana.</p>
+</section>
+
+<section class="email-section">
+<article class="email-card">
+<div class="email-icon"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><circle cx="11" cy="11" r="7"/><path d="M20 20l-4-4"/></svg></div>
+<h3>Link TikTok</h3>
+<p>Gunakan link video TikTok, bukan link profil atau link musik.</p>
+<form id="amfind-form">
+<label for="amfind-url">URL TikTok</label>
+<input class="input-field" id="amfind-url" name="url" type="url" placeholder="https://www.tiktok.com/@user/video/1234567890" autocomplete="url" required>
+<button type="submit" class="btn" id="amfind-submit"><span class="btn-label">Cari Preset</span><span class="spinner" hidden></span></button>
+</form>
+<p class="note" id="amfind-status" role="status" aria-live="polite" style="margin-top:12px"></p>
+<div class="amfind-result" id="amfind-result" hidden></div>
+</article>
+</section>
+
+<footer>© Mann'zz Tools</footer>
+</main>
+<script src="/app.js"></script>
+<script>
+(() => {
+  const form = document.getElementById('amfind-form');
+  if (!form) return;
+  const input = document.getElementById('amfind-url');
+  const out = document.getElementById('amfind-result');
+  const status = document.getElementById('amfind-status');
+  const submit = document.getElementById('amfind-submit');
+
+  const API = 'https://bintangapi.my.id/api/amfind/?url=';
+  const TIMEOUT_MS = 110000;
+  const MAX_RETRIES = 2;
+  const sleep = ms => new Promise(r => setTimeout(r, ms));
+
+  function tiktokUrl(raw) {
+    try {
+      const u = new URL(raw);
+      if (u.protocol !== 'https:' && u.protocol !== 'http:') return null;
+      const h = u.hostname.toLowerCase();
+      if (h !== 'tiktok.com' && h !== 'www.tiktok.com' && h !== 'vm.tiktok.com' && h !== 'vt.tiktok.com') return null;
+      return u;
+    } catch (e) { return null; }
+  }
+
+  function node(tag, cls, text) {
+    const el = document.createElement(tag);
+    if (cls) el.className = cls;
+    if (text !== undefined) el.textContent = text;
+    return el;
+  }
+
+  function timeoutSignal() {
+    if (typeof AbortSignal !== 'undefined' && typeof AbortSignal.timeout === 'function') {
+      return AbortSignal.timeout(TIMEOUT_MS);
+    }
+    const c = new AbortController();
+    setTimeout(() => c.abort(), TIMEOUT_MS);
+    return c.signal;
+  }
+
+  async function amPresetFind(url) {
+    let lastError = 'Gagal menghubungi server.';
+    for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+      try {
+        const res = await fetch(API + encodeURIComponent(url), {
+          headers: { Accept: 'application/json' },
+          signal: timeoutSignal()
+        });
+        const json = await res.json().catch(() => null);
+        if (!json || typeof json !== 'object') {
+          lastError = 'Server balas bukan JSON (HTTP ' + res.status + ').';
+          continue;
+        }
+        if (json.success === true && json.data) {
+          const d = json.data;
+          return {
+            ok: true,
+            video: d.video || {},
+            user: d.user || {},
+            preset: d.preset || null,
+            thumbnail: d.thumbnail || null,
+            totalComments: d.total_comments_scanned ?? null,
+            foundIn: d.found_in || null,
+            source: d.source || null,
+            queryUrl: d.query_url || url
+          };
+        }
+        return {
+          ok: false,
+          error: String(json.error || json.message || 'Data tidak ditemukan.').slice(0, 200)
+        };
+      } catch (e) {
+        lastError = /abort|timeout/i.test(e && e.message || '')
+          ? 'Server timeout. Coba lagi.'
+          : 'Gagal terhubung: ' + String(e && e.message || e).slice(0, 120);
+        if (attempt < MAX_RETRIES) await sleep(2000 * attempt);
+      }
+    }
+    return { ok: false, error: lastError };
+  }
+
+  function fmt(n) {
+    const x = Number(n);
+    return Number.isFinite(x) ? x.toLocaleString('id-ID') : '-';
+  }
+
+  function render(data) {
+    out.textContent = '';
+
+    const video = node('div', 'amfind-video');
+    if (data.thumbnail) {
+      const img = document.createElement('img');
+      img.src = data.thumbnail;
+      img.alt = 'Pratinjau video TikTok';
+      video.appendChild(img);
+    }
+    const meta = node('div', 'amfind-meta');
+    meta.appendChild(node('div', 'amfind-title', data.video.caption || 'Video TikTok'));
+    meta.appendChild(node('div', 'label', 'User: @' + (data.user.username || '-') + (data.user.display_name ? ' · ' + data.user.display_name : '')));
+    meta.appendChild(node('div', 'label', 'ID video: ' + (data.video.id || '-')));
+
+    const stats = [];
+    if (data.video.views != null) stats.push('Tayangan ' + fmt(data.video.views));
+    if (data.video.likes != null) stats.push('Suka ' + fmt(data.video.likes));
+    if (data.video.comments != null) stats.push('Komentar ' + fmt(data.video.comments));
+    if (data.video.shares != null) stats.push('Bagian ' + fmt(data.video.shares));
+    if (stats.length) meta.appendChild(node('div', 'label', stats.join(' · ')));
+    if (data.totalComments != null) meta.appendChild(node('div', 'label', 'Komentar dipindai: ' + fmt(data.totalComments)));
+    if (data.foundIn) {
+      const found = { comment: 'komentar', caption: 'caption video' };
+      meta.appendChild(node('div', 'label', 'Ditemukan di: ' + (found[data.foundIn] || data.foundIn)));
+    }
+    video.appendChild(meta);
+    out.appendChild(video);
+
+    const box = node('div', 'amfind-presets');
+    if (!data.preset) {
+      box.appendChild(node('p', 'note', 'Preset tidak ditemukan di komentar video ini.'));
+    } else {
+      const p = data.preset;
+      const card = node('div', 'amfind-preset');
+      card.appendChild(node('b', '', 'Preset dari @' + (p.username || '-')));
+      card.appendChild(node('p', 'note',
+        'Komentar' + (p.is_reply ? ' balasan' : '') + ' · ' + fmt(p.likes || 0) + ' suka'));
+      const items = Array.isArray(p.items) ? p.items : [];
+      items.forEach(function (item) {
+        if (!item.url) return;
+        const a = node('a', '', item.label || 'Buka preset');
+        a.href = item.url;
+        a.target = '_blank';
+        a.rel = 'noopener noreferrer';
+        card.appendChild(a);
+      });
+      box.appendChild(card);
+    }
+    out.appendChild(box);
+  }
+
+  form.addEventListener('submit', async function (e) {
+    e.preventDefault();
+    out.hidden = true;
+    out.textContent = '';
+    status.textContent = '';
+    const raw = input.value.trim();
+    if (!tiktokUrl(raw)) {
+      status.textContent = 'Masukkan link video TikTok yang valid.';
+      return;
+    }
+    submit.disabled = true;
+    submit.classList.add('is-loading');
+    status.textContent = 'Mencari preset di komentar TikTok... bisa memakan waktu beberapa menit.';
+    let result;
+    try {
+      result = await amPresetFind(raw);
+    } finally {
+      submit.disabled = false;
+      submit.classList.remove('is-loading');
+    }
+    if (!result.ok) {
+      status.textContent = result.error;
+      return;
+    }
+    render(result);
+    out.hidden = false;
+    status.textContent = 'Selesai. Berikut preset yang ditemukan dari komentar video.';
+  });
+})();
+</script>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script>
+<script>
+(function(){
+  function sync(){
+    try{
+      var pb = window.parent !== window ? window.parent.document.body : null;
+      if(pb) document.body.classList.toggle('light-mode', pb.classList.contains('light-mode'));
+    }catch(e){}
+  }
+  sync();
+  window.addEventListener('load', sync);
+  try{
+    new MutationObserver(sync).observe(window.parent.document.body, {attributes:true, attributeFilter:['class']});
+  }catch(e){}
+})();
+</script>
+</body>
+</html>
