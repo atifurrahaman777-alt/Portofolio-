@@ -1,0 +1,393 @@
+/* Tema profesional: netral, solid, tanpa teks berwarna. */
+:root {
+  --brand: #2f6feb;
+  --brand-hover: #3b82f6;
+  --shadow: rgba(0, 0, 0, .28);
+  --radius: 12px;
+}
+
+html body {
+  font-family: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
+  scrollbar-color: var(--border) transparent;
+  scrollbar-width: thin;
+}
+
+html body:not(.light-mode) {
+  color-scheme: dark;
+  --bg: #0d1117;
+  --card: #141a22;
+  --card-2: #1a222c;
+  --line: #262f3a;
+  --text: #e6edf3;
+  --muted: #9aa7b4;
+  --on: #ffffff;
+  --accent: var(--brand);
+  --gold: var(--text);
+  --purple: var(--text);
+  --code-strong: #d6dee7;
+  --code-mid: #aab6c2;
+  --code-dim: #7d8a97;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+}
+
+html body.light-mode {
+  color-scheme: light;
+  --bg: #f4f6f8;
+  --card: #ffffff;
+  --card-2: #f8fafc;
+  --line: #d9e0e7;
+  --text: #111827;
+  --muted: #5b6673;
+  --on: #ffffff;
+  --accent: #2563eb;
+  --gold: var(--text);
+  --purple: var(--text);
+  --code-strong: #1f2937;
+  --code-mid: #4b5563;
+  --code-dim: #6b7280;
+  background: var(--bg) !important;
+  color: var(--text) !important;
+  text-shadow: none !important;
+}
+
+html body::before,
+html body::after {
+  display: none !important;
+  background: none !important;
+  box-shadow: none !important;
+}
+
+/* Permukaan solid, bukan kaca/gelembung. */
+html body header,
+html body main.wrap > header,
+html body .bottom-nav,
+html body .sidebar,
+html body .gc-head,
+html body .gc-bar,
+html body #bar,
+html body .oh {
+  background: var(--card) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body main.wrap > header {
+  margin: 0 0 20px !important;
+  padding: 12px 16px !important;
+  border: 1px solid var(--line) !important;
+  border-bottom: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+}
+
+html body main.wrap > header .brand,
+html body main.wrap > header > div:last-child {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  padding: 0 !important;
+  backdrop-filter: none !important;
+}
+
+html body :is(
+  .card, .profile-card, .banner, .project, .skill, .tool-card, .quote, .stat,
+  .game-frame, .owner-panel, .panel, .pf-info, .pf-prog, .pf-bd, .pf-sheet-panel,
+  .mzm, .mzs-panel, .keys, #out, #side, .top, .con, .ftabs, .tools, #msg,
+  .seg, .tm-mail, .tm-item, .tm-body, .tm-raw, .dl-format, .dl-result,
+  .rc-result, .ttt-cell, .wam-hole, #wheel-options, .mem-card, .g2048-board,
+  .security-card, .email-card, .about-card, .profile, .gc-notes, .gc-replybar,
+  .gc-emoji, .gc-day, .gc-bub, .gc-nb, .input-field, .in
+) {
+  background: var(--card) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 1px 2px var(--shadow) !important;
+  -webkit-backdrop-filter: none !important;
+  backdrop-filter: none !important;
+}
+
+html body :is(.card, .profile-card, .banner, .project, .tool-card, .quote,
+  .security-card, .email-card, .about-card, .profile) {
+  padding: 18px !important;
+}
+
+html body .bottom-nav {
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: 0 4px 16px var(--shadow) !important;
+}
+
+html body .sidebar {
+  border-right: 1px solid var(--line) !important;
+  border-radius: 0 var(--radius) var(--radius) 0 !important;
+}
+
+html body .tool-overlay {
+  background: rgba(13, 17, 23, .88) !important;
+  backdrop-filter: none !important;
+}
+
+html body.light-mode .tool-overlay {
+  background: rgba(244, 246, 248, .92) !important;
+}
+
+html body .pf-banner {
+  background: var(--card-2) !important;
+  border: 0 !important;
+  border-bottom: 1px solid var(--line) !important;
+  box-shadow: none !important;
+}
+
+html body .title::before {
+  background: var(--brand) !important;
+  box-shadow: none !important;
+}
+
+html body :is(.pf-bar i, .pf-up i, .mzm-bar i, .gc-track i) {
+  background: var(--brand) !important;
+}
+
+/* Semua teks UI netral. */
+html body :is(
+  h1, h2, h3, h4, h5, h6, p, span, a, b, strong, em, small, label, li,
+  blockquote, figcaption, dt, dd, button, div, summary, th, td
+) {
+  color: var(--text) !important;
+  -webkit-text-fill-color: currentColor !important;
+  text-shadow: none !important;
+  background-image: none !important;
+  -webkit-background-clip: border-box !important;
+  background-clip: border-box !important;
+}
+
+html body :is(
+  .sub, .muted, .profile-bio, .banner-sub, .project p, .tool-card p, footer,
+  .tm-muted, .tm-label, .label, .note, .empty, .foot-note, .gc-sub, .gc-time,
+  .back-link, .gc-day, .gc-nh, .gc-vdur, .gc-title span, .platform-chip,
+  .ocean-tab, .auth-tab, .mz-sl, .mz-sw, .mz-fo, .bd-opt, .pf-chip,
+  .mzs-chips button, .bundled-chip, .project-links a, .auth-prov,
+  .gc-nb.new, .gc-quote span, .gc-replybar span
+) {
+  color: var(--muted) !important;
+}
+
+/* Tombol utama memakai aksen, teks tetap netral (putih). */
+html body :is(
+  .btn, .btn.primary, .btn.pri, .contact-block button, .keys button.sg,
+  .gc-act, .gc-play, #auth-toggle, #mzPlay, .sf .pri, #run
+) {
+  background: var(--brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border: 1px solid var(--brand) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html body :is(.btn:hover, .gc-act:hover, .gc-play:hover, #auth-toggle:hover) {
+  background: var(--brand-hover) !important;
+}
+
+html body :is(.btn.ghost, .btn.warn, .oh button, .sh button, .seg button,
+  .mzs-chips button, .auth-tab, .ocean-tab, .gc-ib, .gc-nb) {
+  background: var(--card-2) !important;
+  color: var(--text) !important;
+  -webkit-text-fill-color: currentColor !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+}
+
+html body .bottom-nav .nav-btn.home span {
+  background: var(--brand) !important;
+  color: #ffffff !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+
+html body .bottom-nav .nav-btn.home span .icon {
+  stroke: #ffffff !important;
+}
+
+html body :is(.bottom-nav .nav-btn.active:not(.home), .sidebar-nav .nav-btn.active) {
+  background: var(--card-2) !important;
+  color: var(--text) !important;
+  border-radius: 10px !important;
+}
+
+html body :is(.ocean-tab.active, .email-step.active, .game-controls button.active,
+  .mzs-chips button.on, .mem-card.open, .status, .auth-tab.active,
+  .pf-tabs button.on, .mzs-tabs button.on) {
+  background: var(--brand) !important;
+  color: #ffffff !important;
+  -webkit-text-fill-color: #ffffff !important;
+  border-color: var(--brand) !important;
+  box-shadow: none !important;
+}
+
+/* Input. */
+html body :is(input, textarea, .input-field, .in, #gc-input) {
+  background: var(--card-2) !important;
+  color: var(--text) !important;
+  border: 1px solid var(--line) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
+}
+
+html body :is(input, textarea, .input-field, .in, #gc-input):focus {
+  outline: none !important;
+  border-color: var(--brand) !important;
+  box-shadow: 0 0 0 3px rgba(47, 111, 235, .18) !important;
+}
+
+html body input[placeholder*="foto" i] {
+  background: var(--card-2) !important;
+  color: var(--text) !important;
+}
+
+/* Chat: palet netral, tanpa gradien. */
+html body .gc {
+  --bg: var(--bg);
+  --head: var(--card);
+  --panel: var(--card-2);
+  --bub: var(--card-2);
+  --me: var(--card-2);
+  --txt: var(--text);
+  --mut: var(--muted);
+  --line: var(--line);
+  --acc: var(--brand);
+  --inp: var(--card-2);
+  --q: transparent;
+  background: var(--bg) !important;
+  backdrop-filter: none !important;
+}
+
+html body .gc.light {
+  --head: var(--card);
+  --panel: var(--card-2);
+  --bub: var(--card);
+  --me: var(--card-2);
+  --txt: var(--text);
+  --mut: var(--muted);
+  --line: var(--line);
+  --acc: var(--brand);
+  --inp: var(--card);
+  --q: transparent;
+}
+
+html body .gc-bub {
+  border: 1px solid var(--line) !important;
+  border-radius: var(--radius) !important;
+  box-shadow: none !important;
+}
+
+html body .gc-row.me .gc-bub {
+  background: var(--card-2) !important;
+  border-color: var(--line) !important;
+  color: var(--text) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body .gc-quote,
+html body .gc-replybar div {
+  border-left-color: var(--brand) !important;
+}
+
+html body .gc-dot,
+html body .gc-bdot,
+html body .gc-ring.on {
+  background: var(--brand) !important;
+  border-color: var(--brand) !important;
+}
+
+/* Editor: sintaks monokrom. */
+html body .CodeMirror-gutters {
+  background: var(--card) !important;
+  border-right: 1px solid var(--line) !important;
+}
+
+html body .tab.on,
+html body .ftabs button.on,
+html body .seg button.on {
+  background: var(--card-2) !important;
+  color: var(--text) !important;
+  border-bottom-color: var(--brand) !important;
+}
+
+html body .cm-s-default .cm-keyword,
+html body .cm-s-default .cm-def,
+html body .cm-s-default .cm-variable-2,
+html body .cm-s-default .cm-builtin,
+html body .cm-s-default .cm-qualifier,
+html body .cm-s-default .cm-type {
+  color: var(--code-strong) !important;
+  font-weight: 700;
+}
+
+html body .cm-s-default .cm-string,
+html body .cm-s-default .cm-string-2,
+html body .cm-s-default .cm-tag,
+html body .cm-s-default .cm-attribute,
+html body .cm-s-default .cm-property {
+  color: var(--code-mid) !important;
+}
+
+html body .cm-s-default .cm-number,
+html body .cm-s-default .cm-atom,
+html body .cm-s-default .cm-comment,
+html body .cm-s-default .cm-variable,
+html body .cm-s-default .cm-bracket,
+html body .cm-s-default .cm-meta,
+html body .cm-s-default .cm-operator {
+  color: var(--code-dim) !important;
+}
+
+/* Game dan indikator. */
+html body :is(.ttt-cell, .wam-hole, .typing-text, #wheel-options, .mem-card) {
+  color: var(--text) !important;
+  -webkit-text-fill-color: currentColor !important;
+}
+
+html body .wam-hole.up {
+  background: var(--brand) !important;
+  color: #ffffff !important;
+}
+
+html body .wheel-pointer {
+  border-top-color: var(--brand) !important;
+}
+
+html body :is(.value, .email-icon) {
+  color: var(--muted) !important;
+}
+
+html body .dot {
+  background: var(--brand) !important;
+  box-shadow: none !important;
+}
+
+html body a:focus-visible,
+html body button:focus-visible,
+html body input:focus-visible,
+html body textarea:focus-visible {
+  outline: 2px solid var(--brand) !important;
+  outline-offset: 2px !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html body *,
+  html body *::before,
+  html body *::after {
+    animation-duration: .01ms !important;
+    transition-duration: .01ms !important;
+    backdrop-filter: none !important;
+  }
+}
