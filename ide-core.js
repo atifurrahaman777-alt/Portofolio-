@@ -119,6 +119,46 @@
       t.appendChild(b);
       if (p === S.active) setTimeout(function () { b.scrollIntoView({ inline: 'nearest', block: 'nearest' }); }, 0);
     });
+    updateFavicon();
+  }
+
+  /* ----- Favicon mengikuti jenis berkas aktif ----- */
+  var favicon = $('favicon');
+  function svgIcon(inner) {
+    var svg = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">'
+      + '<circle cx="32" cy="32" r="29" fill="#061020" stroke="#22d3ee" stroke-width="2"/>'
+      + inner + '</svg>';
+    return 'data:image/svg+xml,' + encodeURIComponent(svg);
+  }
+  function fileIcon(p) {
+    var e = (p.split('/').pop().split('.').pop() || '').toLowerCase();
+    var t = 'font-family="Arial,sans-serif" font-weight="800" text-anchor="middle"';
+    if (e === 'html' || e === 'htm' || e === 'xml') return svgIcon(
+      '<path d="M15 12h34l-3 35-14 7-14-7z" fill="#e44d26"/>'
+      + '<path d="M32 16v31l11-5.5 2.5-25.5z" fill="#f16529"/>'
+      + '<text x="32" y="39" ' + t + ' font-size="19" fill="#fff">5</text>');
+    if (e === 'css') return svgIcon(
+      '<path d="M15 12h34l-3 35-14 7-14-7z" fill="#1572b6"/>'
+      + '<path d="M32 16v31l11-5.5 2.5-25.5z" fill="#33a9dc"/>'
+      + '<text x="32" y="39" ' + t + ' font-size="19" fill="#fff">3</text>');
+    if (e === 'js' || e === 'mjs' || e === 'ts') return svgIcon(
+      '<rect x="12" y="12" width="40" height="40" rx="9" fill="#f7df1e"/>'
+      + '<text x="32" y="42" ' + t + ' font-size="23" fill="#10131f">JS</text>');
+    if (e === 'py') return svgIcon(
+      '<rect x="10" y="12" width="44" height="40" rx="10" fill="#3776ab"/>'
+      + '<text x="32" y="43" ' + t + ' font-size="25" fill="#ffd43b">Py</text>');
+    if (e === 'svg') return svgIcon(
+      '<circle cx="23" cy="22" r="5" fill="#ffd43b"/>'
+      + '<path d="M8 50l15-17 10 11 8-9 15 15z" fill="#22d3ee"/>');
+    if (e === 'json') return svgIcon(
+      '<text x="32" y="44" ' + t + ' font-size="30" fill="#9ece6a">{}</text>');
+    if (e === 'md') return svgIcon(
+      '<text x="32" y="43" ' + t + ' font-size="26" fill="#7dcfff">M</text>');
+    return svgIcon(
+      '<text x="32" y="43" ' + t + ' font-size="25" fill="#7dcfff">&lt;/&gt;</text>');
+  }
+  function updateFavicon() {
+    if (favicon) favicon.href = fileIcon(S.active || '');
   }
 
   /* ----- Panel bawah dan tombol bantu ----- */
