@@ -109,12 +109,15 @@
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'tab' + (p === S.active ? ' on' : '');
+      var im = document.createElement('img');
+      im.src = fileIcon(p);
+      im.alt = '';
       var s = document.createElement('span');
       s.textContent = p.split('/').pop();
       var x = document.createElement('i');
       x.textContent = '\u00D7';
       x.addEventListener('click', function (e) { e.stopPropagation(); closeTab(p); });
-      b.append(s, x);
+      b.append(im, s, x);
       b.addEventListener('click', function () { openFile(p); });
       t.appendChild(b);
       if (p === S.active) setTimeout(function () { b.scrollIntoView({ inline: 'nearest', block: 'nearest' }); }, 0);
@@ -314,7 +317,6 @@
   }
 
   /* ----- Pohon berkas ----- */
-  var COL = { html: '#e44d26', htm: '#e44d26', css: '#2d8cf0', js: '#f7df1e', mjs: '#f7df1e', ts: '#3178c6', py: '#3776ab', json: '#9ece6a', md: '#7dcfff', php: '#8892bf', java: '#e76f00', c: '#659ad2', cpp: '#659ad2', go: '#00add8', rs: '#dea584' };
   function buildTree() {
     var root = { d: {}, f: [] };
     function node(parts) {
@@ -336,7 +338,7 @@
     b.style.paddingLeft = (10 + lvl * 16) + 'px';
     var ic = document.createElement('span');
     if (isDir) { ic.className = 'ic'; ic.textContent = open ? '\u25BE' : '\u25B8'; }
-    else { ic.className = 'dot'; ic.style.background = COL[name.split('.').pop().toLowerCase()] || '#7a82a8'; }
+    else { ic = document.createElement('img'); ic.className = 'ic'; ic.src = fileIcon(path); ic.alt = ''; }
     var nm = document.createElement('span');
     nm.className = 'nm';
     nm.textContent = name;
