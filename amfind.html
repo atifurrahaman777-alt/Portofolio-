@@ -46,8 +46,11 @@
 <link rel="icon" type="image/png" href="/icon-192.png?v=7">
 
 <style>
-.amfind-result{display:grid;gap:14px;margin-top:18px}
+#amfind-form{display:grid;gap:12px;margin-top:6px}
+#amfind-form label{margin:0}
+#amfind-submit{justify-self:start;min-height:44px}
 .btn .spinner[hidden]{display:none}
+.amfind-result{display:grid;gap:14px;margin-top:18px}
 .amfind-video{display:flex;gap:14px;align-items:center}
 .amfind-video img{width:88px;height:118px;object-fit:cover;border-radius:10px;border:1px solid var(--line);background:var(--card-2)}
 .amfind-meta{display:grid;gap:5px;min-width:0}
@@ -56,7 +59,7 @@
 .amfind-preset{padding:12px;border:1px solid var(--line);border-radius:10px;background:var(--card-2)}
 .amfind-preset b{display:block;margin-bottom:4px}
 .amfind-preset a{display:block;padding:8px 0;font-size:.9rem;text-decoration:underline;overflow-wrap:anywhere}
-@media(max-width:520px){.amfind-video{align-items:flex-start}.amfind-video img{width:70px;height:94px}}
+@media(max-width:520px){#amfind-submit{width:100%}.amfind-video{align-items:flex-start}.amfind-video img{width:70px;height:94px}}
 </style>
 </head>
 <body>
