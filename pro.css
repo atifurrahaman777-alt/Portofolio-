@@ -8,7 +8,7 @@
 
 html body {
   font-family: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  scrollbar-color: var(--border) transparent;
+  scrollbar-color: var(--line) transparent;
   scrollbar-width: thin;
 }
 
@@ -389,6 +389,169 @@ html body input:focus-visible,
 html body textarea:focus-visible {
   outline: 2px solid var(--brand) !important;
   outline-offset: 2px !important;
+}
+
+/* Lapisan bergaya shadcn/ui: token + interaksi halus, tetap netral. */
+html body {
+  --sh-background: var(--bg);
+  --sh-foreground: var(--text);
+  --sh-card: var(--card);
+  --sh-card-foreground: var(--text);
+  --sh-popover: var(--card);
+  --sh-primary: var(--brand);
+  --sh-primary-foreground: #ffffff;
+  --sh-secondary: var(--card-2);
+  --sh-muted: var(--card-2);
+  --sh-muted-foreground: var(--muted);
+  --sh-accent: var(--card-2);
+  --sh-border: var(--line);
+  --sh-input: var(--card-2);
+  --sh-ring: rgba(47, 111, 235, .35);
+  --sh-radius: var(--radius);
+  -webkit-font-smoothing: antialiased;
+  font-feature-settings: "cv11", "ss01";
+}
+
+html body :is(h1, h2, h3, h4) {
+  letter-spacing: -.02em;
+}
+
+html body :is(.card, .tool-card, .email-card, .about-card, .security-card,
+  .profile, .panel, .project, .skill, .game-frame) {
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease !important;
+}
+
+html body :is(.card:hover, .tool-card:hover, .email-card:hover,
+  .project:hover, .skill:hover) {
+  transform: translateY(-2px) !important;
+  border-color: var(--brand) !important;
+  box-shadow: 0 10px 24px var(--shadow) !important;
+}
+
+html body :is(.btn, .ocean-tab, .gc-act, #run, .keys button.sg) {
+  transition: background .15s ease, border-color .15s ease,
+    transform .12s ease, box-shadow .15s ease !important;
+}
+
+html body :is(.btn:active, .ocean-tab:active, .gc-act:active) {
+  transform: translateY(1px) scale(.99) !important;
+}
+
+html body :is(input, textarea, .input-field, .in, #gc-input) {
+  transition: border-color .15s ease, box-shadow .15s ease,
+    background .15s ease !important;
+}
+
+html body main.wrap > header,
+html body main.wrap > section,
+html body main.wrap > .grid {
+  animation: sh-enter .32s ease both;
+}
+
+html body .ocean-view[hidden] {
+  animation: none !important;
+}
+
+@keyframes sh-enter {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: none; }
+}
+
+/* Utilitas siap pakai, mengikuti token shadcn di atas. */
+html body .sh-card {
+  background: var(--sh-card) !important;
+  color: var(--sh-card-foreground) !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: var(--sh-radius) !important;
+  box-shadow: 0 1px 2px var(--shadow) !important;
+}
+
+html body .sh-btn {
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  min-height: 40px !important;
+  padding: 10px 16px !important;
+  background: var(--sh-primary) !important;
+  color: var(--sh-primary-foreground) !important;
+  -webkit-text-fill-color: var(--sh-primary-foreground) !important;
+  border: 1px solid var(--sh-primary) !important;
+  border-radius: 10px !important;
+  box-shadow: none !important;
+  cursor: pointer !important;
+}
+
+html body .sh-btn:hover {
+  background: var(--brand-hover) !important;
+  border-color: var(--brand-hover) !important;
+}
+
+html body .sh-btn:disabled {
+  opacity: .6 !important;
+  cursor: default !important;
+}
+
+html body .sh-input {
+  width: 100% !important;
+  background: var(--sh-input) !important;
+  color: var(--sh-foreground) !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: 10px !important;
+  outline: none !important;
+}
+
+html body .sh-input:focus {
+  border-color: var(--sh-primary) !important;
+  box-shadow: 0 0 0 3px var(--sh-ring) !important;
+}
+
+html body .sh-badge {
+  display: inline-flex !important;
+  align-items: center !important;
+  gap: 6px !important;
+  padding: 4px 10px !important;
+  background: var(--sh-secondary) !important;
+  color: var(--sh-foreground) !important;
+  -webkit-text-fill-color: currentColor !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: 999px !important;
+  font-size: .75rem !important;
+  font-weight: 700 !important;
+}
+
+html body .sh-separator {
+  height: 1px !important;
+  background: var(--sh-border) !important;
+  border: 0 !important;
+}
+
+html body .sh-tabs {
+  display: flex !important;
+  gap: 6px !important;
+  padding: 4px !important;
+  background: var(--sh-secondary) !important;
+  border: 1px solid var(--sh-border) !important;
+  border-radius: 12px !important;
+}
+
+html body .sh-tab {
+  flex: 1 1 auto !important;
+  min-height: 36px !important;
+  padding: 8px 12px !important;
+  background: transparent !important;
+  color: var(--sh-foreground) !important;
+  -webkit-text-fill-color: currentColor !important;
+  border: 0 !important;
+  border-radius: 8px !important;
+  cursor: pointer !important;
+}
+
+html body .sh-tab[aria-selected="true"],
+html body .sh-tab.active {
+  background: var(--sh-primary) !important;
+  color: var(--sh-primary-foreground) !important;
+  -webkit-text-fill-color: var(--sh-primary-foreground) !important;
 }
 
 @media (prefers-reduced-motion: reduce) {
