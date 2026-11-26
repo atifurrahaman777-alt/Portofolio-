@@ -258,7 +258,7 @@
   var P = 'html body:not(#e1):not(#e2) ';
   function R(sel, decl) { return sel.split(',').map(function (s) { return P + s.trim(); }).join(',') + '{' + decl + '}'; }
   var rules = [
-    'body.edark{--bg:#1a1b26;--card:#16161e;--line:#2a2b3d;--text:#c0caf5;--muted:#7a82a8;--accent:#7aa2f7;--on:#10131f;--k:#bb9af7;--s:#9ece6a;--n:#ff9e64;--c:#565f89;--t:#7aa2f7;--a:#7dcfff;--d:#e0af68}',
+    'body.edark{--bg:#1a1a1a;--card:#161616;--line:#2a2a2a;--text:#e5e5e5;--muted:#9ca3a3;--accent:#e5e5e5;--on:#101010;--k:#bb9af7;--s:#9ece6a;--n:#ff9e64;--c:#6b7280;--t:#e5e5e5;--a:#f5f5f5;--d:#e0af68}',
     R('.top', 'padding:0 8px 0 4px;gap:6px;min-height:46px'),
     R('.seg', 'border:0;border-radius:0;gap:0;overflow:visible;flex:1'),
     R('.seg button', 'flex:0 0 auto;padding:13px 16px;background:none;color:var(--muted);border-bottom:2px solid transparent;border-radius:0;font:600 14px system-ui,sans-serif;text-transform:none;letter-spacing:0'),
@@ -269,7 +269,7 @@
     R('.ftabs button[data-f]', 'border:0;border-radius:0;padding:11px 14px;background:none;color:var(--muted);font:600 13px system-ui,sans-serif;text-transform:none;letter-spacing:0;border-bottom:2px solid transparent;display:flex;align-items:center;gap:7px'),
     R('.ftabs button[data-f]::before', 'content:"";width:9px;height:9px;border-radius:2px;background:var(--lc)'),
     R('.ftabs button[data-f="html"]', '--lc:#e44d26'),
-    R('.ftabs button[data-f="css"]', '--lc:#2d8cf0'),
+    R('.ftabs button[data-f="css"]', '--lc:#d4d4d4'),
     R('.ftabs button[data-f="js"]', '--lc:#f7df1e'),
     R('.ftabs button[data-f].on', 'background:rgba(127,127,127,.12);color:var(--text);border-bottom-color:var(--lc)'),
     R('.ftabs #fm,.ftabs #fp,.ftabs #thm', 'border:0;background:none;width:36px;padding:9px 0;border-radius:8px;color:var(--muted);font:600 13px system-ui,sans-serif;text-transform:none;letter-spacing:0'),

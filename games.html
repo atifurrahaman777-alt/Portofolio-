@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="theme-color" content="#0d1117">
+<meta name="theme-color" content="#0a0a0a">
 <meta name="description" content="Games — koleksi mini game, oleh Mann'zz">
 
 <title>Games | Mann'zz Tools</title>
@@ -36,7 +36,7 @@
 .typing-text{background:var(--card);border:2px solid #000;border-radius:12px;padding:16px;margin-bottom:12px;line-height:1.8;font-size:1.02rem}
 .typing-text span.correct{color:#55f0a0}
 .typing-text span.wrong{color:#ff6b6b;text-decoration:underline}
-#typing-input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+#typing-input{width:100%;box-sizing:border-box;padding:12px;border-radius:10px;border:1px solid var(--line);background:#101010;color:#fff;font:inherit;outline:none}
 .typing-stats{display:flex;gap:18px;justify-content:center;margin-top:14px;flex-wrap:wrap}
 .typing-stats div{text-align:center}
 .typing-stats b{display:block;font-size:1.3rem;color:var(--gold)}
@@ -45,7 +45,7 @@
 .wheel-wrap{display:flex;flex-direction:column;align-items:center;gap:16px}
 #wheel-canvas{max-width:100%}
 .wheel-pointer{width:0;height:0;border-left:14px solid transparent;border-right:14px solid transparent;border-top:22px solid var(--gold);margin-bottom:-6px}
-#wheel-options{width:100%;box-sizing:border-box;min-height:80px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#10101d;color:#fff;font:inherit;outline:none}
+#wheel-options{width:100%;box-sizing:border-box;min-height:80px;padding:10px;border-radius:10px;border:1px solid var(--line);background:#101010;color:#fff;font:inherit;outline:none}
 #wheel-result{text-align:center;font-size:1.3rem;font-weight:800;margin-top:8px;min-height:1.6em}
 
 body.light-mode .ttt-cell,
@@ -73,9 +73,9 @@ body.light-mode .ocean-tab{background:#fff;color:#111}
 body.light-mode .ocean-tab.active{background:var(--gold);color:#1a1200}
 [hidden]{display:none!important}
 </style>
-<link rel="manifest" href="/manifest.json?v=7"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=7"><style id="mz-theme">
-html body:not(.light-mode){--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
-html body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12);--gold:#2563eb;--purple:#2563eb;--accent:#2563eb}
+<link rel="manifest" href="/manifest.json?v=7"><meta name="theme-color" content="#0a0a0a"><link rel="apple-touch-icon" href="/icon-192.png?v=7"><style id="mz-theme">
+html body:not(.light-mode){--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--shadow:rgba(0,0,0,.5);--gold:#0a0a0a;--purple:#0a0a0a;--accent:#0a0a0a}
+html body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--shadow:rgba(0,0,0,.12);--gold:#0a0a0a;--purple:#0a0a0a;--accent:#0a0a0a}
 html body:is(.light-mode,:not(.light-mode)){background:var(--bg)!important;color:var(--text)!important}
 html body:is(.light-mode,:not(.light-mode))::before,html body:is(.light-mode,:not(.light-mode))::after{background:none!important}
 html body:is(.light-mode,:not(.light-mode)) .card,html body:is(.light-mode,:not(.light-mode)) .game-box,html body:is(.light-mode,:not(.light-mode)) .ocean-tab{background:var(--card)!important;border:1px solid var(--line)!important;box-shadow:0 4px 18px var(--shadow)!important;border-radius:14px!important}
@@ -472,7 +472,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   const stats = document.getElementById('rt-stats');
   const decoys = [
     { name: 'MERAH',  bg: '#c0392b' },
-    { name: 'BIRU',   bg: '#2f6fd6' },
+    { name: 'HITAM',  bg: '#111111' },
     { name: 'KUNING', bg: '#c99a06' },
     { name: 'UNGU',   bg: '#8e44ad' },
     { name: 'ORANYE', bg: '#d9702a' },
@@ -643,7 +643,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
   const optionsInput = document.getElementById('wheel-options');
   const spinBtn = document.getElementById('wheel-spin');
   const resultEl = document.getElementById('wheel-result');
-  const colors = ['#ffd700', '#a855f7', '#55f0a0', '#ff6b6b', '#4da3ff', '#ff9f4d'];
+  const colors = ['#ffd700', '#a855f7', '#55f0a0', '#ff6b6b', '#e5e5e5', '#ff9f4d'];
 
   let rotation = 0;
   let spinning = false;
@@ -660,7 +660,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
       ctx.save();
       ctx.beginPath();
       ctx.arc(size/2, size/2, size/2-6, 0, Math.PI*2);
-      ctx.fillStyle = '#2a2a3a';
+      ctx.fillStyle = '#2a2a2a';
       ctx.fill();
       ctx.strokeStyle = '#000';
       ctx.lineWidth = 2;

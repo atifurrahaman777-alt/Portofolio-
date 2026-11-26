@@ -1,8 +1,8 @@
 (() => {
   const $ = id => document.getElementById(id);
   const root = $('gc'), list = $('gc-list'), input = $('gc-input'), act = $('gc-action'), status = $('gc-status');
-  const palette = ['#ff7b7b', '#c792ea', '#4dd0e1', '#ffd166', '#7bd88f', '#ff9f68', '#6fa8ff'];
-  const bgs = ['#7c3aed', '#0f766e', '#be185d', '#b45309', '#1d4ed8', '#15803d'];
+  const palette = ['#ff7b7b', '#c792ea', '#e5e5e5', '#ffd166', '#7bd88f', '#ff9f68', '#e5e5e5'];
+  const bgs = ['#7c3aed', '#3f3f46', '#be185d', '#b45309', '#000000', '#15803d'];
   const IC = {
     users: '<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>',
     back: '<path d="M19 12H5"/><path d="M12 19l-7-7 7-7"/>',
@@ -224,8 +224,8 @@
     const p0 = profile();
     const light = root.classList.contains('light');
     const C = light
-      ? { bg: '#ffffff', fg: '#111b21', mu: '#667781', ln: '#d9dee1', fi: '#f0f2f5' }
-      : { bg: '#1f2c33', fg: '#e9edef', mu: '#8696a0', ln: '#2f3f47', fi: '#2a3942' };
+      ? { bg: '#ffffff', fg: '#111111', mu: '#667781', ln: '#d9dee1', fi: '#f2f2f2' }
+      : { bg: '#202020', fg: '#e9e9e9', mu: '#8696a0', ln: '#333333', fi: '#2d2d2d' };
     let bg = Math.floor(Math.random() * bgs.length);
 
     const wrap = el('div');
@@ -440,8 +440,8 @@
   }
   function sheetColors() {
     return root.classList.contains('light')
-      ? { bg: '#ffffff', fg: '#111b21', mu: '#667781', ln: '#d9dee1', fi: '#f0f2f5' }
-      : { bg: '#1f2c33', fg: '#e9edef', mu: '#8696a0', ln: '#2f3f47', fi: '#2a3942' };
+      ? { bg: '#ffffff', fg: '#111111', mu: '#667781', ln: '#d9dee1', fi: '#f2f2f2' }
+      : { bg: '#202020', fg: '#e9e9e9', mu: '#8696a0', ln: '#333333', fi: '#2d2d2d' };
   }
   function openSheet(title) {
     const old = $('gc-sheet2');
