@@ -58,6 +58,23 @@ body.light-mode .platform-chip{color:#5a5468}
 .dl-error.show{display:block}
 .dl-loading{display:none;text-align:center;color:var(--muted);text-shadow:none;font-size:.85rem;margin-top:14px}
 .dl-loading.show{display:block}
+.dl-tabs{display:flex;gap:8px;justify-content:center;margin:0 0 14px}
+.dl-tab{font:inherit;font-size:.82rem;font-weight:700;padding:8px 16px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--muted);cursor:pointer}
+.dl-tab.active{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dl-form input{min-width:0}
+.dl-paste{white-space:nowrap}
+.dl-note{color:var(--muted);text-shadow:none;font-size:.75rem;margin:12px 0 0;text-align:center}
+.dl-download-panel:not(.show),.dl-history:not(.show){display:none}
+.dl-history{display:none;margin-top:18px}
+.dl-history.show{display:block}
+.dl-history-item{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:8px;background:var(--card)}
+.dl-history-item div{min-width:0}
+.dl-history-item strong{display:block;font-size:.85rem;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.dl-history-item small{color:var(--muted);font-size:.72rem}
+.dl-history-actions{display:flex;gap:6px;flex-shrink:0}
+.dl-mini{font:inherit;font-size:.72rem;font-weight:700;padding:7px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--muted);text-decoration:none;cursor:pointer}
+.dl-mini.primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.dl-empty{color:var(--muted);text-shadow:none;font-size:.82rem;text-align:center;padding:18px 0}
 [hidden]{display:none!important}
 </style>
 <link rel="manifest" href="/manifest.json?v=17"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=17"><style id="mz-theme">
@@ -108,11 +125,22 @@ html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.
 <span class="platform-chip">TikTok</span>
 <span class="platform-chip">Instagram</span>
 <span class="platform-chip">Pinterest</span>
-<span class="platform-chip">+ lainnya</span>
+<span class="platform-chip">X / Twitter</span>
+<span class="platform-chip">Spotify</span>
+<span class="platform-chip">CapCut</span>
+<span class="platform-chip">Facebook</span>
+<span class="platform-chip">+18 lainnya</span>
 </div>
 
+<div class="dl-tabs">
+<button class="dl-tab active" type="button" id="dl-tab-download">Unduh</button>
+<button class="dl-tab" type="button" id="dl-tab-history">Riwayat</button>
+</div>
+
+<div id="dl-panel-download" class="dl-download-panel show">
 <form class="dl-form" id="dl-form">
 <input class="input-field" id="dl-url" type="url" placeholder="Tempel link di sini..." required>
+<button class="dl-mini dl-paste" type="button" id="dl-paste">Tempel</button>
 <button class="btn" type="submit" id="dl-submit">Download</button>
 </form>
 
@@ -125,6 +153,12 @@ html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.
 <p id="dl-meta"></p>
 <div id="dl-formats" class="dl-formats"></div>
 <a class="btn" id="dl-link" href="#" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 3v12"/><path d="M7 10l5 5 5-5"/><path d="M5 19h14"/></svg> Unduh File</a>
+<p class="dl-note">Tautan unduhan memakai token sementara (±15 menit). Kalau kedaluwarsa, tekan Download lagi.</p>
+</div>
+</div>
+
+<div class="dl-history" id="dl-panel-history">
+<div id="dl-history-list"></div>
 </div>
 </section>
 
@@ -133,117 +167,238 @@ html body:is(.light-mode,:not(.light-mode)) .btn,html body:is(.light-mode,:not(.
 <script src="app.js?v=17"></script>
 <script>
 
-const form = document.getElementById('dl-form');
-const urlInput = document.getElementById('dl-url');
-const submitBtn = document.getElementById('dl-submit');
-const loading = document.getElementById('dl-loading');
-const errorBox = document.getElementById('dl-error');
-const result = document.getElementById('dl-result');
-const thumb = document.getElementById('dl-thumb');
-const titleEl = document.getElementById('dl-title');
-const metaEl = document.getElementById('dl-meta');
-const linkEl = document.getElementById('dl-link');
-const formatsEl = document.getElementById('dl-formats');
+const $ = (id) => document.getElementById(id);
+const form = $('dl-form');
+const urlInput = $('dl-url');
+const submitBtn = $('dl-submit');
+const pasteBtn = $('dl-paste');
+const loading = $('dl-loading');
+const errorBox = $('dl-error');
+const result = $('dl-result');
+const thumb = $('dl-thumb');
+const titleEl = $('dl-title');
+const metaEl = $('dl-meta');
+const linkEl = $('dl-link');
+const formatsEl = $('dl-formats');
+const tabDown = $('dl-tab-download');
+const tabHist = $('dl-tab-history');
+const panelDown = $('dl-panel-download');
+const panelHist = $('dl-panel-history');
+const historyList = $('dl-history-list');
+
+const HISTORY_KEY = 'mzDlHistory';
+const HISTORY_MAX = 10;
+
+function readHistory() {
+  try {
+    const v = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    return Array.isArray(v) ? v : [];
+  } catch { return []; }
+}
+
+function writeHistory(list) {
+  try { localStorage.setItem(HISTORY_KEY, JSON.stringify(list.slice(0, HISTORY_MAX))); } catch {}
+}
+
+function renderHistory() {
+  const list = readHistory();
+  historyList.replaceChildren();
+  if (!list.length) {
+    const empty = document.createElement('p');
+    empty.className = 'dl-empty';
+    empty.textContent = 'Belum ada riwayat.';
+    historyList.appendChild(empty);
+    return;
+  }
+  for (const item of list) {
+    const row = document.createElement('div');
+    row.className = 'dl-history-item';
+    const info = document.createElement('div');
+    const name = document.createElement('strong');
+    name.textContent = item.title || 'Media';
+    const sub = document.createElement('small');
+    sub.textContent = `${item.meta || 'Media'} • ${new Date(item.at).toLocaleString('id-ID')}`;
+    info.append(name, sub);
+
+    const actions = document.createElement('div');
+    actions.className = 'dl-history-actions';
+    const open = document.createElement('a');
+    open.className = 'dl-mini primary';
+    open.textContent = 'Buka';
+    open.href = item.href || '#';
+    open.target = '_blank';
+    open.rel = 'noopener noreferrer';
+    const again = document.createElement('button');
+    again.className = 'dl-mini';
+    again.type = 'button';
+    again.textContent = 'Cari ulang';
+    again.addEventListener('click', () => {
+      setTab('download');
+      urlInput.value = item.url || '';
+      urlInput.focus();
+    });
+    const del = document.createElement('button');
+    del.className = 'dl-mini';
+    del.type = 'button';
+    del.textContent = 'Hapus';
+    del.addEventListener('click', () => {
+      writeHistory(readHistory().filter((x) => x.url !== item.url));
+      renderHistory();
+    });
+    actions.append(open, again, del);
+    row.append(info, actions);
+    historyList.appendChild(row);
+  }
+}
+
+function remember(item) {
+  const list = readHistory().filter((x) => x.url !== item.url);
+  list.unshift({ ...item, at: Date.now() });
+  writeHistory(list);
+  renderHistory();
+}
+
+function setTab(name) {
+  const down = name === 'download';
+  tabDown.classList.toggle('active', down);
+  tabHist.classList.toggle('active', !down);
+  panelDown.classList.toggle('show', down);
+  panelHist.classList.toggle('show', !down);
+}
+
+tabDown.addEventListener('click', () => setTab('download'));
+tabHist.addEventListener('click', () => setTab('history'));
+
+pasteBtn.addEventListener('click', async () => {
+  try {
+    const text = await navigator.clipboard.readText();
+    if (text) {
+      urlInput.value = text.trim();
+      urlInput.focus();
+    }
+  } catch {
+    errorBox.textContent = 'Browser menolak akses clipboard. Tempel manual saja.';
+    errorBox.classList.add('show');
+  }
+});
+
+function safeName(s, fallback) {
+  return String(s || fallback)
+    .replace(/[\\/:*?"<>|]/g, '_')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, 80) || fallback;
+}
+
+function downloadHref(raw, filename) {
+  try {
+    const u = new URL(raw, location.href);
+    if (u.hostname === 'www.omdown.site' && u.pathname.startsWith('/api/media/stream')) {
+      u.searchParams.set('download', '1');
+      if (filename) u.searchParams.set('filename', filename);
+    }
+    return u.toString();
+  } catch { return raw; }
+}
+
+let progressTimer = null;
+function startProgress() {
+  const steps = ['Menghubungi server...', 'Membaca metadata...', 'Menyiapkan tautan...'];
+  let step = 0;
+  loading.textContent = steps[step];
+  loading.classList.add('show');
+  progressTimer = setInterval(() => {
+    step = Math.min(step + 1, steps.length - 1);
+    loading.textContent = steps[step];
+  }, 900);
+}
+
+function stopProgress() {
+  clearInterval(progressTimer);
+  progressTimer = null;
+  loading.classList.remove('show');
+}
 
 form.addEventListener('submit', async (e) => {
   e.preventDefault();
-
   const url = urlInput.value.trim();
   if (!url) return;
 
   errorBox.classList.remove('show');
+  errorBox.textContent = '';
   result.classList.remove('show');
-  loading.classList.add('show');
   submitBtn.disabled = true;
+  pasteBtn.disabled = true;
   formatsEl.replaceChildren();
+  startProgress();
 
   try {
-    const res = await fetch(
-      `/api/download?url=${encodeURIComponent(url)}`,
-      { cache: 'no-store' }
-    );
-
+    const res = await fetch(`/api/download?url=${encodeURIComponent(url)}`, { cache: 'no-store' });
     const raw = await res.text();
     let data;
-
-    try {
-      data = JSON.parse(raw);
-    } catch {
-      throw new Error('Respons server tidak valid.');
-    }
-
-    if (!res.ok || !data.success) {
-      throw new Error(data.message || 'Gagal memproses link.');
-    }
+    try { data = JSON.parse(raw); } catch { throw new Error('Respons server tidak valid.'); }
+    if (!res.ok || !data.success) throw new Error(data.message || 'Gagal memproses link.');
 
     const formats = Array.isArray(data.formats)
-      ? data.formats.filter(f =>
-          f && typeof f.downloadUrl === 'string' &&
-          /^https?:\/\//i.test(f.downloadUrl)
-        )
+      ? data.formats.filter((f) =>
+          f && typeof f.downloadUrl === 'string' && /^https?:\/\//i.test(f.downloadUrl))
       : [];
+    if (!formats.length && !data.downloadUrl) throw new Error('Link download tidak ditemukan.');
 
-    if (!formats.length && !data.downloadUrl) {
-      throw new Error('Link download tidak ditemukan.');
-    }
-
-    if (data.thumbnail) {
-      thumb.src = data.thumbnail;
+    const title = data.title || (data.data && data.data.title) || 'Media siap diunduh';
+    const meta = data.meta || (data.data && data.data.platform) || 'OMDown';
+    const thumbnail = data.thumbnail || (data.data && data.data.thumbnailUrl) || '';
+    if (thumbnail) {
+      thumb.src = thumbnail;
       thumb.style.display = 'block';
     } else {
       thumb.removeAttribute('src');
       thumb.style.display = 'none';
     }
-
-    titleEl.textContent = data.title || 'Media siap diunduh';
-    metaEl.textContent = data.meta || 'OMDown';
+    titleEl.textContent = title;
+    metaEl.textContent = meta;
 
     const items = formats.length
       ? formats
-      : [{ downloadUrl: data.downloadUrl, quality: 'Download' }];
+      : [{ downloadUrl: data.downloadUrl, label: 'Download', ext: '' }];
 
     items.forEach((f, i) => {
       const row = document.createElement('div');
       row.className = 'dl-format';
-
       const info = document.createElement('div');
       const name = document.createElement('strong');
+      name.textContent = f.label || f.quality || f.resolution || f.id || `Format ${i + 1}`;
       const detail = document.createElement('small');
-
-      name.textContent =
-        f.quality || f.label || f.resolution ||
-        f.format || f.ext || `Format ${i + 1}`;
-
-      detail.textContent = [
-        f.ext,
-        f.mimeType || f.contentType,
-        f.size || ''
-      ].filter(Boolean).join(' • ') || 'Media';
-
+      detail.textContent = [f.kind, f.ext, f.mimeType || f.contentType, f.durationLabel]
+        .filter(Boolean).join(' • ') || 'Media';
       info.append(name, document.createElement('br'), detail);
 
+      const ext = f.ext ? `.${String(f.ext).replace(/^\./, '')}` : '';
       const a = document.createElement('a');
       a.className = 'btn';
-      a.href = f.downloadUrl;
+      a.href = downloadHref(f.downloadUrl, safeName(`${title} - ${name.textContent}${ext}`, `media-${i + 1}`));
       a.target = '_blank';
       a.rel = 'noopener noreferrer';
       a.textContent = 'Unduh';
-
       row.append(info, a);
       formatsEl.appendChild(row);
     });
 
-    linkEl.href = items[0].downloadUrl;
+    const first = items[0];
+    linkEl.href = downloadHref(first.downloadUrl, safeName(`${title} - Download`, 'media'));
     result.classList.add('show');
-
+    remember({ url, title, meta, href: linkEl.href });
   } catch (err) {
     errorBox.textContent = err.message || 'Terjadi kesalahan.';
     errorBox.classList.add('show');
   } finally {
-    loading.classList.remove('show');
+    stopProgress();
     submitBtn.disabled = false;
+    pasteBtn.disabled = false;
   }
 });
+
+renderHistory();
 </script>
 <script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script><script>
 (function(){
