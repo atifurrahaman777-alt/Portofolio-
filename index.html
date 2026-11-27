@@ -2774,14 +2774,14 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   /* Lirik harus ngikutin bahasa lagunya (misal lagu Jawa → lirik Jawa). */
   function songLangHint(s){
     var x = String(s || '').toLowerCase();
-    if (/\b(jawa|javanese|jawa timur|jawa tengah|campursari|keroncong|dangdut jawa)\b/.test(x)) return 'jv';
+    if (/\b(jawa|javanese|jawa timur|jawa tengah|campursari|keroncong|dangdut jawa|jogja|yogyakarta|surakarta|solo|semarang|surabaya|koplo)\b/.test(x)) return 'jv';
     if (/\b(indonesia|indo|pop indonesia|dangdut)\b/.test(x)) return 'id';
     return '';
   }
   function lyricLang(s){
     var x = ' ' + String(s || '').toLowerCase() + ' ';
-    var jv = ['kowe','kula','panjenengan','marang','saka','nanging','arep','wingi','mbesuk','ngunjuk','tedha','matur','nyuwun','sugeng','wilujeng','kuwi','mangka','dumugi','punika','menika','ageng','alit','wau','kesah','tindak','rawuh','wartos','mboten','boten','dados'];
-    var id = ['yang','dengan','untuk','karena','adalah','setelah','sebelum','hanya','juga','lebih','masih','dari','atau','saya','kamu','tidak','sudah','akan','dapat','seperti','ketika','sehingga','ini','itu'];
+    var jv = ['ora','sing','tak','suweng','gelenter','mambu','gudel','empong','sopo','ngguyu','ndele','godhong','telo','ojo','gelo','ngelak','ombeni','botole','njerone','seneng','asek','ngajar','kowe','kula','panjenengan','marang','saka','nanging','arep','wingi','mbesuk','ngunjuk','tedha','matur','nyuwun','sugeng','wilujeng','kuwi','mangka','dumugi','punika','menika','ageng','alit','wau','kesah','tindak','rawuh','wartos','mboten','boten','dados','tresna','sampun','dhateng','ngapusi','njaluk','nemu','teka','lunga','mangan','turu','tangi','saiki','kepriye','ngendi','kapan','napa','iya','engga','dhèwè','kanca','mangkat','gedhe','cilik','dawa','cendhak','manis','pait','panas','adhem','laris','kepengen','bunder','gepeng','legi'];
+    var id = ['yang','dengan','untuk','karena','adalah','setelah','sebelum','hanya','juga','lebih','masih','dari','atau','saya','kamu','tidak','sudah','akan','dapat','seperti','ketika','sehingga','ini','itu','makan','minum','berdua','hati','sama','sangat','sekali','mereka','kita','belum','pernah','sedang'];
     function count(words){ var n = 0; words.forEach(function(w){ n += (x.split(w).length - 1); }); return n; }
     var j = count(jv), i = count(id);
     if (j >= 2 && j > i * 1.4) return 'jv';
@@ -2791,17 +2791,18 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   /* Judul dari katalog seringkali "Judul - Playlist ...", jadi dibersihkan dulu. */
   function cleanLyricText(s){
     return String(s || '')
+      .replace(/^\s*\d+[.)]\s*/, '')
       .replace(/\s*[\[(][^\])]*[\])]/g, ' ')
-      .replace(/\b(official|video|audio|lyrics?|lirik|klip|full album|playlist|compilation|terpopuler|lagu)\b/gi, ' ')
-      .replace(/\s*[-–—|:_]\s*/g, ' ')
+      .replace(/\b(official|video|audio|lyrics?|lirik|klip|full album|full|playlist|compilation|terpopuler|lagu|versi|cover|daerah|jawa tengah|jawa timur|jawa|indonesia|indo|koplo|asik|juga|di|hd|mp3|new|latest)\b/gi, ' ')
+      .replace(/\s*\.\s+/g, ' ')
+      .replace(/\s*[-–—|:_!?]+\s*/g, ' ')
+      .replace(/\b\d{3,}k?\b/gi, ' ')
       .replace(/\s+/g, ' ')
       .trim();
   }
   function lyricQueries(title, artist){
     var raw = String(title || '').trim(), a = String(artist || '').trim();
     var clean = cleanLyricText(raw);
-    var first = String(raw.split(/\s+[-–—|:_]\s+/)[0] || '').trim();
-    var firstClean = cleanLyricText(first);
     var out = [];
     function add(t, ar){
       t = String(t || '').trim(); ar = String(ar || '').trim();
@@ -2809,10 +2810,27 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       if (out.some(function(x){ return x.t.toLowerCase() === t.toLowerCase() && x.a.toLowerCase() === ar.toLowerCase(); })) return;
       out.push({ t: t, a: ar });
     }
-    if (clean === raw) add(raw, a);
-    add(clean, a); add(first, a); add(firstClean, a);
-    add(clean, ''); add(firstClean, ''); add(first, '');
-    return out.slice(0, 5);
+    function variants(seed, max){
+      var seen = {}, list = [];
+      function put(v){ v = cleanLyricText(v); if (v && !seen[v]) { seen[v] = 1; list.push(v); } }
+      put(seed);
+      var w = String(seed || '').split(/\s+/).filter(Boolean);
+      while (w.length > 2 && list.length < (max || 6)) { w.pop(); put(w.join(' ')); }
+      return list;
+    }
+    var parts = raw.split(/\s+[-–—|:_]\s+/).map(cleanLyricText).filter(Boolean);
+    var seeds = [clean].concat(parts);
+    seeds.forEach(function(s){
+      var w = String(s || '').split(/\s+/).filter(Boolean);
+      if (w.length > 5) seeds.push(cleanLyricText(w.slice(0, 5).join(' ')));
+    });
+    var seenSeed = {};
+    seeds = seeds.filter(function(s){ s = cleanLyricText(s); if (!s || seenSeed[s]) return false; seenSeed[s] = 1; return true; }).slice(0, 6);
+    var terms = [];
+    seeds.forEach(function(s){ variants(s, 5).forEach(function(v){ if (terms.indexOf(v) < 0) terms.push(v); }); });
+    [a, ''].forEach(function(ar){ terms.forEach(function(t){ add(t, ar); }); });
+    if (clean === raw) add(raw, '');
+    return out.slice(0, 36);
   }
   async function loadLyrics(title, artist){
     var box = $('mLyrics'), body = $('mLyricsBody'), label = $('mLyricsTitle');
@@ -2850,7 +2868,8 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     if (ctrl && ctrl.signal.aborted) return;
     var found = null, best = -Infinity;
     var curTrack = S.queue[S.idx];
-    var langHint = songLangHint(title + ' ' + (curTrack && curTrack.title ? curTrack.title : '') + ' ' + artist);
+    var meta = title + ' ' + (curTrack && curTrack.title ? curTrack.title : '') + ' ' + artist;
+    var langHint = songLangHint(meta) || lyricLang(meta);
     pool.forEach(function(item){
       var x = item.x, q = item.q, score = 0;
       var tn = String(x.trackName || x.name || '').toLowerCase();
