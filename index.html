@@ -929,13 +929,10 @@ html body .mz-scroll .mzs-row input:focus{border-color:var(--sp)!important;box-s
 .mz-now{border-bottom:0!important;border-radius:0 0 24px 24px}
 .mz-now-label{color:var(--sp)!important}
 .mz-now-meta b{font-size:1.25rem}
-.mz-now-meta b.mz-ly-live{color:var(--sp)!important;-webkit-text-fill-color:var(--sp)!important}
+.mz-now-meta b.mz-ly-live{color:var(--text)!important;-webkit-text-fill-color:var(--text)!important}
 .mz-now-meta b.mz-ly-in{animation:mzLySwap .5s cubic-bezier(.22,.8,.24,1)}
 @keyframes mzLySwap{0%{opacity:0;filter:blur(5px);transform:translateY(9px) scale(.98)}100%{opacity:1;filter:blur(0);transform:none}}
-.mz-now-meta b .mz-ly-w{color:var(--text)!important}
-@supports ((-webkit-background-clip:text) or (background-clip:text)){
-  .mz-now-meta b .mz-ly-w{background-clip:text;-webkit-background-clip:text;color:transparent!important;-webkit-text-fill-color:transparent!important}
-}
+.mz-now-meta b .mz-ly-w{color:var(--muted);-webkit-text-fill-color:var(--muted);transition:color .12s linear}
 .mz-controls .mz-playbig{width:64px;height:64px}
 .mz-controls button{transition:transform .15s,color .15s}
 .mz-controls button:hover{transform:scale(1.08);color:var(--text)!important}
@@ -2390,7 +2387,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   var $ = function(id){ return document.getElementById(id); };
   var audio = new Audio();
   audio.preload = 'none';
-  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricPlain: '', lyricWords: [], lyricOffset: 0, lyricOffsets: {}, nowSong: '', nowArtist: '', built: false, loaded: false };
+  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricPlain: '', lyricWords: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, lyricOffset: 0, lyricOffsets: {}, nowSong: '', nowArtist: '', built: false, loaded: false };
   var IP = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
   var IQ = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
   var IN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8zM18 4h2v16h-2z"/></svg>';
@@ -2707,11 +2704,40 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       body.appendChild(d);
     });
   }
+  function parsePlainToLines(text, dur){
+    var arr = String(text || '').split(/\r?\n/).map(function(s){ return s.trim(); }).filter(Boolean);
+    var total = Number(dur) || 0;
+    if (!arr.length || total < 5) return [];
+    var start = Math.min(12, total * 0.06);
+    var end = Math.max(start + 2, total - 5);
+    var step = (end - start) / arr.length;
+    return arr.map(function(t, i){ return { t: start + i * step, text: t }; });
+  }
+  function cssVar(el, name, fallback){
+    try { return getComputedStyle(el).getPropertyValue(name).trim() || fallback; } catch (e) { return fallback; }
+  }
+  function rgbOf(c){
+    c = String(c || '').trim();
+    if (c.charAt(0) === '#') {
+      var h = c.slice(1);
+      if (h.length === 3) h = h.split('').map(function(x){ return x + x; }).join('');
+      if (h.length >= 6) return [parseInt(h.slice(0, 2), 16), parseInt(h.slice(2, 4), 16), parseInt(h.slice(4, 6), 16)];
+    }
+    var m = /^rgba?\(([^)]+)\)/.exec(c);
+    if (m) { var p = m[1].split(/[,\s/]+/).filter(Boolean).map(Number); return [p[0] || 0, p[1] || 0, p[2] || 0]; }
+    return [156, 163, 175];
+  }
+  function mixColor(a, b, t){
+    var A = rgbOf(a), B = rgbOf(b), f = Math.max(0, Math.min(1, t));
+    return 'rgb(' + Math.round(A[0] + (B[0] - A[0]) * f) + ',' + Math.round(A[1] + (B[1] - A[1]) * f) + ',' + Math.round(A[2] + (B[2] - A[2]) * f) + ')';
+  }
   function renderNowLine(idx){
     var now = $('mzNowTitle');
     if (!now) return;
     now.replaceChildren();
     S.lyricWords = [];
+    S.lyricWeights = [];
+    S.lyricColors = { on: cssVar(now, '--sp', '#1ed760'), off: cssVar(now, '--muted', '#9ca3af') };
     String(S.lyricLines[idx].text || '♪').split(/(\s+)/).forEach(function(w){
       if (/^\s+$/.test(w)) { now.appendChild(document.createTextNode(w)); return; }
       var sp = document.createElement('span');
@@ -2719,6 +2745,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       sp.textContent = w;
       now.appendChild(sp);
       S.lyricWords.push(sp);
+      var core = String(w).replace(/[^A-Za-zÀ-ÿ]/g, '');
+      var syl = (core.match(/[aeiouyà-ÿ]/gi) || []).length;
+      S.lyricWeights.push(Math.max(0.7, Math.min(2.4, 0.6 + syl * 0.45 + String(w).length / 14)));
     });
     now.classList.add('mz-ly-live');
     now.classList.remove('mz-ly-in');
@@ -2726,10 +2755,17 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     now.classList.add('mz-ly-in');
   }
   function paintWords(frac){
-    var pos = frac * S.lyricWords.length;
+    if (!S.lyricWords.length || !S.lyricColors) return;
+    var total = 0;
+    S.lyricWeights.forEach(function(w){ total += w; });
+    var pos = Math.max(0, Math.min(1, frac)) * total, acc = 0;
     S.lyricWords.forEach(function(sp, i){
-      var f = Math.max(0, Math.min(1, pos - i)) * 100;
-      sp.style.background = 'linear-gradient(90deg,var(--sp) ' + f + '%,var(--muted) ' + f + '%)';
+      var w = S.lyricWeights[i] || 1, start = acc;
+      acc += w;
+      var f = (pos - start) / Math.max(0.001, w);
+      var col = mixColor(S.lyricColors.off, S.lyricColors.on, f);
+      sp.style.setProperty('color', col);
+      sp.style.setProperty('-webkit-text-fill-color', col);
     });
   }
   function updateKaraoke(t){
@@ -2740,7 +2776,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       else break;
     }
     var line = S.lyricLines[idx], next = S.lyricLines[idx + 1];
-    var end = next ? next.t : line.t + 4;
+    var end = next ? next.t : (S.lyricEnd > line.t ? S.lyricEnd : line.t + 4);
     var frac = Math.max(0, Math.min(1, (at - line.t) / Math.max(0.5, end - line.t)));
     if (idx !== S.lyricIdx) {
       S.lyricIdx = idx;
@@ -2768,6 +2804,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     S.lyricIdx = -1;
     S.lyricPlain = '';
     S.lyricWords = [];
+    S.lyricWeights = [];
+    S.lyricColors = null;
+    S.lyricEnd = 0;
     var now = $('mzNowTitle');
     if (now) { now.replaceChildren(); now.textContent = 'Lirik belum tersedia'; now.classList.remove('mz-ly-live', 'mz-ly-in'); }
   }
@@ -2888,18 +2927,23 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       if (songLangHint(tn + ' ' + an) === langHint && langHint) score += 2;
       if (score > best) { best = score; found = x; }
     });
-    var text = found && found.plainLyrics ? found.plainLyrics : '';
-    if (!text && found && found.syncedLyrics) text = found.syncedLyrics.replace(/^\[\d{2}:\d{2}(?:[.:]\d{1,3})?\]\s?/gm, '');
+    var synced = !!(found && found.syncedLyrics);
+    var text = synced ? found.syncedLyrics.replace(/^\[\d{2}:\d{2}(?:[.:]\d{1,3})?\]\s?/gm, '') : ((found && found.plainLyrics) || '');
     label.textContent = (found && (found.trackName || found.name)) || title || '';
     S.lyricPlain = text || '';
-    S.lyricLines = found && found.syncedLyrics ? parseSynced(found.syncedLyrics) : [];
+    S.lyricLines = synced ? parseSynced(found.syncedLyrics) : parsePlainToLines(S.lyricPlain, want);
+    S.lyricEnd = want || (S.lyricLines.length ? S.lyricLines[S.lyricLines.length - 1].t + 4 : 0);
+    if (synced && found.duration && want) {
+      var scale = want / found.duration;
+      if (scale > 0.35 && scale < 3) S.lyricLines.forEach(function(l){ l.t *= scale; });
+    }
     if (S.lyricLines.length) {
       renderLyricRows();
       updateKaraoke(currentTime());
     } else {
-      body.textContent = S.lyricPlain || 'Lirik belum tersedia untuk lagu ini.';
+      body.textContent = 'Lirik belum tersedia untuk lagu ini.';
       var nowPlain = $('mzNowTitle');
-      if (nowPlain) nowPlain.textContent = S.lyricPlain ? 'Lirik tanpa timing' : 'Lirik belum tersedia';
+      if (nowPlain) nowPlain.textContent = 'Lirik belum tersedia';
     }
   }
   function syncLyrics(){
