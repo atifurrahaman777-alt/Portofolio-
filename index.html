@@ -167,7 +167,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
-</style><link rel="manifest" href="/manifest.json?v=14"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=14"><style id="mz-bw">
+</style><link rel="manifest" href="/manifest.json?v=15"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=15"><style id="mz-bw">
 html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
 html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
 html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
@@ -837,8 +837,8 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
   apply(document, st);
 })();
 </script>
-<link rel="icon" type="image/png" href="icon-192.png?v=14">
-<link rel="stylesheet" href="/pro.css?v=14">
+<link rel="icon" type="image/png" href="icon-192.png?v=15">
+<link rel="stylesheet" href="/pro.css?v=15">
 <style id="mz-spotify-css">
 /* Pemutar musik: layout seperti aplikasi pemutar, tetap memakai warna tema. */
 .mzs{align-items:stretch!important;background:var(--bg)!important}
@@ -898,6 +898,28 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
 .mz-eq.on i:nth-child(3){animation-duration:.7s}
 .mz-eq.on i:nth-child(4){animation-duration:.45s}
 @media(prefers-reduced-motion:reduce){.mz-eq.on i{animation:none;height:9px}}
+/* Aksen hijau khas pemutar musik, tetap mengikuti tema terang/gelap. */
+.mzs,.mzm{--sp:#1ed760;--sp-d:#1db954;--sp-ink:#07170d}
+html body .mzs-panel{background:linear-gradient(180deg,rgba(29,185,84,.14),rgba(29,185,84,0) 300px),var(--bg)!important;border:0!important}
+.mzs-head-title b::before{content:"";display:inline-block;width:8px;height:8px;margin-right:8px;border-radius:50%;background:var(--sp);vertical-align:middle;box-shadow:0 0 10px var(--sp)}
+.mz-now{background:linear-gradient(135deg,rgba(29,185,84,.18),transparent 70%),linear-gradient(180deg,var(--card),var(--bg))!important}
+.mz-now-art{box-shadow:0 14px 30px rgba(29,185,84,.22)}
+html body .mzs .mz-eq i{background:var(--sp)!important}
+html body .mzs #mzSeek{background:linear-gradient(to right,var(--sp) var(--mzp,0%),var(--line) var(--mzp,0%))!important}
+html body .mzs #mzSeek::-webkit-slider-thumb{background:var(--sp)!important}
+html body .mzs #mzSeek::-moz-range-thumb{background:var(--sp)!important}
+html body .mzs .mz-controls #mzShuffle.on,html body .mzs .mz-controls #mzRepeat.on{color:var(--sp)!important}
+html body .mzs .mz-controls .mz-playbig{background:var(--sp)!important;color:var(--sp-ink)!important;-webkit-text-fill-color:var(--sp-ink)!important;border:0!important;box-shadow:0 10px 26px rgba(29,185,84,.32)!important}
+html body .mzs .mzs-tabs button.on{background:transparent!important;color:var(--sp)!important;-webkit-text-fill-color:var(--sp)!important;border-bottom-color:var(--sp)!important}
+html body .mz-scroll .mzs-chips button{background:var(--card)!important;color:var(--text)!important;-webkit-text-fill-color:currentColor!important;border:1px solid var(--line)!important;border-radius:999px!important}
+html body .mz-scroll .mzs-chips button.on{background:var(--sp)!important;color:var(--sp-ink)!important;-webkit-text-fill-color:var(--sp-ink)!important;border-color:var(--sp)!important}
+html body .mzs-item.on{background:var(--card)!important;box-shadow:inset 3px 0 var(--sp)!important}
+html body .mzs-item.on .mzs-num{color:var(--sp)!important}
+html body .mzs .mzs-fav.on,html body #mzFav.on{color:var(--sp)!important}
+html body .mzs .mzs-fav.on svg,html body #mzFav.on svg{fill:currentColor}
+html body .mzm-bar i{background:var(--sp)!important}
+html body #mzPlay{background:var(--sp)!important;color:var(--sp-ink)!important;-webkit-text-fill-color:var(--sp-ink)!important;border:0!important;border-radius:50%!important;box-shadow:0 6px 16px rgba(29,185,84,.3)!important}
+html body .mzm{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;box-shadow:0 10px 30px var(--shadow)!important}
 </style>
 </head>
 <body>
@@ -2960,6 +2982,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   render();
 })();
 </script>
-<script src="/lang.js?v=14"></script>
+<script src="/lang.js?v=15"></script>
 </body>
 </html>
