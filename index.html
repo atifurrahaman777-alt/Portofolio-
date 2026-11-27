@@ -2388,7 +2388,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   var $ = function(id){ return document.getElementById(id); };
   var audio = new Audio();
   audio.preload = 'none';
-  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, nowSong: '', nowArtist: '', built: false, loaded: false };
+  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricRowCount: 0, lyricSong: '', lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, nowSong: '', nowArtist: '', built: false, loaded: false };
   var IP = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
   var IQ = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
   var IN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8zM18 4h2v16h-2z"/></svg>';
@@ -2737,12 +2737,13 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     var body = $('mLyricsBody');
     if (!body) return;
     body.replaceChildren();
-    S.lyricLines.forEach(function(l){
+    S.lyricLines.forEach(function(l, i){
       var d = document.createElement('div');
-      d.className = 'mz-ly-row';
+      d.className = 'mz-ly-row' + (i === S.lyricIdx ? ' on' : '');
       d.textContent = l.text;
       body.appendChild(d);
     });
+    S.lyricRowCount = S.lyricLines.length;
   }
   function parsePlainToLines(text, dur){
     var arr = String(text || '').split(/\r?\n/).map(function(s){ return s.trim(); }).filter(Boolean);
@@ -2835,14 +2836,15 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     var line = S.lyricLines[idx], next = S.lyricLines[idx + 1];
     var end = next ? next.t : (S.lyricEnd > line.t ? S.lyricEnd : line.t + 4);
     var frac = Math.max(0, Math.min(1, (at - line.t) / Math.max(0.5, end - line.t)));
-    if (idx !== S.lyricIdx) {
+    var rows = $('mLyricsBody') && $('mLyricsBody').querySelectorAll('.mz-ly-row');
+    var stale = !rows || rows.length !== S.lyricRowCount;
+    if (idx !== S.lyricIdx || stale) {
       S.lyricIdx = idx;
       renderNowLine(idx);
-      var rows = $('mLyricsBody') && $('mLyricsBody').querySelectorAll('.mz-ly-row');
       if (rows && rows.length) {
         for (var j = 0; j < rows.length; j++) rows[j].classList.toggle('on', j === idx);
         var box = $('mLyrics'), on = rows[idx];
-        if (on && box && !box.hidden && on.scrollIntoView) { try { on.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {} }
+        if (on && box && !box.hidden && on.scrollIntoView && !stale) { try { on.scrollIntoView({ block: 'center', behavior: 'smooth' }); } catch (e) {} }
       }
     }
     paintWords(S.lyricMode === 'word' ? at : frac);
@@ -2850,6 +2852,8 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   function resetKaraoke(){
     S.lyricLines = [];
     S.lyricIdx = -1;
+    S.lyricRowCount = 0;
+    S.lyricSong = '';
     S.lyricPlain = '';
     S.lyricMode = 'line';
     S.lyricWords = [];
@@ -3016,6 +3020,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       }
     }
     if (S.lyricLines.length) {
+      S.lyricSong = title || '';
       renderLyricRows();
       updateKaraoke(currentTime());
     } else {
@@ -3044,6 +3049,8 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       if (waiting) waiting.textContent = 'Lirik muncul setelah judul terdeteksi';
       $('mLyricsTitle').textContent = '';
       $('mLyricsBody').textContent = 'Lirik muncul setelah judul lagu terdeteksi.';
+    } else if (S.lyricSong === t.title && S.lyricLines.length) {
+      updateKaraoke(currentTime());
     } else {
       loadLyrics(t.title, t.artist);
     }
