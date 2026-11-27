@@ -1,28 +1,30 @@
 /* ==========================================================================
-   INK NEUTRAL — satu sistem desain, ramp abu, tanpa warna tema.
-   Arah: tenang, presisi, sedikit hangat. Header 48px, grid 4px.
+   ATELIER PAPER — satu sistem desain untuk semua halaman.
+   Enam tinta kertas, bukan abu-abu seragam. Header 48px, grid 4px.
    ========================================================================== */
 
 /* --- Token -------------------------------------------------------------- */
 :root {
   color-scheme: light;
-  --ui-bg:#fafafa;
-  --ui-surface:#ffffff;
-  --ui-raised:#f4f4f5;
-  --ui-border:#e5e5e5;
-  --ui-text:#171717;
-  --ui-text-2:#525252;
-  --ui-text-3:#737373;
-  --ui-accent:#171717;
+  --ui-bg:#faf8f3;
+  --ui-surface:#fffdf8;
+  --ui-raised:#f2ede3;
+  --ui-border:#e3dccd;
+  --ui-text:#201d18;
+  --ui-text-2:#575046;
+  --ui-text-3:#6f675c;
+  --ui-accent:#8a5a2b;
   --ui-on-accent:#ffffff;
-  --ui-positive:#15803d;
-  --ui-negative:#b91c1c;
+  --ui-positive:#166534;
+  --ui-negative:#b42318;
   --ui-font:"Inter","IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --ui-display:"Newsreader","Instrument Serif",Georgia,serif;
   --ui-mono:ui-monospace,"SFMono-Regular",Consolas,monospace;
   --ui-ease:cubic-bezier(.22,1,.36,1);
-  --ui-shadow:0 1px 2px rgba(0,0,0,.05);
-  --ui-float:0 8px 24px rgba(0,0,0,.08);
-  --ui-overlay:rgba(23,23,23,.48);
+  --ui-shadow:0 1px 2px rgba(38,30,18,.06);
+  --ui-float:0 8px 24px rgba(38,30,18,.10);
+  --ui-overlay:rgba(32,29,24,.48);
+
   --ui-canvas:var(--ui-bg); --ui-surface-2:var(--ui-raised);
   --ui-text-muted:var(--ui-text-3); --ui-ink:var(--ui-text);
   --ui-danger:var(--ui-negative); --ui-success:var(--ui-positive);
@@ -36,7 +38,7 @@
   --accent:var(--ui-accent); --acc:var(--ui-accent);
   --brand:var(--ui-accent); --brand-hover:var(--ui-accent);
   --gold:var(--ui-text-2); --warn:var(--ui-text-2); --err:var(--ui-negative);
-  --purple:var(--ui-text); --black:var(--ui-text); --on:var(--ui-on-accent);
+  --purple:var(--ui-accent); --black:var(--ui-text); --on:var(--ui-on-accent);
   --shadow:var(--ui-border); --radius:12px;
   --code-strong:var(--ui-text); --code-mid:var(--ui-text-2); --code-dim:var(--ui-text-3);
   --sh-card:var(--ui-surface); --sh-card-foreground:var(--ui-text);
@@ -45,15 +47,72 @@
   --sp:var(--ui-accent); --sp-d:var(--ui-accent); --sp-ink:var(--ui-on-accent);
 }
 
+/* Enam tinta: tiap tema mengubah kanvas, permukaan, teks, border, aksen. */
+html[data-mz-accent="biru"] {
+  color-scheme:light;
+  --ui-bg:#f4f7fb; --ui-surface:#ffffff; --ui-raised:#e8f0f8;
+  --ui-border:#d3e0ed; --ui-text:#172434; --ui-text-2:#4c6076;
+  --ui-text-3:#64778c; --ui-accent:#1d4ed8; --ui-on-accent:#ffffff;
+}
+html[data-mz-accent="hijau"] {
+  color-scheme:light;
+  --ui-bg:#f4f8f4; --ui-surface:#fffefa; --ui-raised:#e7f0e7;
+  --ui-border:#d2e3d2; --ui-text:#17271b; --ui-text-2:#4b6353;
+  --ui-text-3:#637966; --ui-accent:#166534; --ui-on-accent:#ffffff;
+}
+html[data-mz-accent="kuning"] {
+  color-scheme:light;
+  --ui-bg:#fcf8ec; --ui-surface:#fffdf5; --ui-raised:#f5ecd2;
+  --ui-border:#e8dab2; --ui-text:#2b230c; --ui-text-2:#635535;
+  --ui-text-3:#786a49; --ui-accent:#92610a; --ui-on-accent:#ffffff;
+}
+html[data-mz-accent="pink"] {
+  color-scheme:light;
+  --ui-bg:#fdf5f8; --ui-surface:#fffdfd; --ui-raised:#f7e8ee;
+  --ui-border:#ecd0da; --ui-text:#2b1720; --ui-text-2:#6d4c5c;
+  --ui-text-3:#856273; --ui-accent:#a81959; --ui-on-accent:#ffffff;
+}
+html[data-mz-accent="oranye"] {
+  color-scheme:light;
+  --ui-bg:#fdf7f1; --ui-surface:#fffdf9; --ui-raised:#f8ebdd;
+  --ui-border:#eddcc4; --ui-text:#2b1c0f; --ui-text-2:#6b533e;
+  --ui-text-3:#836a53; --ui-accent:#a63a10; --ui-on-accent:#ffffff;
+}
+
 html body:not(.light-mode) {
   color-scheme:dark;
-  --ui-bg:#141415; --ui-surface:#19191b; --ui-raised:#232325;
-  --ui-border:#2b2b2e; --ui-text:#ededed; --ui-text-2:#a1a1a6;
-  --ui-text-3:#8f8f95; --ui-accent:#ededed; --ui-on-accent:#171717;
-  --ui-positive:#4cc38a; --ui-negative:#e5484d;
+  --ui-bg:#171613; --ui-surface:#1e1c18; --ui-raised:#29261f;
+  --ui-border:#353127; --ui-text:#f3eee3; --ui-text-2:#b9b0a1;
+  --ui-text-3:#999083; --ui-accent:#d6b98c; --ui-on-accent:#1a150e;
+  --ui-positive:#4cc38a; --ui-negative:#f0736b;
   --ui-shadow:0 1px 2px rgba(0,0,0,.32);
-  --ui-float:0 8px 24px rgba(0,0,0,.4);
-  --ui-overlay:rgba(0,0,0,.62);
+  --ui-float:0 8px 24px rgba(0,0,0,.42);
+  --ui-overlay:rgba(0,0,0,.64);
+}
+html[data-mz-accent="biru"] body:not(.light-mode) {
+  --ui-bg:#0d1622; --ui-surface:#142033; --ui-raised:#1c2c43;
+  --ui-border:#273b54; --ui-text:#e8f0fb; --ui-text-2:#a9bdd3;
+  --ui-text-3:#8ba1b9; --ui-accent:#8fc0ff; --ui-on-accent:#0d1622;
+}
+html[data-mz-accent="hijau"] body:not(.light-mode) {
+  --ui-bg:#0d1711; --ui-surface:#15241a; --ui-raised:#1d3124;
+  --ui-border:#294330; --ui-text:#e9f5eb; --ui-text-2:#a9c2af;
+  --ui-text-3:#8aa792; --ui-accent:#93dfa6; --ui-on-accent:#0d1711;
+}
+html[data-mz-accent="kuning"] body:not(.light-mode) {
+  --ui-bg:#191508; --ui-surface:#241e0d; --ui-raised:#302814;
+  --ui-border:#44391f; --ui-text:#fbf2d6; --ui-text-2:#c8b78d;
+  --ui-text-3:#aa9b73; --ui-accent:#f0c86a; --ui-on-accent:#191508;
+}
+html[data-mz-accent="pink"] body:not(.light-mode) {
+  --ui-bg:#1a0f15; --ui-surface:#271821; --ui-raised:#34212d;
+  --ui-border:#4a3040; --ui-text:#fdeaf2; --ui-text-2:#cda9b9;
+  --ui-text-3:#ae8b9b; --ui-accent:#f4a6ca; --ui-on-accent:#1a0f15;
+}
+html[data-mz-accent="oranye"] body:not(.light-mode) {
+  --ui-bg:#1a1109; --ui-surface:#271a10; --ui-raised:#342417;
+  --ui-border:#4a3522; --ui-text:#fdf0e2; --ui-text-2:#cdb094;
+  --ui-text-3:#ae9276; --ui-accent:#ffb070; --ui-on-accent:#1a1109;
 }
 .dark { color-scheme:dark; }
 
@@ -503,3 +562,6 @@ footer { text-align:center; color:var(--ui-text-3); padding:24px 16px;
   *,*::before,*::after { scroll-behavior:auto!important; animation-duration:.01ms!important;
     animation-iteration-count:1!important; transition-duration:.01ms!important; }
 }
+
+/* Judul editorial — satu partner family, berat 400. */
+h1,h2 { font-family:var(--ui-display); font-weight:400; letter-spacing:-.01em; }
