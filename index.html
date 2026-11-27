@@ -867,6 +867,8 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
 .mz-controls{display:flex;align-items:center;justify-content:center;gap:14px;padding:6px 16px 18px}
 .mz-controls button{width:42px;height:42px;padding:0;border:0;border-radius:50%;background:none!important;color:var(--muted)!important;display:flex;align-items:center;justify-content:center;cursor:pointer}
 .mz-controls button.on{color:var(--accent)!important}
+html body .mz-controls #mzRepeat.one{position:relative}
+html body .mz-controls #mzRepeat.one::after{content:'1';position:absolute;right:0;bottom:3px;width:13px;height:13px;border-radius:50%;background:var(--accent);color:var(--on,#fff);font-size:.55rem;font-weight:900;display:flex;align-items:center;justify-content:center}
 .mz-controls button svg{width:22px;height:22px}
 .mz-controls .mz-playbig{width:56px;height:56px;background:var(--accent)!important;color:var(--on,#fff)!important;box-shadow:0 8px 20px var(--shadow)}
 .mz-controls .mz-playbig svg{width:26px;height:26px}
@@ -2388,7 +2390,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   var $ = function(id){ return document.getElementById(id); };
   var audio = new Audio();
   audio.preload = 'none';
-  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricRowCount: 0, lyricSong: '', lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, nowSong: '', nowArtist: '', built: false, loaded: false };
+  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: '', yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricRowCount: 0, lyricSong: '', lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, nowSong: '', nowArtist: '', built: false, loaded: false };
   var IP = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
   var IQ = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
   var IN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8zM18 4h2v16h-2z"/></svg>';
@@ -2551,8 +2553,29 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     $('mzPrev').addEventListener('click', prev);
     $('mzNext').addEventListener('click', function(){ next(false); });
     $('mzNextBig').addEventListener('click', function(){ next(false); });
-    $('mzShuffle').addEventListener('click', function(){ S.shuffle = !S.shuffle; this.classList.toggle('on', S.shuffle); });
-    $('mzRepeat').addEventListener('click', function(){ S.repeat = !S.repeat; this.classList.toggle('on', S.repeat); });
+    $('mzShuffle').addEventListener('click', function(){
+      S.shuffle = !S.shuffle;
+      this.classList.toggle('on', S.shuffle);
+      this.title = S.shuffle ? 'Matikan acak' : 'Acak';
+      if (S.shuffle && S.queue.length > 1 && S.idx >= 0) {
+        var i = S.idx;
+        while (i === S.idx) i = Math.floor(Math.random() * S.queue.length);
+        S.idx = i;
+        startItem();
+        stat('Acak aktif');
+      } else if (!S.shuffle) stat('Acak dimatikan');
+    });
+    $('mzRepeat').addEventListener('click', function(){
+      var modes = ['', 'one', 'all'];
+      var at = modes.indexOf(S.repeat || '');
+      S.repeat = modes[(at + 1) % modes.length];
+      this.classList.toggle('on', !!S.repeat);
+      this.classList.toggle('one', S.repeat === 'one');
+      this.title = S.repeat === 'one' ? 'Ulangi lagu ini' : (S.repeat === 'all' ? 'Ulangi semua lagu' : 'Ulangi');
+      if (S.repeat === 'one') { restartCurrent(); stat('Ulangi lagu ini'); }
+      else if (S.repeat === 'all') stat('Ulangi semua lagu');
+      else stat('Ulangi dimatikan');
+    });
     $('mzSeek').addEventListener('input', function(){
       var d = 0;
       if (S.mode === 'audius') d = audio.duration;
@@ -3170,9 +3193,24 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       } catch (e) {}
     }
   }
+  function restartCurrent(){
+    if (S.mode === 'audius') {
+      try { audio.currentTime = 0; } catch (e) {}
+      var p = audio.play();
+      if (p && p.catch) p.catch(function(){});
+      setProgress(0, audio.duration || 0);
+    } else if (S.mode === 'yt' && S.yt) {
+      try { S.yt.seekTo(0, true); S.yt.playVideo(); } catch (e) {}
+      var d = 0;
+      try { d = S.yt.getDuration() || 0; } catch (e) {}
+      setProgress(0, d);
+    }
+    updateKaraoke(0);
+  }
   function next(auto){
     var n = S.queue.length;
     if (!n) return;
+    if (auto && S.repeat === 'one') { restartCurrent(); return; }
     if (S.shuffle && n > 1) {
       var i = S.idx;
       while (i === S.idx) i = Math.floor(Math.random() * n);
@@ -3181,7 +3219,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       return;
     }
     if (S.idx + 1 < n) { S.idx++; startItem(); return; }
-    if (auto && S.repeat) { S.idx = 0; startItem(); return; }
+    if (S.idx + 1 >= n && S.repeat === 'all') { S.idx = 0; startItem(); return; }
     if (S.mode === 'audius') audio.pause();
   }
   function prev(){
