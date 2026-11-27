@@ -1591,6 +1591,104 @@ html body .mzs,html body .mzm{--sp:var(--ui-accent)!important;--sp-d:var(--ui-ac
 html body :is(.eyebrow,.mz-now-label,.mz-lyrics-label,.label,.mzs-hint,.pf-stats span,.stat span){
   text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800}
 @media (prefers-reduced-motion:reduce){html body *{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+/* Sapuan brutal lanjutan: sidebar, beranda, kartu alat, status. */
+:root,body.light-mode{--ui-on-success:#fffdf4;--ui-on-warning:#111111;--ui-on-danger:#fffdf4}
+html[data-mz-accent="biru"]{--ui-on-success:#071a33;--ui-on-warning:#071a33;--ui-on-danger:#071a33}
+html[data-mz-accent="hijau"]{--ui-on-success:#0a2316;--ui-on-warning:#0a2316;--ui-on-danger:#0a2316}
+html[data-mz-accent="kuning"]{--ui-on-success:#fffdf4;--ui-on-warning:#1a1300;--ui-on-danger:#fffdf4}
+html[data-mz-accent="pink"]{--ui-on-success:#2a0b20;--ui-on-warning:#2a0b20;--ui-on-danger:#2a0b20}
+html[data-mz-accent="oranye"]{--ui-on-success:#2a1408;--ui-on-warning:#2a1408;--ui-on-danger:#2a1408}
+html body .sidebar,
+html body .bottom-nav,
+html body .owner-panel,
+html body .auth-form,
+html body .profile-card,
+html body .banner,
+html body .quote,
+html body .project,
+html body .skill,
+html body .tool-card,
+html body a.tool-card,
+html body .contact-block,
+html body .pf-info,
+html body .pf-prog,
+html body .pf-bd,
+html body .pf-stats div,
+html body .game-frame,
+html body .tool-overlay-bar{
+  background:var(--ui-surface)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:var(--ui-shadow)!important}
+html body .sidebar-nav .nav-btn,
+html body .bottom-nav .nav-btn,
+html body .sidebar-nav .nav-btn.home,
+html body .bottom-nav .nav-btn.home{
+  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:3px 3px 0 var(--ui-ink)!important;font-family:var(--ui-font-display)!important;
+  font-weight:900!important;font-size:.78rem!important;text-transform:uppercase!important;
+  letter-spacing:-.01em!important;padding:10px 12px!important;margin:0!important;gap:8px!important}
+html body .sidebar-nav .nav-btn.active,
+html body .bottom-nav .nav-btn.active,
+html body .sidebar-nav .nav-btn.home.active,
+html body .bottom-nav .nav-btn.home.active{
+  background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
+  box-shadow:4px 4px 0 var(--ui-ink)!important}
+html body .sidebar-nav .nav-btn span,
+html body .bottom-nav .nav-btn span{
+  width:24px!important;height:24px!important;background:transparent!important;
+  border:0!important;border-radius:0!important;box-shadow:none!important}
+html body .bottom-nav .nav-btn.home span{
+  width:44px!important;height:44px!important;background:var(--ui-accent)!important;
+  color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
+  box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body .bottom-nav .nav-btn.home{margin-top:-22px!important}
+html body :is(.sidebar-nav,.bottom-nav) .nav-btn .icon{stroke:currentColor!important;width:20px!important;height:20px!important}
+html body .sidebar-head{
+  border-bottom:2px solid var(--ui-ink)!important;padding-bottom:10px!important;
+  margin-bottom:12px!important}
+html body .logo{font-size:1.1rem!important;text-transform:uppercase}
+html body .mz-sl,
+html body .project-links a,
+html body .pf-chip,
+html body .tag,
+html body .mz-lang select{
+  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:2px 2px 0 var(--ui-ink)!important;text-transform:uppercase;
+  font-weight:800!important;text-decoration:none!important}
+html body .tool-icon{
+  width:48px!important;height:48px!important;flex:none;display:flex;
+  align-items:center;justify-content:center;background:var(--ui-accent)!important;
+  color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
+  border-radius:0!important;box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body .tool-card h3,
+html body .project h3,
+html body .banner-title{
+  font-family:var(--ui-font-display)!important;font-weight:900!important;
+  text-transform:uppercase;letter-spacing:-.03em}
+html body .profile-name{
+  font-family:var(--ui-font-display)!important;font-weight:900!important;
+  text-transform:uppercase;letter-spacing:-.04em}
+html body .profile-card .profile-name{
+  display:inline-block;background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
+  border:2px solid var(--ui-ink)!important;padding:4px 10px;
+  box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body :is(.btn.primary,.auth-tab.active,.ocean-tab.active,.dl-tab.active,.gc-act,.gc-play,.dl-mini.primary,.mzs-btn,.mz-scroll .mzs-btn,#run){
+  background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
+  -webkit-text-fill-color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
+  border-radius:0!important;box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body :is(.email-step.active,.status,.wam-hole.up,.t2048.v8,.t2048.v16,.t2048.v128,.t2048.v256,.t2048.v512,.t2048.v1024,.t2048.v2048,.t2048.vbig){
+  color:var(--ui-on-warning)!important}
+html body :is(.email-step.completed,.rt-area.go){
+  color:var(--ui-on-success)!important}
+html body :is(.email-step.failed,.gc-act.rec,.t2048.v32,.t2048.v64){
+  color:var(--ui-on-danger)!important}
+html body footer{
+  border-top:2px solid var(--ui-ink)!important;margin-top:24px!important;
+  padding-top:16px!important;text-transform:uppercase;letter-spacing:.08em;
+  font-size:.72rem!important;font-weight:800}
+
 </style>
 </body>
 </html>
