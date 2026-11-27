@@ -167,7 +167,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
-</style><link rel="manifest" href="/manifest.json?v=11"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=11"><style id="mz-bw">
+</style><link rel="manifest" href="/manifest.json?v=12"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=12"><style id="mz-bw">
 html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
 html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
 html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
@@ -837,8 +837,67 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
   apply(document, st);
 })();
 </script>
-<link rel="icon" type="image/png" href="icon-192.png?v=11">
-<link rel="stylesheet" href="/pro.css?v=11">
+<link rel="icon" type="image/png" href="icon-192.png?v=12">
+<link rel="stylesheet" href="/pro.css?v=12">
+<style id="mz-spotify-css">
+/* Pemutar musik: layout seperti aplikasi pemutar, tetap memakai warna tema. */
+.mzs{align-items:stretch!important;background:var(--bg)!important}
+.mzs-panel{width:100%!important;max-width:none!important;height:100%!important;max-height:none!important;border:0!important;border-radius:0!important;padding:0!important;display:flex!important;flex-direction:column!important;overflow:hidden!important;background:var(--bg)!important;box-shadow:none!important}
+.mzs-head{position:sticky;top:0;z-index:4;margin:0!important;padding:calc(12px + env(safe-area-inset-top,0px)) 16px 10px!important;background:var(--bg)!important;border-bottom:1px solid var(--line)!important}
+.mzs-head-title{display:inline-flex;align-items:center}
+.mzs-head button{background:none!important;border:0!important;color:var(--muted)!important;font:inherit;font-weight:700;cursor:pointer}
+.mz-now{display:flex;align-items:center;gap:14px;padding:18px 16px 10px;background:linear-gradient(180deg,var(--card),var(--bg));border-bottom:1px solid var(--line)}
+.mz-now-art{position:relative;width:112px;height:112px;flex:none;border-radius:14px;overflow:hidden;background:var(--card-2,var(--line));display:flex;align-items:center;justify-content:center}
+.mz-now-art img{width:100%;height:100%;object-fit:cover}
+.mz-now-art img[hidden],.mz-now-ph[hidden]{display:none!important}
+.mz-now-ph{font-size:2.4rem;color:var(--muted)!important}
+.mz-now-art .mzs-yt{position:absolute;inset:0;width:100%;height:100%;aspect-ratio:auto;border:0;border-radius:0;margin:0}
+.mz-now-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.mz-now-label{font-size:.66rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)!important;font-weight:800}
+.mz-now-meta b{font-size:1.15rem;font-weight:800;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mz-now-meta small{color:var(--muted)!important;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mz-now .mz-eq{margin:4px 0 0!important}
+.mz-progress{display:flex;align-items:center;gap:10px;padding:4px 16px 6px}
+.mz-progress span{min-width:34px;font-size:.7rem;color:var(--muted)!important;text-align:center}
+#mzSeek{flex:1;min-width:0;height:4px;margin:0;appearance:none;-webkit-appearance:none;border:0;border-radius:999px;background:linear-gradient(to right,var(--accent) var(--mzp,0%),var(--line) var(--mzp,0%));cursor:pointer}
+#mzSeek::-webkit-slider-thumb{appearance:none;-webkit-appearance:none;width:12px;height:12px;border:0;border-radius:50%;background:var(--accent)}
+#mzSeek::-moz-range-thumb{width:12px;height:12px;border:0;border-radius:50%;background:var(--accent)}
+.mz-controls{display:flex;align-items:center;justify-content:center;gap:14px;padding:2px 16px 14px}
+.mz-controls button{width:42px;height:42px;padding:0;border:0;border-radius:50%;background:none!important;color:var(--muted)!important;display:flex;align-items:center;justify-content:center;cursor:pointer}
+.mz-controls button.on{color:var(--accent)!important}
+.mz-controls button svg{width:22px;height:22px}
+.mz-controls .mz-playbig{width:56px;height:56px;background:var(--accent)!important;color:var(--on,#fff)!important;box-shadow:0 8px 20px var(--shadow)}
+.mz-controls .mz-playbig svg{width:26px;height:26px}
+.mzs-tabs{padding:0 16px;margin:0!important;border-bottom:1px solid var(--line)!important;background:var(--bg)!important}
+.mz-scroll{flex:1;min-height:0;overflow-y:auto;padding:14px 16px calc(24px + env(safe-area-inset-bottom,0px));overscroll-behavior:contain}
+.mz-scroll .mzs-chips{display:flex;gap:8px;flex-wrap:wrap;margin:0 0 12px;padding:0;overflow:visible}
+.mz-scroll .mzs-chips button{flex:0 0 auto;padding:8px 14px;border-radius:999px!important;border:1px solid var(--line)!important;background:var(--bg)!important;color:var(--text)!important;font:inherit;font-size:.8rem;font-weight:700;cursor:pointer;white-space:nowrap}
+.mz-scroll .mzs-chips button.on{background:var(--accent)!important;color:var(--on,#fff)!important;border-color:var(--accent)!important}
+.mzs-row input{background:var(--card)!important;color:var(--text)!important}
+.mzs-btn{border-radius:999px!important;padding:0 18px!important}
+.mzs-item{display:flex;align-items:center;gap:10px;width:100%;padding:8px 6px;border:0!important;border-bottom:1px solid var(--line)!important;border-radius:0!important;background:none!important;color:var(--text)!important;font:inherit;text-align:left;cursor:pointer}
+.mzs-item.on{background:var(--card)!important}
+.mzs-item img,.mzs-item .ph{width:44px;height:44px;border-radius:8px;object-fit:cover;flex:none;background:var(--card-2,var(--line))}
+.mzs-num{width:20px;flex:none;text-align:center;font-size:.78rem;color:var(--muted)!important}
+.mzs-it b{font-size:.9rem;font-weight:700}
+.mzs-it small,.mzs-d{color:var(--muted)!important}
+.mzs-fav{width:34px;height:34px;display:flex;align-items:center;justify-content:center;color:var(--muted)!important;cursor:pointer;border-radius:50%}
+.mzs-fav svg{width:18px;height:18px}
+.mzs-fav.on,#mzFav.on{color:#ef4444!important}
+.mzs-fav.on svg,#mzFav.on svg{fill:currentColor}
+.mzs-more{background:var(--card)!important;color:var(--text)!important;border-radius:999px!important}
+.mzm{border-radius:14px!important;padding:8px 10px!important;gap:8px!important}
+.mzm-main img,.mzm-ph{width:44px!important;height:44px!important;border-radius:8px!important}
+.mzm-bar i,#mzPlay{background:var(--accent)!important}
+#mzPlay{border-radius:50%!important;color:var(--on,#fff)!important}
+.mz-eq{display:inline-flex;align-items:flex-end;gap:2px;height:14px;margin-left:10px}
+.mz-eq i{display:block;width:2px;height:3px;border-radius:2px;background:var(--accent)}
+.mz-eq.on i{animation:mzEq .8s ease-in-out infinite alternate}
+.mz-eq.on i:nth-child(2){animation-duration:.55s}
+.mz-eq.on i:nth-child(3){animation-duration:.7s}
+.mz-eq.on i:nth-child(4){animation-duration:.45s}
+@media(prefers-reduced-motion:reduce){.mz-eq.on i{animation:none;height:9px}}
+</style>
 </head>
 <body>
 <script>
@@ -2251,10 +2310,13 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   var $ = function(id){ return document.getElementById(id); };
   var audio = new Audio();
   audio.preload = 'none';
-  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, yt: null, ytState: -1, built: false, loaded: false };
+  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, built: false, loaded: false };
   var IP = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
   var IQ = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
   var IN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8zM18 4h2v16h-2z"/></svg>';
+  var IPV = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4h2v16H7zM19 4l-10 8 10 8z"/></svg>';
+  var ISH = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 3h5v5"/><path d="M4 20L21 3"/><path d="M21 16v5h-5"/><path d="M15 15l6 6"/><path d="M4 4l5 5"/></svg>';
+  var IRP = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 2l4 4-4 4"/><path d="M3 11v-1a4 4 0 0 1 4-4h14"/><path d="M7 22l-4-4 4-4"/><path d="M21 13v1a4 4 0 0 1-4 4H3"/></svg>';
   var IX = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg>';
   var HEART = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>';
   var GEN = [
@@ -2357,22 +2419,35 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     sheet.className = 'mzs mz-off';
     sheet.innerHTML = '<div class="mzs-panel">'
       + '<div class="mzs-head"><span class="mzs-head-title"><b>Musik</b><span class="mz-eq" id="mzEqSheet" aria-hidden="true"><i></i><i></i><i></i><i></i></span></span><button type="button" id="mzSheetX">Tutup</button></div>'
-      + '<div id="mzVid" class="mzs-yt" style="display:none"><div id="mzYtBox"></div></div>'
+      + '<div class="mz-now">'
+      + '<div class="mz-now-art"><img id="mzNowArt" alt="" hidden><span class="mz-now-ph" id="mzNowArtPh">&#9834;</span><div id="mzVid" class="mzs-yt" style="display:none"><div id="mzYtBox"></div></div></div>'
+      + '<div class="mz-now-meta"><span class="mz-now-label">Sedang diputar</span><b id="mzNowTitle">Belum ada lagu</b><small id="mzNowSub">Cari lagu untuk mulai mendengarkan</small>'
+      + '<span class="mz-eq" id="mzEqNow" aria-hidden="true"><i></i><i></i><i></i><i></i></span></div></div>'
+      + '<div class="mz-progress"><span id="mzNowCur">0:00</span><input type="range" id="mzSeek" min="0" max="100" value="0" aria-label="Posisi lagu"><span id="mzNowDur">0:00</span></div>'
+      + '<div class="mz-controls">'
+      + '<button type="button" id="mzShuffle" aria-label="Acak" title="Acak">' + ISH + '</button>'
+      + '<button type="button" id="mzPrev" aria-label="Sebelumnya">' + IPV + '</button>'
+      + '<button type="button" class="mz-playbig" id="mzPlayBig" aria-label="Putar atau jeda"></button>'
+      + '<button type="button" id="mzNextBig" aria-label="Berikutnya">' + IN + '</button>'
+      + '<button type="button" id="mzRepeat" aria-label="Ulangi" title="Ulangi">' + IRP + '</button>'
+      + '</div>'
       + '<div class="mzs-tabs"><button type="button" class="on" data-mt="cari">Cari</button><button type="button" data-mt="yt">Tempel Link</button></div>'
+      + '<div class="mz-scroll">'
       + '<div id="mz-cari">'
       + '<div class="mzs-chips" id="mzSrc"><button type="button" class="on" data-src="audius">Audius</button><button type="button" data-src="yt" id="mzSrcYt" hidden>YouTube</button></div>'
       + '<div class="mzs-row"><input id="mzQ" type="search" placeholder="Cari lagu atau artis..." maxlength="80" autocomplete="off"><button type="button" class="mzs-btn" id="mzGo">Cari</button></div>'
-      + '<div class="mzs-chips" id="mzGen" style="margin-top:10px"></div>'
+      + '<div class="mzs-chips" id="mzGen"></div>'
       + '<p class="mzs-hint" id="mzStat"></p><div id="mzList"></div>'
       + '<button type="button" class="mzs-more" id="mzMore" hidden>Muat lebih banyak</button>'
       + '<p class="mzs-hint" id="mzCredit"></p></div>'
       + '<div id="mz-yt" class="mz-offp"><div class="mzs-row"><input id="mzYl" type="url" placeholder="Tempel link YouTube..." autocomplete="off"><button type="button" class="mzs-btn" id="mzYgo">Putar</button></div>'
       + '<p class="mzs-hint" id="mzYstat"></p></div>'
-      + '</div>';
+      + '</div></div>';
     document.body.appendChild(sheet);
 
     $('mzFav').innerHTML = HEART;
     $('mzPlay').innerHTML = IP;
+    $('mzPlayBig').innerHTML = IP;
     $('mzNext').innerHTML = IN;
     $('mzClose').innerHTML = IX;
 
@@ -2390,7 +2465,22 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     $('mzMiniOpen').addEventListener('click', openSheet);
     $('mzFav').addEventListener('click', favCurrent);
     $('mzPlay').addEventListener('click', toggle);
-    $('mzNext').addEventListener('click', next);
+    $('mzPlayBig').addEventListener('click', toggle);
+    $('mzPrev').addEventListener('click', prev);
+    $('mzNext').addEventListener('click', function(){ next(false); });
+    $('mzNextBig').addEventListener('click', function(){ next(false); });
+    $('mzShuffle').addEventListener('click', function(){ S.shuffle = !S.shuffle; this.classList.toggle('on', S.shuffle); });
+    $('mzRepeat').addEventListener('click', function(){ S.repeat = !S.repeat; this.classList.toggle('on', S.repeat); });
+    $('mzSeek').addEventListener('input', function(){
+      var d = 0;
+      if (S.mode === 'audius') d = audio.duration;
+      else if (S.mode === 'yt' && S.yt && S.yt.getDuration) { try { d = S.yt.getDuration(); } catch (e) {} }
+      if (!d || !isFinite(d)) return;
+      var t = d * (Number(this.value) / 100);
+      if (S.mode === 'audius') { try { audio.currentTime = t; } catch (e) {} }
+      else if (S.yt && S.yt.seekTo) { try { S.yt.seekTo(t, true); } catch (e) {} }
+      setProgress(t, d);
+    });
     $('mzClose').addEventListener('click', stopAll);
     $('mzGo').addEventListener('click', function(){ search(true); });
     $('mzMore').addEventListener('click', function(){ search(false); });
@@ -2411,11 +2501,22 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     $('mz-yt').classList.toggle('mz-offp', t !== 'yt');
   }
   function layoutVid(){
-    var v = $('mzVid');
+    var v = $('mzVid'), art = $('mzNowArt'), ph = $('mzNowArtPh');
     if (!v) return;
-    if (S.mode !== 'yt') { v.style.display = 'none'; v.classList.remove('mz-offp'); return; }
-    v.style.display = '';
-    v.classList.toggle('mz-offp', !!(sheet && sheet.classList.contains('mz-off')));
+    if (S.mode === 'yt') {
+      v.style.display = '';
+      v.classList.toggle('mz-offp', !!(sheet && sheet.classList.contains('mz-off')));
+      if (art) art.hidden = true;
+      if (ph) ph.hidden = true;
+      return;
+    }
+    v.style.display = 'none';
+    v.classList.remove('mz-offp');
+    var a = safeImg(S.art);
+    if (art && ph) {
+      if (a) { art.src = a; art.hidden = false; ph.hidden = true; }
+      else { art.hidden = true; ph.hidden = false; }
+    }
   }
   function openSheet(){
     build();
@@ -2438,15 +2539,33 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   function setIcon(playing){
     var on = !!playing;
     if ($('mzPlay')) $('mzPlay').innerHTML = on ? IQ : IP;
+    if ($('mzPlayBig')) $('mzPlayBig').innerHTML = on ? IQ : IP;
     document.querySelectorAll('.mz-eq').forEach(function(e){ e.classList.toggle('on', on); });
+  }
+  function setProgress(cur, dur){
+    var pct = (dur > 0 && isFinite(dur)) ? Math.min(100, Math.max(0, cur / dur * 100)) : 0;
+    if ($('mzBar')) $('mzBar').style.width = pct + '%';
+    var seek = $('mzSeek');
+    if (seek) { seek.value = pct; seek.style.setProperty('--mzp', pct + '%'); }
+    if ($('mzNowCur')) $('mzNowCur').textContent = fmt(cur);
+    if ($('mzNowDur')) $('mzNowDur').textContent = fmt(dur);
   }
   function showMini(title, sub, art){
     mini.hidden = false;
     document.body.classList.add('mz-hasmini');
+    S.art = art || '';
     $('mzTitle').textContent = title || '';
     $('mzSub').textContent = sub || '';
-    var img = $('mzArt'), ph = $('mzArtPh'), a = safeImg(art);
+    if ($('mzNowTitle')) $('mzNowTitle').textContent = title || 'Tanpa judul';
+    if ($('mzNowSub')) $('mzNowSub').textContent = sub || 'Artis tidak diketahui';
+    var a = safeImg(art), img = $('mzArt'), ph = $('mzArtPh');
     if (a) { img.src = a; img.hidden = false; ph.hidden = true; } else { img.hidden = true; ph.hidden = false; }
+    var nimg = $('mzNowArt'), nph = $('mzNowArtPh');
+    if (nimg && nph) {
+      if (a) { nimg.src = a; nimg.hidden = false; nph.hidden = true; }
+      else { nimg.hidden = true; nph.hidden = false; }
+    }
+    setProgress(0, 0);
     $('mzNext').style.display = S.queue.length > 1 ? '' : 'none';
     syncFavBtn();
   }
@@ -2469,6 +2588,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       var tt = document.createElement('b'); tt.textContent = t.title;
       var ar = document.createElement('small'); ar.textContent = t.artist || '-';
       info.append(tt, ar);
+      var num = document.createElement('span');
+      num.className = 'mzs-num';
+      num.textContent = String(i + 1);
       var d = document.createElement('span');
       d.className = 'mzs-d';
       d.textContent = t.dur ? fmt(t.dur) : '';
@@ -2478,7 +2600,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       hs.setAttribute('aria-label', 'Favorit');
       hs.innerHTML = HEART;
       hs.addEventListener('click', function(e){ e.stopPropagation(); toggleFav(t); });
-      b.append(pic, info, d, hs);
+      b.append(num, pic, info, d, hs);
       b.addEventListener('click', function(){ S.queue = S.results.slice(); S.idx = i; startItem(); });
       box.appendChild(b);
     });
@@ -2552,9 +2674,19 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       } catch (e) {}
     }
   }
-  function next(){
-    if (S.idx + 1 < S.queue.length) { S.idx++; startItem(); }
-    else if (S.mode === 'audius') audio.pause();
+  function next(auto){
+    var n = S.queue.length;
+    if (!n) return;
+    if (S.shuffle && n > 1) {
+      var i = S.idx;
+      while (i === S.idx) i = Math.floor(Math.random() * n);
+      S.idx = i;
+      startItem();
+      return;
+    }
+    if (S.idx + 1 < n) { S.idx++; startItem(); return; }
+    if (auto && S.repeat) { S.idx = 0; startItem(); return; }
+    if (S.mode === 'audius') audio.pause();
   }
   function prev(){
     if (S.mode === 'audius' && (audio.currentTime > 4 || S.idx === 0)) { audio.currentTime = 0; return; }
@@ -2562,14 +2694,17 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
   audio.addEventListener('play', function(){ if (S.mode === 'audius') setIcon(true); });
   audio.addEventListener('pause', function(){ if (S.mode === 'audius') setIcon(false); });
-  audio.addEventListener('ended', next);
+  audio.addEventListener('ended', function(){ next(true); });
   audio.addEventListener('error', function(){
     if (S.mode === 'audius' && audio.getAttribute('src')) { stat('Lagu gagal diputar, coba lagu lain.'); setIcon(false); }
   });
   audio.addEventListener('timeupdate', function(){
-    var bar = $('mzBar');
-    if (bar && S.mode === 'audius' && audio.duration && isFinite(audio.duration)) bar.style.width = Math.min(100, audio.currentTime / audio.duration * 100) + '%';
+    if (S.mode === 'audius') setProgress(audio.currentTime, audio.duration);
   });
+  setInterval(function(){
+    if (S.mode !== 'yt' || !S.yt || S.ytState !== 1 || !S.yt.getCurrentTime) return;
+    try { setProgress(S.yt.getCurrentTime(), S.yt.getDuration()); } catch (e) {}
+  }, 500);
 
   var YT_RE = /(?:youtu\.be\/|youtube\.com\/(?:watch\?(?:[^#]*&)?v=|embed\/|shorts\/|live\/)|music\.youtube\.com\/watch\?(?:[^#]*&)?v=)([A-Za-z0-9_-]{11})/;
   function ytApi(cb){
@@ -2597,13 +2732,17 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       var cur = S.queue[S.idx];
       if (d && d.title && cur && d.video_id === cur.id) {
         if (!cur.artist) cur.artist = d.author || '';
-        $('mzTitle').textContent = cur.title === 'YouTube' ? d.title : cur.title;
-        $('mzSub').textContent = cur.artist || 'YouTube';
+        var label = cur.title === 'YouTube' ? d.title : cur.title;
+        var sub = cur.artist || 'YouTube';
+        $('mzTitle').textContent = label;
+        $('mzSub').textContent = sub;
+        if ($('mzNowTitle')) $('mzNowTitle').textContent = label;
+        if ($('mzNowSub')) $('mzNowSub').textContent = sub;
         if (cur.title === 'YouTube') cur.title = d.title;
         syncFavBtn();
       }
     } catch (err) {}
-    if (e.data === 0) { if ($('mzBar')) $('mzBar').style.width = '0'; next(); }
+    if (e.data === 0) { setProgress(0, 0); next(true); }
   }
   function startYt(t){
     audio.pause();
@@ -2647,7 +2786,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     S.mode = '';
     mini.hidden = true;
     document.body.classList.remove('mz-hasmini');
-    if ($('mzBar')) $('mzBar').style.width = '0';
+    setProgress(0, 0);
     layoutVid();
     renderList();
   }
@@ -2820,6 +2959,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   render();
 })();
 </script>
-<script src="/lang.js?v=11"></script>
+<script src="/lang.js?v=12"></script>
 </body>
 </html>
