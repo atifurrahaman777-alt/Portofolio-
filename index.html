@@ -955,22 +955,21 @@ html body .mz-lyrics[hidden]{display:none!important}
 .mz-lyrics-body{white-space:pre-wrap;line-height:1.65;font-size:.92rem;color:var(--text)!important;max-height:360px;overflow-y:auto;padding-right:6px;overscroll-behavior:contain}
 .mz-lyrics-body::-webkit-scrollbar{width:4px}
 .mz-lyrics-body::-webkit-scrollbar-thumb{background:var(--sp);border-radius:4px}
-/* Panah pencarian: pencarian turun ke bawah, posisinya diganti lirik lagu. */
+/* Pencarian tetap terlihat, lirik membuka di bawahnya (mirip Spotify). */
 html body #mz-cari{display:flex;flex-direction:column}
-html body .mz-lyrics-bar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:6px;padding:2px 0;background:none!important;box-shadow:none!important}
-html body .mz-lyrics-toggle{width:40px;height:40px;flex:none;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:var(--card)!important;color:var(--sp)!important;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s,transform .2s}
-html body .mz-lyrics-toggle svg{width:22px;height:22px}
-html body .mz-ly-back{flex:none;padding:8px 14px;border:1px solid var(--sp)!important;border-radius:999px;background:var(--sp)!important;color:var(--sp-ink)!important;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
-html body .mz-ly-back[hidden],html body .mz-lyrics-toggle[hidden],html body .mz-ly-nudge[hidden],html body .mz-ly-offset[hidden]{display:none!important}
-html body .mz-ly-nudge{flex:none;min-width:38px;padding:7px 8px;border:1px solid var(--line)!important;border-radius:999px;background:var(--card)!important;color:var(--text)!important;font:inherit;font-size:.72rem;font-weight:800;cursor:pointer}
-html body .mz-ly-offset{flex:none;font-size:.7rem;color:var(--muted)!important;font-weight:700}
+html body .mz-search-top{position:sticky;top:0;z-index:4;padding:6px 0 10px;background:var(--bg)!important}
+html body .mz-search-top .mzs-row{display:flex;align-items:center;gap:8px}
+html body .mz-search-top .mzs-row input{flex:1;min-width:0}
+html body .mz-lyrics-toggle{width:40px;height:40px;flex:none;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:var(--card)!important;color:var(--sp)!important;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s}
+html body .mz-lyrics-toggle svg{width:20px;height:20px;transition:transform .25s ease}
+html body #mz-cari.mz-lyrics-open .mz-lyrics-toggle svg{transform:rotate(180deg)}
 html body .mz-ly-row{padding:3px 0;opacity:.5;transition:opacity .2s,color .2s}
 html body .mz-ly-row.on{opacity:1;color:var(--sp)!important;font-weight:800}
 html body .mz-lyrics-toggle:hover{background:var(--sp)!important;color:var(--sp-ink)!important;border-color:var(--sp)!important}
 html body .mz-search-wrap{display:grid;grid-template-rows:1fr;opacity:1;transform:translateY(0);transition:grid-template-rows .32s ease,opacity .25s ease,transform .32s ease}
 html body .mz-search-wrap>.mz-search-body{min-height:0;overflow:hidden}
 html body #mz-cari.mz-lyrics-open .mz-search-wrap{grid-template-rows:0fr;opacity:0;transform:translateY(18px);pointer-events:none}
-html body #mz-cari.mz-lyrics-open .mz-lyrics{order:-1;margin:0 0 16px;animation:mzLyIn .28s ease both}
+html body #mz-cari.mz-lyrics-open .mz-lyrics{margin:0 0 16px;animation:mzLyIn .28s ease both}
 @keyframes mzLyIn{from{opacity:0;transform:translateY(-12px)}to{opacity:1;transform:none}}
 @media(prefers-reduced-motion:reduce){html body .mz-search-wrap,html body .mz-lyrics-toggle,html body .mz-lyrics-toggle svg{transition:none}html body #mz-cari.mz-lyrics-open .mz-lyrics{animation:none}}
 </style>
@@ -2386,7 +2385,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   var $ = function(id){ return document.getElementById(id); };
   var audio = new Audio();
   audio.preload = 'none';
-  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, lyricOffset: 0, lyricOffsets: {}, nowSong: '', nowArtist: '', built: false, loaded: false };
+  var S = { mode: '', src: 'audius', q: '', next: '', more: false, loading: false, results: [], queue: [], idx: -1, art: '', shuffle: false, repeat: false, yt: null, ytState: -1, lyricAbort: null, lyricLines: [], lyricIdx: -1, lyricPlain: '', lyricMode: 'line', lyricWords: [], lyricWordTimes: [], lyricWeights: [], lyricColors: null, lyricEnd: 0, nowSong: '', nowArtist: '', built: false, loaded: false };
   var IP = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M7 4l13 8-13 8z"/></svg>';
   var IQ = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>';
   var IN = '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M6 4l10 8-10 8zM18 4h2v16h-2z"/></svg>';
@@ -2511,10 +2510,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       + '<div class="mzs-tabs"><button type="button" class="on" data-mt="cari">Cari</button><button type="button" data-mt="yt">Tempel Link</button></div>'
       + '<div class="mz-scroll">'
       + '<div id="mz-cari">'
-      + '<div class="mz-lyrics-bar"><span id="mzLyOffset" class="mz-ly-offset" hidden>0s</span><button type="button" class="mz-ly-nudge" id="mLyMinus" hidden title="Mundurkan lirik 5 detik">-5s</button><button type="button" class="mz-ly-nudge" id="mLyPlus" hidden title="Majukan lirik 5 detik">+5s</button><button type="button" class="mz-ly-back" id="mLyBack" hidden>← Cari lagu</button><button type="button" class="mz-lyrics-toggle" id="mLyricsToggle" aria-expanded="false" aria-controls="mLyrics" aria-label="Tampilkan lirik" title="Tampilkan lirik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div>'
+      + '<div class="mz-search-top"><div class="mzs-row"><input id="mzQ" type="search" placeholder="Cari lagu atau artis..." maxlength="80" autocomplete="off" enterkeyhint="search"><button type="button" class="mzs-btn" id="mzGo">Cari</button><button type="button" class="mz-lyrics-toggle" id="mLyricsToggle" aria-expanded="false" aria-controls="mLyrics" aria-label="Tampilkan lirik" title="Tampilkan lirik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div></div>'
       + '<div class="mz-search-wrap"><div class="mz-search-body">'
       + '<div class="mzs-chips" id="mzSrc"><button type="button" class="on" data-src="audius">Audius</button><button type="button" data-src="yt" id="mzSrcYt" hidden>YouTube</button></div>'
-      + '<div class="mzs-row"><input id="mzQ" type="search" placeholder="Cari lagu atau artis..." maxlength="80" autocomplete="off"><button type="button" class="mzs-btn" id="mzGo">Cari</button></div>'
       + '<div class="mzs-chips" id="mzGen"></div>'
       + '<p class="mzs-hint" id="mzStat"></p><div id="mzList"></div>'
       + '<button type="button" class="mzs-more" id="mzMore" hidden>Muat lebih banyak</button>'
@@ -2565,15 +2563,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     $('mzClose').addEventListener('click', stopAll);
     $('mzGo').addEventListener('click', function(){ search(true); });
     $('mLyricsToggle').addEventListener('click', function(){
-      lyricsOpen = true;
+      lyricsOpen = !lyricsOpen;
       syncLyrics();
     });
-    $('mLyBack').addEventListener('click', function(){
-      lyricsOpen = false;
-      syncLyrics();
-    });
-    $('mLyMinus').addEventListener('click', function(){ nudgeLyric(-5); });
-    $('mLyPlus').addEventListener('click', function(){ nudgeLyric(5); });
     $('mzMore').addEventListener('click', function(){ search(false); });
     $('mzQ').addEventListener('keydown', function(e){ if (e.key === 'Enter') { e.preventDefault(); search(true); } });
     $('mzYgo').addEventListener('click', goYt);
@@ -2616,6 +2608,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     document.documentElement.classList.add('mz-musiclock');
     layoutVid();
     if (!S.loaded) { S.loaded = true; init(); }
+    if (window.matchMedia && !window.matchMedia('(pointer: coarse)').matches) {
+      try { $('mzQ').focus(); } catch (e) {}
+    }
   }
   function closeSheet(){
     if (!sheet) return;
@@ -2829,7 +2824,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
   function updateKaraoke(t){
     if (!S.lyricLines.length) return;
-    var at = (t || 0) + S.lyricOffset, idx = 0;
+    var at = t || 0, idx = 0;
     for (var i = 0; i < S.lyricLines.length; i++) {
       if (S.lyricLines[i].t <= at + 0.12) idx = i;
       else break;
@@ -2848,15 +2843,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       }
     }
     paintWords(S.lyricMode === 'word' ? at : frac);
-  }
-  function nudgeLyric(d){
-    var cur = S.queue[S.idx];
-    if (!cur) return;
-    S.lyricOffset = Math.max(-120, Math.min(120, S.lyricOffset + d));
-    S.lyricOffsets[cur.id] = S.lyricOffset;
-    var o = $('mzLyOffset');
-    if (o) o.textContent = (S.lyricOffset > 0 ? '+' : '') + S.lyricOffset + 's';
-    updateKaraoke(currentTime());
   }
   function resetKaraoke(){
     S.lyricLines = [];
@@ -2946,9 +2932,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     box.hidden = !lyricsOpen;
     body.textContent = 'Memuat lirik...';
     var cur = S.queue[S.idx];
-    S.lyricOffset = (cur && S.lyricOffsets[cur.id]) || 0;
-    var off = $('mzLyOffset');
-    if (off) { off.hidden = false; off.textContent = (S.lyricOffset > 0 ? '+' : '') + S.lyricOffset + 's'; }
     var want = (cur && cur.dur) || (S.mode === 'audius' ? audio.duration : 0) || 0;
     var queries = lyricQueries(title, artist), pool = [];
     function fetchOpts(){
@@ -3043,13 +3026,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     if (!box || !cari || !b) return;
     box.hidden = !lyricsOpen;
     cari.classList.toggle('mz-lyrics-open', lyricsOpen);
-    b.hidden = lyricsOpen;
     b.setAttribute('aria-expanded', String(lyricsOpen));
-    var back = $('mLyBack');
-    if (back) back.hidden = !lyricsOpen;
-    ['mLyMinus', 'mLyPlus'].forEach(function(id){ var n = $(id); if (n) n.hidden = !lyricsOpen; });
-    var off = $('mzLyOffset');
-    if (off) off.hidden = !lyricsOpen;
+    b.setAttribute('aria-label', lyricsOpen ? 'Tutup lirik' : 'Tampilkan lirik');
+    b.title = lyricsOpen ? 'Tutup lirik' : 'Tampilkan lirik';
     if (!lyricsOpen) return;
     if (box.scrollIntoView) { try { box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {} }
     var t = S.queue[S.idx];
@@ -3128,7 +3107,10 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
   async function search(reset){
     if (S.loading) return;
-    if (reset) { S.q = $('mzQ').value.trim(); S.next = ''; S.results = []; S.more = false; }
+    if (reset) {
+      if (lyricsOpen) { lyricsOpen = false; syncLyrics(); }
+      S.q = $('mzQ').value.trim(); S.next = ''; S.results = []; S.more = false;
+    }
     S.loading = true;
     stat(reset ? (S.q ? 'Mencari...' : 'Memuat lagu populer...') : 'Memuat...');
     renderList();
@@ -3163,7 +3145,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     var p = audio.play();
     if (p && p.catch) p.catch(function(){ stat('Lagu gagal diputar, coba lagu lain.'); });
     showMini(t.title, t.artist, t.art);
-    stat(lyricsOpen ? '' : 'Ketuk panah di atas untuk lihat lirik yang mengikuti lagu.');
+    stat(lyricsOpen ? '' : 'Ketuk ikon lirik di kolom cari untuk melihat lirik.');
     loadLyrics(t.title, t.artist);
     if ('mediaSession' in navigator) {
       try {
