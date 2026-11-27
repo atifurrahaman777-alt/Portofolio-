@@ -167,7 +167,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
-</style><link rel="manifest" href="/manifest.json?v=9"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=9"><style id="mz-bw">
+</style><link rel="manifest" href="/manifest.json?v=10"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=10"><style id="mz-bw">
 html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
 html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
 html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
@@ -837,8 +837,8 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
   apply(document, st);
 })();
 </script>
-<link rel="icon" type="image/png" href="icon-192.png?v=9">
-<link rel="stylesheet" href="/pro.css?v=9">
+<link rel="icon" type="image/png" href="icon-192.png?v=10">
+<link rel="stylesheet" href="/pro.css?v=10">
 </head>
 <body>
 <script>
@@ -852,11 +852,10 @@ try {
 
 <header>
 <div class="container topbar">
-<a class="logo" href="#"><span>Multifungsi</span><span class="verified-badge" id="verifiedBadge"><svg viewBox="0 0 24 24" class="badge-icon"><path fill="currentColor" d="M3.85 8.62a4 4 0 0 1 4.78-4.77 4 4 0 0 1 6.74 0 4 4 0 0 1 4.78 4.78 4 4 0 0 1 0 6.74 4 4 0 0 1-4.77 4.78 4 4 0 0 1-6.75 0 4 4 0 0 1-4.78-4.77 4 4 0 0 1 0-6.76Z"/><path fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" d="m9 12 2 2 4-4"/></svg></span></a>
-<div class="topbar-actions">
-<span class="owner-badge" id="ownerBadge"><span class="badge-avatar" id="badgeAvatar">?</span><span id="badgeText">Tamu</span></span>
-<button id="theme-toggle" type="button" aria-label="Ganti tema"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
 <button id="menu-toggle" type="button" aria-label="Menu"><svg viewBox="0 0 24 24" class="icon"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button>
+<div class="topbar-actions">
+<button id="theme-toggle" type="button" aria-label="Ganti tema"><svg viewBox="0 0 24 24" class="icon"><path d="M21 12.8A9 9 0 1111.2 3a7 7 0 009.8 9.8z"/></svg></button>
+<span class="owner-badge" id="ownerBadge"><span class="badge-avatar" id="badgeAvatar">?</span><span id="badgeText">Tamu</span></span>
 </div>
 </div>
 </header>
@@ -1250,11 +1249,11 @@ if(doc.exists){ const data=doc.data(); isAdmin=!!data.isAdmin; name=data.name||n
 if(isAdmin){
 badgeText.innerHTML=CROWN_ICON+' OWNER';
 ownerBadge.classList.add('owner-role');
-verifiedBadge.classList.add('owner-role');
+if (verifiedBadge) verifiedBadge.classList.add('owner-role');
 }else{
 badgeText.textContent=name;
 ownerBadge.classList.remove('owner-role');
-verifiedBadge.classList.remove('owner-role');
+if (verifiedBadge) verifiedBadge.classList.remove('owner-role');
 }
 renderAvatar(badgeAvatar, name, photoURL);
 renderAvatar(profileAvatarPreview, name, photoURL);
@@ -1265,7 +1264,7 @@ window.currentUserProfile={uid:user.uid, isAdmin:isAdmin, name:name, photoURL:ph
 badgeText.textContent='Tamu';
 badgeAvatar.textContent='?';
 ownerBadge.classList.remove('owner-role');
-verifiedBadge.classList.remove('owner-role');
+if (verifiedBadge) verifiedBadge.classList.remove('owner-role');
 logoutBtn.style.display='none';
 profileEditor.style.display='none';
 authTabs.forEach(t=>t.style.display='block');
@@ -2821,6 +2820,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   render();
 })();
 </script>
-<script src="/lang.js?v=9"></script>
+<script src="/lang.js?v=10"></script>
 </body>
 </html>
