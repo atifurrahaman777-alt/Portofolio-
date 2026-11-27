@@ -1068,4 +1068,86 @@ html body footer{
   border-top:2px solid var(--ui-ink)!important;margin-top:24px!important;
   padding-top:16px!important;text-transform:uppercase;letter-spacing:.08em;
   font-size:.72rem!important;font-weight:800}
+/* Final say: palet tema menang atas semua aturan lama. */
+html body:not(.light-mode){--radius:0px!important;
+  --bg:var(--ui-canvas)!important;--bg2:var(--ui-surface)!important;
+  --card:var(--ui-surface)!important;--card-2:var(--ui-surface-2)!important;
+  --panel:var(--ui-surface)!important;--inp:var(--ui-surface-2)!important;
+  --line:var(--ui-border)!important;--text:var(--ui-text)!important;
+  --txt:var(--ui-text)!important;--head:var(--ui-text)!important;
+  --muted:var(--ui-text-muted)!important;--mut:var(--ui-text-muted)!important;
+  --accent:var(--ui-accent)!important;--acc:var(--ui-accent)!important;
+  --brand:var(--ui-accent)!important;--brand-hover:var(--ui-accent-bg)!important;
+  --gold:var(--ui-warning-text)!important;--warn:var(--ui-warning-text)!important;
+  --err:var(--ui-danger-text)!important;--black:var(--ui-ink)!important;
+  --on:var(--ui-on-accent)!important;--shadow:var(--ui-ink)!important;
+  --sh-border:var(--ui-border)!important;--sh-card:var(--ui-surface)!important;
+  --sh-card-foreground:var(--ui-text)!important;--sh-foreground:var(--ui-text)!important;
+  --sh-input:var(--ui-surface-2)!important;--sh-primary:var(--ui-accent)!important;
+  --sh-primary-foreground:var(--ui-on-accent)!important;--sh-ring:var(--ui-accent)!important;
+  --sh-secondary:var(--ui-surface-2)!important;--sh-secondary-foreground:var(--ui-text)!important;
+  --sh-radius:0px!important;--color-background:var(--ui-canvas)!important;
+  --color-surface:var(--ui-surface)!important;--color-surface-elevated:var(--ui-surface-2)!important;
+  --color-text:var(--ui-text)!important;--color-text-muted:var(--ui-text-muted)!important;
+  --color-border:var(--ui-border)!important;--color-accent:var(--ui-accent)!important;
+  --color-focus:var(--ui-accent)!important;--surface-0:var(--ui-canvas)!important;
+  --surface-1:var(--ui-surface)!important;--surface-elevated:var(--ui-surface-2)!important;}
+html body.light-mode{--radius:0px!important;
+  --bg:var(--ui-canvas)!important;--bg2:var(--ui-surface)!important;
+  --card:var(--ui-surface)!important;--card-2:var(--ui-surface-2)!important;
+  --panel:var(--ui-surface)!important;--inp:var(--ui-surface-2)!important;
+  --line:var(--ui-border)!important;--text:var(--ui-text)!important;
+  --txt:var(--ui-text)!important;--head:var(--ui-text)!important;
+  --muted:var(--ui-text-muted)!important;--mut:var(--ui-text-muted)!important;
+  --accent:var(--ui-accent)!important;--acc:var(--ui-accent)!important;
+  --brand:var(--ui-accent)!important;--brand-hover:var(--ui-accent-bg)!important;
+  --gold:var(--ui-warning-text)!important;--warn:var(--ui-warning-text)!important;
+  --err:var(--ui-danger-text)!important;--black:var(--ui-ink)!important;
+  --on:var(--ui-on-accent)!important;--shadow:var(--ui-ink)!important;
+  --sh-border:var(--ui-border)!important;--sh-card:var(--ui-surface)!important;
+  --sh-card-foreground:var(--ui-text)!important;--sh-foreground:var(--ui-text)!important;
+  --sh-input:var(--ui-surface-2)!important;--sh-primary:var(--ui-accent)!important;
+  --sh-primary-foreground:var(--ui-on-accent)!important;--sh-ring:var(--ui-accent)!important;
+  --sh-secondary:var(--ui-surface-2)!important;--sh-secondary-foreground:var(--ui-text)!important;
+  --sh-radius:0px!important;--color-background:var(--ui-canvas)!important;
+  --color-surface:var(--ui-surface)!important;--color-surface-elevated:var(--ui-surface-2)!important;
+  --color-text:var(--ui-text)!important;--color-text-muted:var(--ui-text-muted)!important;
+  --color-border:var(--ui-border)!important;--color-accent:var(--ui-accent)!important;
+  --color-focus:var(--ui-accent)!important;--surface-0:var(--ui-canvas)!important;
+  --surface-1:var(--ui-surface)!important;--surface-elevated:var(--ui-surface-2)!important;}
+html body:not(.light-mode) :is(section,article,aside,header,footer,.card,.tool-card,.profile-card,.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card,.sidebar,.bottom-nav,.owner-panel,.auth-form,.quote,.contact-block,.pf-info,.pf-prog,.pf-bd,.stat,.ttt-cell,.mem-card,.wam-hole,.sh-card){
+  background:var(--ui-surface)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:var(--ui-shadow)!important}
+html body.light-mode :is(section,article,aside,header,footer,.card,.tool-card,.profile-card,.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card,.sidebar,.bottom-nav,.owner-panel,.auth-form,.quote,.contact-block,.pf-info,.pf-prog,.pf-bd,.stat,.ttt-cell,.mem-card,.wam-hole,.sh-card){
+  background:var(--ui-surface)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:var(--ui-shadow)!important}
+html body:not(.light-mode) :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mz-sw,.mz-fo,.sh-btn,input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
+  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body.light-mode :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mz-sw,.mz-fo,.sh-btn,input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
+  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body :is(.nav-btn.active,.btn.primary,.btn.pri,.gc-act,.gc-play,.mzs-btn.sel,.auth-tab.active,.ocean-tab.active,.dl-tab.active,.email-step.active,.game-controls button.active,.mzs-chips button.on,#run){
+  background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
+  -webkit-text-fill-color:var(--ui-on-accent)!important;
+  border:2px solid var(--ui-ink)!important;border-radius:0!important;
+  box-shadow:3px 3px 0 var(--ui-ink)!important}
+html body :is(h1,h2,h3,h4,.brand,.logo,.title,.eyebrow,.banner-title,.profile-name,.nav-btn,.btn,.mzs-head b,.mz-now-meta b){
+  color:var(--ui-text)!important;-webkit-text-fill-color:var(--ui-text)!important;
+  font-family:var(--ui-font-display)!important;font-weight:900!important;
+  letter-spacing:-.03em!important;text-transform:uppercase}
+html body :is(.sub,.muted,.profile-bio,.banner-sub,.eyebrow,.label,.mzs-hint,.pf-stats span,.stat span,footer,.value,.tm-muted){
+  color:var(--ui-text-muted)!important;-webkit-text-fill-color:var(--ui-text-muted)!important;
+  text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800}
+html body .profile-name{background:transparent!important;border:0!important;box-shadow:none!important}
+html body .profile-name>span:first-child{color:var(--ui-accent)!important;-webkit-text-fill-color:var(--ui-accent)!important}
+html body .mzs,html body .mzm{--sp:var(--ui-accent)!important;--sp-d:var(--ui-accent)!important;--sp-ink:var(--ui-ink)!important}
+html body :is(.card,.tool-card,.email-card,.project,.skill):hover{transform:translate(-1px,-1px)!important;box-shadow:5px 5px 0 var(--ui-ink)!important}
+html body :is(button,.btn,.nav-btn):hover{transform:translate(-1px,-1px)!important;box-shadow:5px 5px 0 var(--ui-ink)!important}
+html body :is(button,.btn,.nav-btn):active{transform:translate(2px,2px)!important;box-shadow:1px 1px 0 var(--ui-ink)!important}
+html body :is(a,button,input,select,textarea,[role="button"]):focus-visible{outline:3px solid var(--ui-accent)!important;outline-offset:3px}
 
