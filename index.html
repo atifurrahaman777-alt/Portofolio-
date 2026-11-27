@@ -960,8 +960,7 @@ html body .mz-lyrics[hidden]{display:none!important}
 .mz-lyrics-body::-webkit-scrollbar-thumb{background:var(--sp);border-radius:4px}
 /* Panah pencarian: pencarian turun ke bawah, posisinya diganti lirik lagu. */
 html body #mz-cari{display:flex;flex-direction:column}
-html body .mz-lyrics-bar{display:flex;align-items:center;gap:8px;margin-bottom:12px;position:sticky;top:0;z-index:3;padding:6px 0;background:var(--bg)!important}
-html body .mz-lyrics-bar>span{flex:1;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted)!important;font-weight:800}
+html body .mz-lyrics-bar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:6px;position:sticky;top:0;z-index:3;padding:6px 0;background:transparent!important}
 html body .mz-lyrics-toggle{width:40px;height:40px;flex:none;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:var(--card)!important;color:var(--sp)!important;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s,transform .2s}
 html body .mz-lyrics-toggle svg{width:22px;height:22px}
 html body .mz-ly-back{flex:none;padding:8px 14px;border:1px solid var(--sp)!important;border-radius:999px;background:var(--sp)!important;color:var(--sp-ink)!important;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
@@ -2515,7 +2514,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       + '<div class="mzs-tabs"><button type="button" class="on" data-mt="cari">Cari</button><button type="button" data-mt="yt">Tempel Link</button></div>'
       + '<div class="mz-scroll">'
       + '<div id="mz-cari">'
-      + '<div class="mz-lyrics-bar"><span id="mzLyHint">Pencarian lagu</span><span id="mzLyOffset" class="mz-ly-offset" hidden>0s</span><button type="button" class="mz-ly-nudge" id="mLyMinus" hidden>-5s</button><button type="button" class="mz-ly-nudge" id="mLyPlus" hidden>+5s</button><button type="button" class="mz-ly-back" id="mLyBack" hidden>← Cari lagu</button><button type="button" class="mz-lyrics-toggle" id="mLyricsToggle" aria-expanded="false" aria-controls="mLyrics" aria-label="Tampilkan lirik" title="Tampilkan lirik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div>'
+      + '<div class="mz-lyrics-bar"><span id="mzLyOffset" class="mz-ly-offset" hidden>0s</span><button type="button" class="mz-ly-nudge" id="mLyMinus" hidden>-5s</button><button type="button" class="mz-ly-nudge" id="mLyPlus" hidden>+5s</button><button type="button" class="mz-ly-back" id="mLyBack" hidden>← Cari lagu</button><button type="button" class="mz-lyrics-toggle" id="mLyricsToggle" aria-expanded="false" aria-controls="mLyrics" aria-label="Tampilkan lirik" title="Tampilkan lirik"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg></button></div>'
       + '<div class="mz-search-wrap"><div class="mz-search-body">'
       + '<div class="mzs-chips" id="mzSrc"><button type="button" class="on" data-src="audius">Audius</button><button type="button" data-src="yt" id="mzSrcYt" hidden>YouTube</button></div>'
       + '<div class="mzs-row"><input id="mzQ" type="search" placeholder="Cari lagu atau artis..." maxlength="80" autocomplete="off"><button type="button" class="mzs-btn" id="mzGo">Cari</button></div>'
@@ -2767,6 +2766,23 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     var now = $('mzNowTitle');
     if (now) { now.replaceChildren(); now.textContent = 'Lirik belum tersedia'; now.classList.remove('mz-ly-live', 'mz-ly-in'); }
   }
+  /* Lirik harus ngikutin bahasa lagunya (misal lagu Jawa → lirik Jawa). */
+  function songLangHint(s){
+    var x = String(s || '').toLowerCase();
+    if (/\b(jawa|javanese|jawa timur|jawa tengah|campursari|keroncong|dangdut jawa)\b/.test(x)) return 'jv';
+    if (/\b(indonesia|indo|pop indonesia|dangdut)\b/.test(x)) return 'id';
+    return '';
+  }
+  function lyricLang(s){
+    var x = ' ' + String(s || '').toLowerCase() + ' ';
+    var jv = ['kowe','kula','panjenengan','marang','saka','nanging','arep','wingi','mbesuk','ngunjuk','tedha','matur','nyuwun','sugeng','wilujeng','kuwi','mangka','dumugi','punika','menika','ageng','alit','wau','kesah','tindak','rawuh','wartos','mboten','boten','dados'];
+    var id = ['yang','dengan','untuk','karena','adalah','setelah','sebelum','hanya','juga','lebih','masih','dari','atau','saya','kamu','tidak','sudah','akan','dapat','seperti','ketika','sehingga','ini','itu'];
+    function count(words){ var n = 0; words.forEach(function(w){ n += (x.split(w).length - 1); }); return n; }
+    var j = count(jv), i = count(id);
+    if (j >= 2 && j > i * 1.4) return 'jv';
+    if (i >= 2 && i > j * 1.4) return 'id';
+    return '';
+  }
   /* Judul dari katalog seringkali "Judul - Playlist ...", jadi dibersihkan dulu. */
   function cleanLyricText(s){
     return String(s || '')
@@ -2828,6 +2844,8 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     }
     if (ctrl && ctrl.signal.aborted) return;
     var found = null, best = -Infinity;
+    var curTrack = S.queue[S.idx];
+    var langHint = songLangHint(title + ' ' + (curTrack && curTrack.title ? curTrack.title : '') + ' ' + artist);
     pool.forEach(function(item){
       var x = item.x, q = item.q, score = 0;
       var tn = String(x.trackName || x.name || '').toLowerCase();
@@ -2841,6 +2859,9 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       }
       if (want && x.duration) score += Math.max(0, 5 - Math.abs(x.duration - want) / 25);
       if (x.plainLyrics || x.syncedLyrics) score += 3;
+      var lx = lyricLang(x.plainLyrics || x.syncedLyrics || '');
+      if (langHint && lx) score += (lx === langHint) ? 8 : -8;
+      if (songLangHint(tn + ' ' + an) === langHint && langHint) score += 2;
       if (score > best) { best = score; found = x; }
     });
     var text = found && found.plainLyrics ? found.plainLyrics : '';
@@ -2869,8 +2890,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     ['mLyMinus', 'mLyPlus'].forEach(function(id){ var n = $(id); if (n) n.hidden = !lyricsOpen; });
     var off = $('mzLyOffset');
     if (off) off.hidden = !lyricsOpen;
-    var hint = $('mzLyHint');
-    if (hint) hint.textContent = lyricsOpen ? 'Lirik lagu' : 'Pencarian lagu';
     if (!lyricsOpen) return;
     if (box.scrollIntoView) { try { box.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch (e) {} }
     var t = S.queue[S.idx];
