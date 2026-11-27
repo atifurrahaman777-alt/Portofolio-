@@ -960,7 +960,8 @@ html body .mz-lyrics[hidden]{display:none!important}
 .mz-lyrics-body::-webkit-scrollbar-thumb{background:var(--sp);border-radius:4px}
 /* Panah pencarian: pencarian turun ke bawah, posisinya diganti lirik lagu. */
 html body #mz-cari{display:flex;flex-direction:column}
-html body .mz-lyrics-bar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:6px;position:sticky;top:0;z-index:3;padding:6px 0;background:transparent!important}
+html body .mz-lyrics-bar{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-bottom:6px;padding:2px 0;background:none!important;box-shadow:none!important}
+html body .mz-ly-back-bottom{margin-top:12px;width:100%}
 html body .mz-lyrics-toggle{width:40px;height:40px;flex:none;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:var(--card)!important;color:var(--sp)!important;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s,transform .2s}
 html body .mz-lyrics-toggle svg{width:22px;height:22px}
 html body .mz-ly-back{flex:none;padding:8px 14px;border:1px solid var(--sp)!important;border-radius:999px;background:var(--sp)!important;color:var(--sp-ink)!important;font:inherit;font-size:.8rem;font-weight:800;cursor:pointer}
@@ -2523,7 +2524,7 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       + '<button type="button" class="mzs-more" id="mzMore" hidden>Muat lebih banyak</button>'
       + '<p class="mzs-hint" id="mzCredit"></p>'
       + '</div></div>'
-      + '<div class="mz-lyrics" id="mLyrics" hidden><div class="mz-lyrics-head"><span class="mz-lyrics-label">Lirik</span><b id="mLyricsTitle"></b></div><div class="mz-lyrics-body" id="mLyricsBody">Memuat lirik...</div></div></div>'
+      + '<div class="mz-lyrics" id="mLyrics" hidden><div class="mz-lyrics-head"><span class="mz-lyrics-label">Lirik</span><b id="mLyricsTitle"></b></div><div class="mz-lyrics-body" id="mLyricsBody">Memuat lirik...</div><button type="button" class="mz-ly-back mz-ly-back-bottom" id="mLyBackBottom">← Cari lagu</button></div></div>'
       + '<div id="mz-yt" class="mz-offp"><div class="mzs-row"><input id="mzYl" type="url" placeholder="Tempel link YouTube..." autocomplete="off"><button type="button" class="mzs-btn" id="mzYgo">Putar</button></div>'
       + '<p class="mzs-hint" id="mzYstat"></p></div>'
       + '</div></div>';
@@ -2572,6 +2573,10 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
       syncLyrics();
     });
     $('mLyBack').addEventListener('click', function(){
+      lyricsOpen = false;
+      syncLyrics();
+    });
+    $('mLyBackBottom').addEventListener('click', function(){
       lyricsOpen = false;
       syncLyrics();
     });
