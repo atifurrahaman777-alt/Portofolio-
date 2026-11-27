@@ -1,462 +1,3 @@
-/* Tema profesional: netral, solid, tanpa teks berwarna. */
-:root {
-  --brand: var(--ui-info);
-  --brand-hover: var(--ui-info);
-  --shadow: var(--ui-surface-2);
-  --radius: 12px;
-}
-
-html body {
-  font-family: "Inter", "Plus Jakarta Sans", system-ui, -apple-system, "Segoe UI", sans-serif;
-  scrollbar-color: var(--line) transparent;
-  scrollbar-width: thin;
-}
-
-html body:not(.light-mode) {
-  color-scheme: dark;
-  --bg: var(--ui-surface-2);
-  --card: var(--ui-surface-2);
-  --card-2: var(--ui-surface-2);
-  --line: var(--ui-border);
-  --text: var(--ui-info);
-  --muted: var(--ui-info);
-  --on: var(--ui-text);
-  --accent: var(--brand);
-  --gold: var(--text);
-  --purple: var(--text);
-  --code-strong: var(--ui-info);
-  --code-mid: var(--ui-info);
-  --code-dim: var(--ui-info);
-  background: var(--bg) !important;
-  color: var(--text) !important;
-  text-shadow: none !important;
-}
-
-html body.light-mode {
-  color-scheme: light;
-  --bg: var(--ui-surface-2);
-  --card: var(--ui-surface-2);
-  --card-2: var(--ui-surface-2);
-  --line: var(--ui-border);
-  --text: var(--ui-text);
-  --muted: var(--ui-info);
-  --on: var(--ui-text);
-  --accent: var(--ui-info);
-  --gold: var(--text);
-  --purple: var(--text);
-  --code-strong: var(--ui-info);
-  --code-mid: var(--ui-info);
-  --code-dim: var(--ui-info);
-  background: var(--bg) !important;
-  color: var(--text) !important;
-  text-shadow: none !important;
-}
-
-html body::before,
-html body::after {
-  display: none !important;
-  background: none !important;
-  box-shadow: none !important;
-}
-
-/* Permukaan solid, bukan kaca/gelembung. */
-html body header,
-html body main.wrap > header,
-html body .bottom-nav,
-html body .sidebar,
-html body .gc-head,
-html body .gc-bar,
-html body #bar,
-html body .oh {
-  background: var(--card) !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--line) !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-
-html body main.wrap > header {
-  margin: 0 0 20px !important;
-  padding: 12px 16px !important;
-  border: 1px solid var(--line) !important;
-  border-bottom: 1px solid var(--line) !important;
-  border-radius: var(--radius) !important;
-}
-
-html body main.wrap > header .brand,
-html body main.wrap > header > div:last-child {
-  background: transparent !important;
-  border: 0 !important;
-  border-radius: 0 !important;
-  box-shadow: none !important;
-  padding: 0 !important;
-  backdrop-filter: none !important;
-}
-
-html body :is(
-  .card, .profile-card, .banner, .project, .skill, .tool-card, .quote, .stat,
-  .game-frame, .owner-panel, .panel, .pf-info, .pf-prog, .pf-bd, .pf-sheet-panel,
-  .mzm, .mzs-panel, .keys, #out, #side, .top, .con, .ftabs, .tools, #msg,
-  .seg, .tm-mail, .tm-item, .tm-body, .tm-raw, .dl-format, .dl-result,
-  .rc-result, .ttt-cell, .wam-hole, #wheel-options, .mem-card, .g2048-board,
-  .security-card, .email-card, .about-card, .profile, .gc-notes, .gc-replybar,
-  .gc-emoji, .gc-day, .gc-bub, .gc-nb, .input-field, .in
-) {
-  background: var(--card) !important;
-  border: 1px solid var(--line) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: 0 1px 2px var(--shadow) !important;
-  -webkit-backdrop-filter: none !important;
-  backdrop-filter: none !important;
-}
-
-html body :is(.card, .profile-card, .banner, .project, .tool-card, .quote,
-  .security-card, .email-card, .about-card, .profile) {
-  padding: 18px !important;
-}
-
-html body .bottom-nav {
-  border: 1px solid var(--line) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: 0 4px 16px var(--shadow) !important;
-}
-
-html body .sidebar {
-  border-right: 1px solid var(--line) !important;
-  border-radius: 0 var(--radius) var(--radius) 0 !important;
-}
-
-html body .tool-overlay {
-  background: var(--ui-surface-2) !important;
-  backdrop-filter: none !important;
-}
-
-html body.light-mode .tool-overlay {
-  background: var(--ui-surface-2) !important;
-}
-
-html body .pf-banner {
-  background: var(--card-2) !important;
-  border: 0 !important;
-  border-bottom: 1px solid var(--line) !important;
-  box-shadow: none !important;
-}
-
-html body .title::before {
-  background: var(--ui-accent-bg) !important;
-  box-shadow: none !important;
-}
-
-html body :is(.pf-bar i, .pf-up i, .mzm-bar i, .gc-track i) {
-  background: var(--ui-accent-bg) !important;
-}
-
-/* Semua teks UI netral. */
-html body :is(
-  h1, h2, h3, h4, h5, h6, p, span, a, b, strong, em, small, label, li,
-  blockquote, figcaption, dt, dd, button, div, summary, th, td
-) {
-  color: var(--text) !important;
-  -webkit-text-fill-color: currentColor !important;
-  text-shadow: none !important;
-  background-image: none !important;
-  -webkit-background-clip: border-box !important;
-  background-clip: border-box !important;
-}
-
-html body :is(
-  .sub, .muted, .profile-bio, .banner-sub, .project p, .tool-card p, footer,
-  .tm-muted, .tm-label, .label, .note, .empty, .foot-note, .gc-sub, .gc-time,
-  .back-link, .gc-day, .gc-nh, .gc-vdur, .gc-title span, .platform-chip,
-  .ocean-tab, .auth-tab, .mz-sl, .mz-sw, .mz-fo, .bd-opt, .pf-chip,
-  .mzs-chips button, .bundled-chip, .project-links a, .auth-prov,
-  .gc-nb.new, .gc-quote span, .gc-replybar span
-) {
-  color: var(--muted) !important;
-}
-
-/* Centang biru hanya untuk verifikasi Mann'zz Dev di kartu profil. */
-html body .profile-name > .verified-badge2,
-html body .profile-name > .verified-badge2 .badge-icon {
-  color: var(--ui-ink) !important;
-  -webkit-text-fill-color: var(--ui-ink) !important;
-  text-shadow: none !important;
-}
-
-/* Tombol utama memakai aksen, teks tetap netral (putih). */
-html body :is(
-  .btn, .btn.primary, .btn.pri, .contact-block button, .keys button.sg,
-  .gc-act, .gc-play, #auth-toggle, #mzPlay, .sf .pri, #run
-) {
-  background: var(--ui-accent-bg) !important;
-  color: var(--ui-ink) !important;
-  -webkit-text-fill-color: var(--ui-ink) !important;
-  border: 1px solid var(--brand) !important;
-  border-radius: 10px !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-}
-
-html body :is(.btn:hover, .gc-act:hover, .gc-play:hover, #auth-toggle:hover) {
-  background: var(--brand-hover) !important;
-}
-
-html body :is(.btn.ghost, .btn.warn, .oh button, .sh button, .seg button,
-  .mzs-chips button, .auth-tab, .ocean-tab, .gc-ib, .gc-nb) {
-  background: var(--card-2) !important;
-  color: var(--text) !important;
-  -webkit-text-fill-color: currentColor !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 10px !important;
-  box-shadow: none !important;
-}
-
-html body .bottom-nav .nav-btn.home span {
-  background: var(--ui-accent-bg) !important;
-  color: var(--ui-text) !important;
-  border: 0 !important;
-  box-shadow: none !important;
-}
-
-html body .bottom-nav .nav-btn.home span .icon {
-  stroke: var(--ui-surface-2) !important;
-}
-
-html body :is(.bottom-nav .nav-btn.active:not(.home), .sidebar-nav .nav-btn.active) {
-  background: var(--card-2) !important;
-  color: var(--text) !important;
-  border-radius: 10px !important;
-}
-
-html body :is(.ocean-tab.active, .email-step.active, .game-controls button.active,
-  .mzs-chips button.on, .mem-card.open, .status, .auth-tab.active,
-  .pf-tabs button.on, .mzs-tabs button.on) {
-  background: var(--ui-accent-bg) !important;
-  color: var(--ui-text) !important;
-  -webkit-text-fill-color: var(--ui-ink) !important;
-  border-color: var(--brand) !important;
-  box-shadow: none !important;
-}
-
-/* Input. */
-html body :is(input, textarea, .input-field, .in, #gc-input) {
-  background: var(--card-2) !important;
-  color: var(--text) !important;
-  border: 1px solid var(--line) !important;
-  border-radius: 10px !important;
-  box-shadow: none !important;
-  text-shadow: none !important;
-}
-
-html body :is(input, textarea, .input-field, .in, #gc-input):focus {
-  outline: none !important;
-  border-color: var(--brand) !important;
-  box-shadow: 0 0 0 3px var(--ui-accent-bg) !important;
-}
-
-html body input[placeholder*="foto" i] {
-  background: var(--card-2) !important;
-  color: var(--text) !important;
-}
-
-/* Chat: palet netral, tanpa gradien. */
-html body .gc {
-  --bg: var(--bg);
-  --head: var(--card);
-  --panel: var(--card-2);
-  --bub: var(--card-2);
-  --me: var(--card-2);
-  --txt: var(--text);
-  --mut: var(--muted);
-  --line: var(--line);
-  --acc: var(--brand);
-  --inp: var(--card-2);
-  --q: transparent;
-  background: var(--bg) !important;
-  backdrop-filter: none !important;
-}
-
-html body .gc.light {
-  --head: var(--card);
-  --panel: var(--card-2);
-  --bub: var(--card);
-  --me: var(--card-2);
-  --txt: var(--text);
-  --mut: var(--muted);
-  --line: var(--line);
-  --acc: var(--brand);
-  --inp: var(--card);
-  --q: transparent;
-}
-
-html body .gc-bub {
-  border: 1px solid var(--line) !important;
-  border-radius: var(--radius) !important;
-  box-shadow: none !important;
-}
-
-html body .gc-row.me .gc-bub {
-  background: var(--card-2) !important;
-  border-color: var(--line) !important;
-  color: var(--text) !important;
-  -webkit-text-fill-color: currentColor !important;
-}
-
-html body .gc-quote,
-html body .gc-replybar div {
-  border-left-color: var(--brand) !important;
-}
-
-html body .gc-dot,
-html body .gc-bdot,
-html body .gc-ring.on {
-  background: var(--ui-accent-bg) !important;
-  border-color: var(--brand) !important;
-}
-
-/* Editor: sintaks monokrom. */
-html body .CodeMirror-gutters {
-  background: var(--card) !important;
-  border-right: 1px solid var(--line) !important;
-}
-
-html body .tab.on,
-html body .ftabs button.on,
-html body .seg button.on {
-  background: var(--card-2) !important;
-  color: var(--text) !important;
-  border-bottom-color: var(--brand) !important;
-}
-
-html body .cm-s-default .cm-keyword,
-html body .cm-s-default .cm-def,
-html body .cm-s-default .cm-variable-2,
-html body .cm-s-default .cm-builtin,
-html body .cm-s-default .cm-qualifier,
-html body .cm-s-default .cm-type {
-  color: var(--code-strong) !important;
-  font-weight: 700;
-}
-
-html body .cm-s-default .cm-string,
-html body .cm-s-default .cm-string-2,
-html body .cm-s-default .cm-tag,
-html body .cm-s-default .cm-attribute,
-html body .cm-s-default .cm-property {
-  color: var(--code-mid) !important;
-}
-
-html body .cm-s-default .cm-number,
-html body .cm-s-default .cm-atom,
-html body .cm-s-default .cm-comment,
-html body .cm-s-default .cm-variable,
-html body .cm-s-default .cm-bracket,
-html body .cm-s-default .cm-meta,
-html body .cm-s-default .cm-operator {
-  color: var(--code-dim) !important;
-}
-
-/* Game dan indikator. */
-html body :is(.ttt-cell, .wam-hole, .typing-text, #wheel-options, .mem-card) {
-  color: var(--text) !important;
-  -webkit-text-fill-color: currentColor !important;
-}
-
-html body .wam-hole.up {
-  background: var(--ui-accent-bg) !important;
-  color: var(--ui-ink) !important;
-}
-
-html body .wheel-pointer {
-  border-top-color: var(--brand) !important;
-}
-
-html body :is(.value, .email-icon) {
-  color: var(--muted) !important;
-}
-
-html body .dot {
-  background: var(--ui-accent-bg) !important;
-  box-shadow: none !important;
-}
-
-html body a:focus-visible,
-html body button:focus-visible,
-html body input:focus-visible,
-html body textarea:focus-visible {
-  outline: 2px solid var(--brand) !important;
-  outline-offset: 2px !important;
-}
-
-/* Lapisan bergaya shadcn/ui: token + interaksi halus, tetap netral. */
-html body {
-  --sh-background: var(--bg);
-  --sh-foreground: var(--text);
-  --sh-card: var(--card);
-  --sh-card-foreground: var(--text);
-  --sh-popover: var(--card);
-  --sh-primary: var(--brand);
-  --sh-primary-foreground: var(--ui-text);
-  --sh-secondary: var(--card-2);
-  --sh-muted: var(--card-2);
-  --sh-muted-foreground: var(--muted);
-  --sh-accent: var(--card-2);
-  --sh-border: var(--line);
-  --sh-input: var(--card-2);
-  --sh-ring: var(--ui-info);
-  --sh-radius: var(--radius);
-  -webkit-font-smoothing: antialiased;
-  font-feature-settings: "cv11", "ss01";
-}
-
-html body :is(h1, h2, h3, h4) {
-  letter-spacing: -.02em;
-}
-
-html body :is(.card, .tool-card, .email-card, .about-card, .security-card,
-  .profile, .panel, .project, .skill, .game-frame) {
-  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease !important;
-}
-
-html body :is(.card:hover, .tool-card:hover, .email-card:hover,
-  .project:hover, .skill:hover) {
-  transform: translateY(-2px) !important;
-  border: 1px solid var(--ui-border) !important;
-  border-color: var(--ui-border) !important;
-  box-shadow: 0 10px 24px var(--shadow) !important;
-}
-
-html body :is(.btn, .ocean-tab, .gc-act, #run, .keys button.sg) {
-  transition: background .15s ease, border-color .15s ease,
-    transform .12s ease, box-shadow .15s ease !important;
-}
-
-html body :is(.btn:active, .ocean-tab:active, .gc-act:active) {
-  transform: translateY(1px) scale(.99) !important;
-}
-
-html body :is(input, textarea, .input-field, .in, #gc-input) {
-  transition: border-color .15s ease, box-shadow .15s ease,
-    background .15s ease !important;
-}
-
-html body main.wrap > header,
-html body main.wrap > section,
-html body main.wrap > .grid {
-  animation: sh-enter .32s ease both;
-}
-
-html body .ocean-view[hidden] {
-  animation: none !important;
-}
-
-@keyframes sh-enter {
-  from { opacity: 0; transform: translateY(6px); }
-  to { opacity: 1; transform: none; }
-}
-
 /* Utilitas siap pakai, mengikuti token shadcn di atas. */
 html body .sh-card {
   background: var(--sh-card) !important;
@@ -564,8 +105,15 @@ html body .sh-tab.active {
   }
 }
 
-/* unslop · neo-brutalist-craft token foundation */
-:root{  color-scheme:light;
+/* ============================================================
+   Sistem desain tunggal · neo-brutalist-craft
+   Satu sumber kebenaran: token --ui-* -> alias komponen -> tampilan.
+   Tema ditulis oleh mz-theme-authority lewat data-theme-root.
+   ============================================================ */
+
+/* 1. Token dasar + alias komponen */
+:root{
+  color-scheme:light;
   --ui-canvas:#f2efdf;
   --ui-surface:#faf7e9;
   --ui-surface-2:#fffdf4;
@@ -593,8 +141,8 @@ html body .sh-tab.active {
   --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
   --bg:var(--ui-canvas);
   --bg2:var(--ui-surface);
-  --card:var(--ui-surface-2);
-  --card-2:var(--ui-surface);
+  --card:var(--ui-surface);
+  --card-2:var(--ui-surface-2);
   --panel:var(--ui-surface);
   --inp:var(--ui-surface-2);
   --line:var(--ui-border);
@@ -603,9 +151,6 @@ html body .sh-tab.active {
   --head:var(--ui-text);
   --muted:var(--ui-text-muted);
   --mut:var(--ui-text-muted);
-  --code-dim:var(--ui-text-muted);
-  --code-mid:var(--ui-text);
-  --code-strong:var(--ui-text);
   --accent:var(--ui-accent);
   --acc:var(--ui-accent);
   --brand:var(--ui-accent);
@@ -616,18 +161,11 @@ html body .sh-tab.active {
   --purple:var(--ui-accent);
   --black:var(--ui-ink);
   --on:var(--ui-on-accent);
-  --me:var(--ui-accent);
-  --bub:var(--ui-surface-2);
-  --a:var(--ui-success-text);
-  --c:var(--ui-text-muted);
-  --d:var(--ui-accent);
-  --k:var(--ui-warning-text);
-  --m:var(--ui-text-muted);
-  --n:var(--ui-info);
-  --q:var(--ui-accent);
-  --s:var(--ui-success-text);
-  --t:var(--ui-text);
+  --radius:0px;
   --shadow:var(--ui-ink);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
   --sh-border:var(--ui-border);
   --sh-card:var(--ui-surface);
   --sh-card-foreground:var(--ui-text);
@@ -651,7 +189,8 @@ html body .sh-tab.active {
   --surface-1:var(--ui-surface);
   --surface-elevated:var(--ui-surface-2);
 }
-.dark{  color-scheme:dark;
+html body:not(.light-mode){
+  color-scheme:dark;
   --ui-canvas:#171714;
   --ui-surface:#22221d;
   --ui-surface-2:#2d2d25;
@@ -677,153 +216,12 @@ html body .sh-tab.active {
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
   --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
-  --bg:var(--ui-canvas);
-  --bg2:var(--ui-surface);
-  --card:var(--ui-surface-2);
-  --card-2:var(--ui-surface);
-  --panel:var(--ui-surface);
-  --inp:var(--ui-surface-2);
-  --line:var(--ui-border);
-  --text:var(--ui-text);
-  --txt:var(--ui-text);
-  --head:var(--ui-text);
-  --muted:var(--ui-text-muted);
-  --mut:var(--ui-text-muted);
-  --code-dim:var(--ui-text-muted);
-  --code-mid:var(--ui-text);
-  --code-strong:var(--ui-text);
-  --accent:var(--ui-accent);
-  --acc:var(--ui-accent);
-  --brand:var(--ui-accent);
-  --brand-hover:var(--ui-accent-bg);
-  --gold:var(--ui-warning-text);
-  --warn:var(--ui-warning-text);
-  --err:var(--ui-danger-text);
-  --purple:var(--ui-accent);
-  --black:var(--ui-ink);
-  --on:var(--ui-on-accent);
-  --me:var(--ui-accent);
-  --bub:var(--ui-surface-2);
-  --a:var(--ui-success-text);
-  --c:var(--ui-text-muted);
-  --d:var(--ui-accent);
-  --k:var(--ui-warning-text);
-  --m:var(--ui-text-muted);
-  --n:var(--ui-info);
-  --q:var(--ui-accent);
-  --s:var(--ui-success-text);
-  --t:var(--ui-text);
-  --shadow:var(--ui-ink);
-  --sh-border:var(--ui-border);
-  --sh-card:var(--ui-surface);
-  --sh-card-foreground:var(--ui-text);
-  --sh-foreground:var(--ui-text);
-  --sh-input:var(--ui-surface-2);
-  --sh-primary:var(--ui-accent);
-  --sh-primary-foreground:var(--ui-on-accent);
-  --sh-ring:var(--ui-accent);
-  --sh-secondary:var(--ui-surface-2);
-  --sh-secondary-foreground:var(--ui-text);
-  --sh-radius:0px;
-  --color-background:var(--ui-canvas);
-  --color-surface:var(--ui-surface);
-  --color-surface-elevated:var(--ui-surface-2);
-  --color-text:var(--ui-text);
-  --color-text-muted:var(--ui-text-muted);
-  --color-border:var(--ui-border);
-  --color-accent:var(--ui-accent);
-  --color-focus:var(--ui-accent);
-  --surface-0:var(--ui-canvas);
-  --surface-1:var(--ui-surface);
-  --surface-elevated:var(--ui-surface-2);
 }
-body.light-mode{  color-scheme:light;
-  --ui-canvas:#f2efdf;
-  --ui-surface:#faf7e9;
-  --ui-surface-2:#fffdf4;
-  --ui-ink:#111111;
-  --ui-text:#111111;
-  --ui-text-muted:#514e45;
-  --ui-border:#111111;
-  --ui-accent:#ff5c35;
-  --ui-accent-bg:#ff5c35;
-  --ui-on-accent:#111111;
-  --ui-success:#16845b;
-  --ui-success-text:#0f6b49;
-  --ui-warning:#e0a400;
-  --ui-warning-text:#7a5400;
-  --ui-danger:#d53b36;
-  --ui-danger-text:#a32722;
-  --ui-info:#2c62c8;
-  --ui-content-max:1240px;
-  --ui-overlay:rgba(17,17,17,.62);
-  --ui-success-wash:rgba(22,132,91,.16);
-  --ui-success-glow:rgba(17,17,17,.42);
-  --ui-shadow:4px 4px 0 var(--ui-ink);
-  --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
-  --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
-  --bg:var(--ui-canvas);
-  --bg2:var(--ui-surface);
-  --card:var(--ui-surface-2);
-  --card-2:var(--ui-surface);
-  --panel:var(--ui-surface);
-  --inp:var(--ui-surface-2);
-  --line:var(--ui-border);
-  --text:var(--ui-text);
-  --txt:var(--ui-text);
-  --head:var(--ui-text);
-  --muted:var(--ui-text-muted);
-  --mut:var(--ui-text-muted);
-  --code-dim:var(--ui-text-muted);
-  --code-mid:var(--ui-text);
-  --code-strong:var(--ui-text);
-  --accent:var(--ui-accent);
-  --acc:var(--ui-accent);
-  --brand:var(--ui-accent);
-  --brand-hover:var(--ui-accent-bg);
-  --gold:var(--ui-warning-text);
-  --warn:var(--ui-warning-text);
-  --err:var(--ui-danger-text);
-  --purple:var(--ui-accent);
-  --black:var(--ui-ink);
-  --on:var(--ui-on-accent);
-  --me:var(--ui-accent);
-  --bub:var(--ui-surface-2);
-  --a:var(--ui-success-text);
-  --c:var(--ui-text-muted);
-  --d:var(--ui-accent);
-  --k:var(--ui-warning-text);
-  --m:var(--ui-text-muted);
-  --n:var(--ui-info);
-  --q:var(--ui-accent);
-  --s:var(--ui-success-text);
-  --t:var(--ui-text);
-  --shadow:var(--ui-ink);
-  --sh-border:var(--ui-border);
-  --sh-card:var(--ui-surface);
-  --sh-card-foreground:var(--ui-text);
-  --sh-foreground:var(--ui-text);
-  --sh-input:var(--ui-surface-2);
-  --sh-primary:var(--ui-accent);
-  --sh-primary-foreground:var(--ui-on-accent);
-  --sh-ring:var(--ui-accent);
-  --sh-secondary:var(--ui-surface-2);
-  --sh-secondary-foreground:var(--ui-text);
-  --sh-radius:0px;
-  --color-background:var(--ui-canvas);
-  --color-surface:var(--ui-surface);
-  --color-surface-elevated:var(--ui-surface-2);
-  --color-text:var(--ui-text);
-  --color-text-muted:var(--ui-text-muted);
-  --color-border:var(--ui-border);
-  --color-accent:var(--ui-accent);
-  --color-focus:var(--ui-accent);
-  --surface-0:var(--ui-canvas);
-  --surface-1:var(--ui-surface);
-  --surface-elevated:var(--ui-surface-2);
-}
-html[data-mz-accent="biru"],html[data-mz-accent="biru"] body{  color-scheme:dark;
+
+/* 2. Palet tema: canvas, surface, teks, border, dan aksen ikut berubah */
+html[data-mz-accent="biru"],
+html[data-mz-accent="biru"] body{
+  color-scheme:dark;
   --ui-canvas:#071a33;
   --ui-surface:#0f2c52;
   --ui-surface-2:#173d70;
@@ -848,8 +246,11 @@ html[data-mz-accent="biru"],html[data-mz-accent="biru"] body{  color-scheme:dark
   --ui-shadow:4px 4px 0 var(--ui-ink);
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;}
-html[data-mz-accent="hijau"],html[data-mz-accent="hijau"] body{  color-scheme:dark;
+  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+html[data-mz-accent="hijau"],
+html[data-mz-accent="hijau"] body{
+  color-scheme:dark;
   --ui-canvas:#0a2316;
   --ui-surface:#123a24;
   --ui-surface-2:#1b5233;
@@ -874,8 +275,11 @@ html[data-mz-accent="hijau"],html[data-mz-accent="hijau"] body{  color-scheme:da
   --ui-shadow:4px 4px 0 var(--ui-ink);
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;}
-html[data-mz-accent="kuning"],html[data-mz-accent="kuning"] body{  color-scheme:light;
+  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+html[data-mz-accent="kuning"],
+html[data-mz-accent="kuning"] body{
+  color-scheme:light;
   --ui-canvas:#fff3bf;
   --ui-surface:#ffe08a;
   --ui-surface-2:#ffd166;
@@ -900,8 +304,11 @@ html[data-mz-accent="kuning"],html[data-mz-accent="kuning"] body{  color-scheme:
   --ui-shadow:4px 4px 0 var(--ui-ink);
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;}
-html[data-mz-accent="pink"],html[data-mz-accent="pink"] body{  color-scheme:dark;
+  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+html[data-mz-accent="pink"],
+html[data-mz-accent="pink"] body{
+  color-scheme:dark;
   --ui-canvas:#2a0b20;
   --ui-surface:#491438;
   --ui-surface-2:#65204e;
@@ -926,8 +333,11 @@ html[data-mz-accent="pink"],html[data-mz-accent="pink"] body{  color-scheme:dark
   --ui-shadow:4px 4px 0 var(--ui-ink);
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;}
-html[data-mz-accent="oranye"],html[data-mz-accent="oranye"] body{  color-scheme:dark;
+  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+html[data-mz-accent="oranye"],
+html[data-mz-accent="oranye"] body{
+  color-scheme:dark;
   --ui-canvas:#2a1408;
   --ui-surface:#4a240d;
   --ui-surface-2:#66330f;
@@ -952,202 +362,70 @@ html[data-mz-accent="oranye"],html[data-mz-accent="oranye"] body{  color-scheme:
   --ui-shadow:4px 4px 0 var(--ui-ink);
   --ui-font-display:"Arial Black","Archivo Black","Helvetica Neue",Arial,sans-serif;
   --ui-font-body:Inter,"Helvetica Neue",Arial,sans-serif;
-  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;}
-html,body{background:var(--ui-canvas);color:var(--ui-text);font-family:var(--ui-font-body)}
-html body :is(h1,h2,h3,.brand,.logo,.title,.eyebrow,.banner-title,.pf-name,.profile-name,.nav-btn,.btn,.mzs-tabs button,.mzs-head b,.mz-now-meta b){
-  font-family:var(--ui-font-display)!important;letter-spacing:-.03em;font-weight:900}
-html body :is(button,input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;box-shadow:3px 3px 0 var(--ui-ink)!important;
-  background:var(--ui-surface)!important;color:var(--ui-text)!important;font:inherit}
-html body :is(section,article,aside,.card,.tool-card,.profile-card,.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card){
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;box-shadow:var(--ui-shadow)!important;
-  background:var(--ui-surface)!important;color:var(--ui-text)!important}
-html body :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mzs-btn,.mzs-chips button,.mz-sw,.mz-fo):hover{filter:none!important;transform:translate(-1px,-1px);box-shadow:5px 5px 0 var(--ui-ink)!important}
-html body :is(button,.btn,.nav-btn,.pill):active{transform:translate(2px,2px);box-shadow:1px 1px 0 var(--ui-ink)!important}
-html body :is(button,input,select,textarea,[role="button"]):focus-visible{outline:3px solid var(--ui-accent)!important;outline-offset:3px}
-html body :is(button,input,select,textarea):disabled{opacity:.5;cursor:not-allowed}
-html body .mzs-panel,html body .mz-now,html body .mzs-head,html body .mz-search-top{background:var(--ui-surface)!important}
-html body .mzs,html body .mzm{--sp:var(--ui-accent)!important;--sp-d:var(--ui-accent)!important;--sp-ink:var(--ui-ink)!important}
-html body :is(.eyebrow,.mz-now-label,.mz-lyrics-label,.label,.mzs-hint,.pf-stats span,.stat span){
-  text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800}
-@media (prefers-reduced-motion:reduce){html body *{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-/* Sapuan brutal lanjutan: sidebar, beranda, kartu alat, status. */
-:root,body.light-mode{--ui-on-success:#fffdf4;--ui-on-warning:#111111;--ui-on-danger:#fffdf4}
-html[data-mz-accent="biru"]{--ui-on-success:#071a33;--ui-on-warning:#071a33;--ui-on-danger:#071a33}
-html[data-mz-accent="hijau"]{--ui-on-success:#0a2316;--ui-on-warning:#0a2316;--ui-on-danger:#0a2316}
-html[data-mz-accent="kuning"]{--ui-on-success:#fffdf4;--ui-on-warning:#1a1300;--ui-on-danger:#fffdf4}
-html[data-mz-accent="pink"]{--ui-on-success:#2a0b20;--ui-on-warning:#2a0b20;--ui-on-danger:#2a0b20}
-html[data-mz-accent="oranye"]{--ui-on-success:#2a1408;--ui-on-warning:#2a1408;--ui-on-danger:#2a1408}
-html body .sidebar,
-html body .bottom-nav,
-html body .owner-panel,
-html body .auth-form,
-html body .profile-card,
-html body .banner,
-html body .quote,
-html body .project,
-html body .skill,
-html body .tool-card,
-html body a.tool-card,
-html body .contact-block,
-html body .pf-info,
-html body .pf-prog,
-html body .pf-bd,
-html body .pf-stats div,
-html body .game-frame,
-html body .tool-overlay-bar{
+  --ui-font-mono:"IBM Plex Mono","SFMono-Regular",Consolas,monospace;
+}
+
+/* 3. Tampilan. Scope tunggal: menang atas CSS lama tanpa perang !important. */
+html[data-theme-root] body{
+  background:var(--ui-canvas);color:var(--ui-text);
+  font-family:var(--ui-font-body);
+}
+html[data-theme-root] body :is(section,article,aside,header,footer,.card,.tool-card,.profile-card,
+.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,
+.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card,
+.sidebar,.bottom-nav,.owner-panel,.auth-form,.quote,.contact-block,.pf-info,
+.pf-prog,.pf-bd,.stat,.ttt-cell,.mem-card,.wam-hole,.sh-card){
   background:var(--ui-surface)!important;color:var(--ui-text)!important;
   border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:var(--ui-shadow)!important}
-html body .sidebar-nav .nav-btn,
-html body .bottom-nav .nav-btn,
-html body .sidebar-nav .nav-btn.home,
-html body .bottom-nav .nav-btn.home{
+  box-shadow:var(--ui-shadow)!important;
+}
+html[data-theme-root] body :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mz-sw,.mz-fo,.sh-btn,
+input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
   background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
   border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:3px 3px 0 var(--ui-ink)!important;font-family:var(--ui-font-display)!important;
-  font-weight:900!important;font-size:.78rem!important;text-transform:uppercase!important;
-  letter-spacing:-.01em!important;padding:10px 12px!important;margin:0!important;gap:8px!important}
-html body .sidebar-nav .nav-btn.active,
-html body .bottom-nav .nav-btn.active,
-html body .sidebar-nav .nav-btn.home.active,
-html body .bottom-nav .nav-btn.home.active{
-  background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
-  box-shadow:4px 4px 0 var(--ui-ink)!important}
-html body .sidebar-nav .nav-btn span,
-html body .bottom-nav .nav-btn span{
-  width:24px!important;height:24px!important;background:transparent!important;
-  border:0!important;border-radius:0!important;box-shadow:none!important}
-html body .bottom-nav .nav-btn.home span{
-  width:44px!important;height:44px!important;background:var(--ui-accent)!important;
-  color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
-  box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body .bottom-nav .nav-btn.home{margin-top:-22px!important}
-html body :is(.sidebar-nav,.bottom-nav) .nav-btn .icon{stroke:currentColor!important;width:20px!important;height:20px!important}
-html body .sidebar-head{
-  border-bottom:2px solid var(--ui-ink)!important;padding-bottom:10px!important;
-  margin-bottom:12px!important}
-html body .logo{font-size:1.1rem!important;text-transform:uppercase}
-html body .mz-sl,
-html body .project-links a,
-html body .pf-chip,
-html body .tag,
-html body .mz-lang select{
-  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:2px 2px 0 var(--ui-ink)!important;text-transform:uppercase;
-  font-weight:800!important;text-decoration:none!important}
-html body .tool-icon{
-  width:48px!important;height:48px!important;flex:none;display:flex;
-  align-items:center;justify-content:center;background:var(--ui-accent)!important;
-  color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
-  border-radius:0!important;box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body .tool-card h3,
-html body .project h3,
-html body .banner-title{
-  font-family:var(--ui-font-display)!important;font-weight:900!important;
-  text-transform:uppercase;letter-spacing:-.03em}
-html body .profile-name{
-  font-family:var(--ui-font-display)!important;font-weight:900!important;
-  text-transform:uppercase;letter-spacing:-.04em}
-html body .profile-card .profile-name{
-  display:inline-block;background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
-  border:2px solid var(--ui-ink)!important;padding:4px 10px;
-  box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body :is(.btn.primary,.auth-tab.active,.ocean-tab.active,.dl-tab.active,.gc-act,.gc-play,.dl-mini.primary,.mzs-btn,.mz-scroll .mzs-btn,#run){
-  background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
-  -webkit-text-fill-color:var(--ui-on-accent)!important;border:2px solid var(--ui-ink)!important;
-  border-radius:0!important;box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body :is(.email-step.active,.status,.wam-hole.up,.t2048.v8,.t2048.v16,.t2048.v128,.t2048.v256,.t2048.v512,.t2048.v1024,.t2048.v2048,.t2048.vbig){
-  color:var(--ui-on-warning)!important}
-html body :is(.email-step.completed,.rt-area.go){
-  color:var(--ui-on-success)!important}
-html body :is(.email-step.failed,.gc-act.rec,.t2048.v32,.t2048.v64){
-  color:var(--ui-on-danger)!important}
-html body footer{
-  border-top:2px solid var(--ui-ink)!important;margin-top:24px!important;
-  padding-top:16px!important;text-transform:uppercase;letter-spacing:.08em;
-  font-size:.72rem!important;font-weight:800}
-/* Final say: palet tema menang atas semua aturan lama. */
-html body:not(.light-mode){--radius:0px!important;
-  --bg:var(--ui-canvas)!important;--bg2:var(--ui-surface)!important;
-  --card:var(--ui-surface)!important;--card-2:var(--ui-surface-2)!important;
-  --panel:var(--ui-surface)!important;--inp:var(--ui-surface-2)!important;
-  --line:var(--ui-border)!important;--text:var(--ui-text)!important;
-  --txt:var(--ui-text)!important;--head:var(--ui-text)!important;
-  --muted:var(--ui-text-muted)!important;--mut:var(--ui-text-muted)!important;
-  --accent:var(--ui-accent)!important;--acc:var(--ui-accent)!important;
-  --brand:var(--ui-accent)!important;--brand-hover:var(--ui-accent-bg)!important;
-  --gold:var(--ui-warning-text)!important;--warn:var(--ui-warning-text)!important;
-  --err:var(--ui-danger-text)!important;--black:var(--ui-ink)!important;
-  --on:var(--ui-on-accent)!important;--shadow:var(--ui-ink)!important;
-  --sh-border:var(--ui-border)!important;--sh-card:var(--ui-surface)!important;
-  --sh-card-foreground:var(--ui-text)!important;--sh-foreground:var(--ui-text)!important;
-  --sh-input:var(--ui-surface-2)!important;--sh-primary:var(--ui-accent)!important;
-  --sh-primary-foreground:var(--ui-on-accent)!important;--sh-ring:var(--ui-accent)!important;
-  --sh-secondary:var(--ui-surface-2)!important;--sh-secondary-foreground:var(--ui-text)!important;
-  --sh-radius:0px!important;--color-background:var(--ui-canvas)!important;
-  --color-surface:var(--ui-surface)!important;--color-surface-elevated:var(--ui-surface-2)!important;
-  --color-text:var(--ui-text)!important;--color-text-muted:var(--ui-text-muted)!important;
-  --color-border:var(--ui-border)!important;--color-accent:var(--ui-accent)!important;
-  --color-focus:var(--ui-accent)!important;--surface-0:var(--ui-canvas)!important;
-  --surface-1:var(--ui-surface)!important;--surface-elevated:var(--ui-surface-2)!important;}
-html body.light-mode{--radius:0px!important;
-  --bg:var(--ui-canvas)!important;--bg2:var(--ui-surface)!important;
-  --card:var(--ui-surface)!important;--card-2:var(--ui-surface-2)!important;
-  --panel:var(--ui-surface)!important;--inp:var(--ui-surface-2)!important;
-  --line:var(--ui-border)!important;--text:var(--ui-text)!important;
-  --txt:var(--ui-text)!important;--head:var(--ui-text)!important;
-  --muted:var(--ui-text-muted)!important;--mut:var(--ui-text-muted)!important;
-  --accent:var(--ui-accent)!important;--acc:var(--ui-accent)!important;
-  --brand:var(--ui-accent)!important;--brand-hover:var(--ui-accent-bg)!important;
-  --gold:var(--ui-warning-text)!important;--warn:var(--ui-warning-text)!important;
-  --err:var(--ui-danger-text)!important;--black:var(--ui-ink)!important;
-  --on:var(--ui-on-accent)!important;--shadow:var(--ui-ink)!important;
-  --sh-border:var(--ui-border)!important;--sh-card:var(--ui-surface)!important;
-  --sh-card-foreground:var(--ui-text)!important;--sh-foreground:var(--ui-text)!important;
-  --sh-input:var(--ui-surface-2)!important;--sh-primary:var(--ui-accent)!important;
-  --sh-primary-foreground:var(--ui-on-accent)!important;--sh-ring:var(--ui-accent)!important;
-  --sh-secondary:var(--ui-surface-2)!important;--sh-secondary-foreground:var(--ui-text)!important;
-  --sh-radius:0px!important;--color-background:var(--ui-canvas)!important;
-  --color-surface:var(--ui-surface)!important;--color-surface-elevated:var(--ui-surface-2)!important;
-  --color-text:var(--ui-text)!important;--color-text-muted:var(--ui-text-muted)!important;
-  --color-border:var(--ui-border)!important;--color-accent:var(--ui-accent)!important;
-  --color-focus:var(--ui-accent)!important;--surface-0:var(--ui-canvas)!important;
-  --surface-1:var(--ui-surface)!important;--surface-elevated:var(--ui-surface-2)!important;}
-html body:not(.light-mode) :is(section,article,aside,header,footer,.card,.tool-card,.profile-card,.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card,.sidebar,.bottom-nav,.owner-panel,.auth-form,.quote,.contact-block,.pf-info,.pf-prog,.pf-bd,.stat,.ttt-cell,.mem-card,.wam-hole,.sh-card){
-  background:var(--ui-surface)!important;color:var(--ui-text)!important;
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:var(--ui-shadow)!important}
-html body.light-mode :is(section,article,aside,header,footer,.card,.tool-card,.profile-card,.email-card,.project,.skill,.panel,.mzs-panel,.mzm,.mz-sw,.mz-fo,.pf-card,.mz-tech-up,.mz-lyrics,.banner,.gc-panel,.chat-card,.game-card,.editor-card,.sidebar,.bottom-nav,.owner-panel,.auth-form,.quote,.contact-block,.pf-info,.pf-prog,.pf-bd,.stat,.ttt-cell,.mem-card,.wam-hole,.sh-card){
-  background:var(--ui-surface)!important;color:var(--ui-text)!important;
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:var(--ui-shadow)!important}
-html body:not(.light-mode) :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mz-sw,.mz-fo,.sh-btn,input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
-  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body.light-mode :is(button,.btn,.nav-btn,.pill,.mzs-btn,.mz-sw,.mz-fo,.sh-btn,input,select,textarea,[role="button"]):not([type="range"]):not([type="checkbox"]):not([type="radio"]){
-  background:var(--ui-surface-2)!important;color:var(--ui-text)!important;
-  border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body :is(.nav-btn.active,.btn.primary,.btn.pri,.gc-act,.gc-play,.mzs-btn.sel,.auth-tab.active,.ocean-tab.active,.dl-tab.active,.email-step.active,.game-controls button.active,.mzs-chips button.on,#run){
+  box-shadow:3px 3px 0 var(--ui-ink)!important;font:inherit;
+}
+html[data-theme-root] body :is(.nav-btn.active,.btn.primary,.btn.pri,.gc-act,.gc-play,.mzs-btn.sel,
+.auth-tab.active,.ocean-tab.active,.dl-tab.active,.email-step.active,
+.game-controls button.active,.mzs-chips button.on,#run){
   background:var(--ui-accent)!important;color:var(--ui-on-accent)!important;
   -webkit-text-fill-color:var(--ui-on-accent)!important;
   border:2px solid var(--ui-ink)!important;border-radius:0!important;
-  box-shadow:3px 3px 0 var(--ui-ink)!important}
-html body :is(h1,h2,h3,h4,.brand,.logo,.title,.eyebrow,.banner-title,.profile-name,.nav-btn,.btn,.mzs-head b,.mz-now-meta b){
+  box-shadow:3px 3px 0 var(--ui-ink)!important;
+}
+html[data-theme-root] body :is(h1,h2,h3,h4,.brand,.logo,.title,.eyebrow,.banner-title,.profile-name,
+.nav-btn,.btn,.mzs-head b,.mz-now-meta b){
   color:var(--ui-text)!important;-webkit-text-fill-color:var(--ui-text)!important;
   font-family:var(--ui-font-display)!important;font-weight:900!important;
-  letter-spacing:-.03em!important;text-transform:uppercase}
-html body :is(.sub,.muted,.profile-bio,.banner-sub,.eyebrow,.label,.mzs-hint,.pf-stats span,.stat span,footer,.value,.tm-muted){
+  letter-spacing:-.03em!important;text-transform:uppercase;
+}
+html[data-theme-root] body :is(.sub,.muted,.profile-bio,.banner-sub,.eyebrow,.label,.mzs-hint,
+.pf-stats span,.stat span,footer,.value,.tm-muted){
   color:var(--ui-text-muted)!important;-webkit-text-fill-color:var(--ui-text-muted)!important;
-  text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800}
-html body .profile-name{background:transparent!important;border:0!important;box-shadow:none!important}
-html body .profile-name>span:first-child{color:var(--ui-accent)!important;-webkit-text-fill-color:var(--ui-accent)!important}
-html body .mzs,html body .mzm{--sp:var(--ui-accent)!important;--sp-d:var(--ui-accent)!important;--sp-ink:var(--ui-ink)!important}
-html body :is(.card,.tool-card,.email-card,.project,.skill):hover{transform:translate(-1px,-1px)!important;box-shadow:5px 5px 0 var(--ui-ink)!important}
-html body :is(button,.btn,.nav-btn):hover{transform:translate(-1px,-1px)!important;box-shadow:5px 5px 0 var(--ui-ink)!important}
-html body :is(button,.btn,.nav-btn):active{transform:translate(2px,2px)!important;box-shadow:1px 1px 0 var(--ui-ink)!important}
-html body :is(a,button,input,select,textarea,[role="button"]):focus-visible{outline:3px solid var(--ui-accent)!important;outline-offset:3px}
-
+  text-transform:uppercase;letter-spacing:.08em;font-size:.72rem;font-weight:800;
+}
+html[data-theme-root] body .profile-name{background:transparent!important;border:0!important;box-shadow:none!important}
+html[data-theme-root] body .profile-name>span:first-child{
+  color:var(--ui-accent)!important;-webkit-text-fill-color:var(--ui-accent)!important;
+}
+html[data-theme-root] body :is(.mzs,.mzm){
+  --sp:var(--ui-accent)!important;--sp-d:var(--ui-accent)!important;--sp-ink:var(--ui-ink)!important;
+}
+html[data-theme-root] body :is(.card,.tool-card,.email-card,.project,.skill):hover,
+html[data-theme-root] body :is(button,.btn,.nav-btn):hover{
+  transform:translate(-1px,-1px)!important;box-shadow:5px 5px 0 var(--ui-ink)!important;
+}
+html[data-theme-root] body :is(button,.btn,.nav-btn):active{
+  transform:translate(2px,2px)!important;box-shadow:1px 1px 0 var(--ui-ink)!important;
+}
+html[data-theme-root] body :is(a,button,input,select,textarea,[role="button"]):focus-visible{
+  outline:3px solid var(--ui-accent)!important;outline-offset:3px;
+}
+html[data-theme-root] body :is(button,input,select,textarea):disabled{
+  opacity:.5;cursor:not-allowed;
+}
+.dark{color-scheme:dark}
+@media (prefers-reduced-motion:reduce){
+  html[data-theme-root] body *{scroll-behavior:auto!important;animation-duration:.01ms!important;
+    animation-iteration-count:1!important;transition-duration:.01ms!important}
+}
