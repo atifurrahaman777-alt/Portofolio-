@@ -10,28 +10,28 @@
 <style>
 *{box-sizing:border-box}
 html,body{height:100%;margin:0}
-body{--bg:#0a0a0a;--card:#141414;--line:#2a2a2a;--text:#f5f5f5;--muted:#9ca3af;--accent:#f5f5f5;--on:#0a0a0a;--err:#ef4444;--warn:#f59e0b;--k:#c084fc;--s:#86efac;--n:#fbbf24;--c:#6b7280;--t:#60a5fa;--a:#f9a8d4;--d:#7dd3fc;background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
-body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--muted:#6b7280;--accent:#0a0a0a;--on:#ffffff;--k:#7e22ce;--s:#15803d;--n:#b45309;--t:#1d4ed8;--a:#be185d;--d:#0369a1}
+body{--bg:var(--ui-surface-2);--card:var(--ui-surface-2);--line:var(--ui-border);--text:var(--ui-text);--muted:var(--ui-info);--accent:var(--ui-text);--on:var(--ui-text);--err:var(--ui-danger-text);--warn:var(--ui-warning-text);--k:var(--ui-accent);--s:var(--ui-success-text);--n:var(--ui-warning-text);--c:var(--ui-info);--t:var(--ui-info);--a:var(--ui-accent);--d:var(--ui-info);background:var(--bg);color:var(--text);font:14px/1.5 system-ui,-apple-system,sans-serif;display:flex;flex-direction:column;height:100vh;height:100dvh;overflow:hidden}
+body.light-mode{--bg:var(--ui-surface-2);--card:var(--ui-surface-2);--line:var(--ui-border);--text:var(--ui-text);--muted:var(--ui-info);--accent:var(--ui-text);--on:var(--ui-text);--k:var(--ui-accent);--s:var(--ui-success-text);--n:var(--ui-warning-text);--t:var(--ui-info);--a:var(--ui-accent);--d:var(--ui-info)}
 .top{display:flex;gap:8px;align-items:center;padding:10px 12px;border-bottom:1px solid var(--line);background:var(--card)}
 .seg{display:flex;flex:1;border:1px solid var(--line);border-radius:10px;overflow:hidden}
 .seg button{flex:1;padding:9px;border:none;background:none;color:var(--muted);font:inherit;font-weight:800;cursor:pointer}
-.seg button.on{background:var(--accent);color:var(--on)}
+.seg button.on{background:var(--ui-accent-bg);color:var(--on)}
 .btn{padding:9px 14px;border-radius:10px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:inherit;font-weight:800;cursor:pointer;white-space:nowrap}
-.btn.pri{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.btn.pri{background:var(--ui-accent-bg);color:var(--on);border-color:var(--accent)}
 .btn.warn{border-color:var(--err);color:var(--err)}
 .view{display:none;flex:1;min-height:0;flex-direction:column}
 .view.on{display:flex}
 .ftabs{display:flex;align-items:center;gap:6px;padding:8px 12px;border-bottom:1px solid var(--line);overflow-x:auto}
 .ftabs button{flex:0 0 auto;padding:7px 14px;border-radius:999px;border:1px solid var(--line);background:none;color:var(--muted);font:inherit;font-weight:800;cursor:pointer}
-.ftabs button.on{background:var(--accent);color:var(--on);border-color:var(--accent)}
+.ftabs button.on{background:var(--ui-accent-bg);color:var(--on);border-color:var(--accent)}
 .ftabs .sp{flex:1}
 #ed{flex:1;min-height:0;position:relative}
 .CodeMirror{position:absolute;left:0;right:0;top:0;bottom:0;height:auto!important;background:var(--bg);color:var(--text);font:var(--fs,13px)/1.55 ui-monospace,SFMono-Regular,Menlo,Consolas,monospace}
 .CodeMirror-gutters{background:var(--card);border-right:1px solid var(--line)}
 .CodeMirror-linenumber{color:var(--muted)}
 .CodeMirror-cursor{border-left:2px solid var(--text)}
-.CodeMirror-selected{background:rgba(120,120,120,.35)!important}
-.CodeMirror-matchingbracket{color:var(--text)!important;background:rgba(120,120,120,.35)}
+.CodeMirror-selected{background:var(--ui-surface-2)!important}
+.CodeMirror-matchingbracket{color:var(--text)!important;background:var(--ui-surface-2)}
 .cm-s-default .cm-keyword{color:var(--k)}
 .cm-s-default .cm-string,.cm-s-default .cm-string-2{color:var(--s)}
 .cm-s-default .cm-number,.cm-s-default .cm-atom{color:var(--n)}
@@ -44,7 +44,7 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
 .keys button{flex:0 0 auto;min-width:38px;padding:8px 10px;border-radius:8px;border:1px solid var(--line);background:var(--bg);color:var(--text);font:600 15px ui-monospace,Menlo,monospace;cursor:pointer}
 .tools button{flex:1 0 auto}
 #msg{margin:0;padding:0 12px 6px;font-size:.78rem;color:var(--muted);min-height:1.3em;background:var(--card)}
-#frame{flex:1;min-height:0;width:100%;border:0;background:#fff}
+#frame{flex:1;min-height:0;width:100%;border:0;background:var(--ui-surface-2)}
 .con{flex:0 0 30%;display:flex;flex-direction:column;border-top:1px solid var(--line);background:var(--card);min-height:90px}
 .con-h{display:flex;justify-content:space-between;align-items:center;padding:6px 12px;font-size:.8rem}
 .con-h button{background:none;border:none;color:var(--muted);font:inherit;font-weight:700;cursor:pointer}
@@ -52,8 +52,8 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
 .ln{padding:3px 0 3px 8px;border-left:3px solid var(--line);white-space:pre-wrap;word-break:break-word}
 .ln.error{border-color:var(--err);color:var(--err)}
 .ln.warn{border-color:var(--warn)}
-.ln.info{border-color:#38bdf8}
-.sheet{position:fixed;left:0;right:0;top:0;bottom:0;z-index:50;background:rgba(0,0,0,.55);display:flex;align-items:flex-end;justify-content:center}
+.ln.info{border-color:var(--ui-border)}
+.sheet{position:fixed;left:0;right:0;top:0;bottom:0;z-index:50;background:var(--ui-surface-2);display:flex;align-items:flex-end;justify-content:center}
 .sheet.off{display:none}
 .panel{width:min(520px,100%);max-height:85%;overflow-y:auto;background:var(--card);border-radius:18px 18px 0 0;padding:16px;border:1px solid var(--line);display:flex;flex-direction:column;gap:10px}
 .ph{display:flex;justify-content:space-between;align-items:center;font-size:1.05rem}
@@ -119,19 +119,19 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
   var SAMPLES = [
     { n: 'Halo Dunia', d: 'Tombol yang mengubah judul',
       html: '<h1>Halo, Dunia!</h1>\n<p>Edit kode ini lalu tekan Jalankan.</p>\n<button id="btn">Klik aku</button>',
-      css: 'body{font-family:system-ui,sans-serif;text-align:center;padding:40px;background:#0f172a;color:#e2e8f0}\nbutton{padding:12px 20px;border:0;border-radius:10px;background:#38bdf8;font-weight:700;font-size:1rem}',
+      css: 'body{font-family:system-ui,sans-serif;text-align:center;padding:40px;background:var(--ui-surface-2);color:var(--ui-info)}\nbutton{padding:12px 20px;border:0;border-radius:10px;background:var(--ui-info);font-weight:700;font-size:1rem}',
       js: 'document.getElementById("btn").addEventListener("click", function(){\n  console.log("Tombol diklik!");\n  document.querySelector("h1").textContent = "Berhasil!";\n});' },
     { n: 'Kartu CSS', d: 'Kartu gradasi dengan efek sentuh',
       html: '<div class="card">\n  <h2>Kartu Keren</h2>\n  <p>Sentuh atau arahkan kursor ke sini.</p>\n</div>',
-      css: 'body{display:grid;place-items:center;height:100vh;margin:0;background:#111;font-family:system-ui,sans-serif}\n.card{width:240px;padding:24px;border-radius:20px;color:#fff;background:linear-gradient(135deg,#f97316,#ec4899,#8b5cf6);transition:transform .3s}\n.card:hover,.card:active{transform:rotate(-3deg) scale(1.05)}\nh2{margin:0 0 8px}',
+      css: 'body{display:grid;place-items:center;height:100vh;margin:0;background:var(--ui-surface-2);font-family:system-ui,sans-serif}\n.card{width:240px;padding:24px;border-radius:20px;color:var(--ui-text);background:linear-gradient(135deg,var(--ui-warning),var(--ui-accent-bg),var(--ui-info));transition:transform .3s}\n.card:hover,.card:active{transform:rotate(-3deg) scale(1.05)}\nh2{margin:0 0 8px}',
       js: '' },
     { n: 'Stopwatch', d: 'Hitung waktu dengan JavaScript',
-      html: '<div id="t">0.0</div>\n<button id="go">Mulai</button>\n<button id="rs">Reset</button>',
-      css: 'body{font-family:system-ui,sans-serif;text-align:center;padding-top:60px;background:#0b1020;color:#fff}\n#t{font-size:4rem;font-weight:800;margin-bottom:20px}\nbutton{padding:10px 18px;margin:4px;border:0;border-radius:10px;font-weight:700}',
+      html: '<div id="t" class="tabular-nums">0.0</div>\n<button id="go">Mulai</button>\n<button id="rs">Reset</button>',
+      css: 'body{font-family:system-ui,sans-serif;text-align:center;padding-top:60px;background:var(--ui-surface-2);color:var(--ui-text)}\n#t{font-size:4rem;font-weight:800;margin-bottom:20px}\nbutton{padding:10px 18px;margin:4px;border:0;border-radius:10px;font-weight:700}',
       js: 'var timer = null, ms = 0;\nvar t = document.getElementById("t");\ndocument.getElementById("go").onclick = function(){\n  if (timer) { clearInterval(timer); timer = null; this.textContent = "Lanjut"; return; }\n  this.textContent = "Jeda";\n  timer = setInterval(function(){ ms += 100; t.textContent = (ms / 1000).toFixed(1); }, 100);\n};\ndocument.getElementById("rs").onclick = function(){\n  clearInterval(timer); timer = null; ms = 0; t.textContent = "0.0";\n  document.getElementById("go").textContent = "Mulai";\n  console.log("Direset");\n};' },
     { n: 'Daftar Tugas', d: 'Tambah dan hapus item',
-      html: '<h2>Tugasku</h2>\n<input id="in" placeholder="Tulis tugas...">\n<button id="add">Tambah</button>\n<ul id="ls"></ul>',
-      css: 'body{font-family:system-ui,sans-serif;max-width:420px;margin:30px auto;padding:0 16px}\ninput{padding:10px;border:1px solid #888;border-radius:8px}\nbutton{padding:10px 14px;border:0;border-radius:8px;background:#22c55e;color:#fff;font-weight:700}\nli{margin:8px 0;cursor:pointer}',
+      html: '<h2>Tugasku</h2>\n<input id="in" placeholder="Tulis tugas..." aria-label="Tulis tugas">\n<button id="add">Tambah</button>\n<ul id="ls"></ul>',
+      css: 'body{font-family:system-ui,sans-serif;max-width:420px;margin:30px auto;padding:0 16px}\ninput{padding:10px;border:1px solid var(--ui-border);border-radius:8px}\nbutton{padding:10px 14px;border:0;border-radius:8px;background:var(--ui-success);color:var(--ui-ink);font-weight:700}\nli{margin:8px 0;cursor:pointer}',
       js: 'var ls = document.getElementById("ls");\ndocument.getElementById("add").onclick = function(){\n  var i = document.getElementById("in");\n  if (!i.value.trim()) return;\n  var li = document.createElement("li");\n  li.textContent = i.value;\n  li.onclick = function(){ li.remove(); console.log("Dihapus"); };\n  ls.appendChild(li);\n  i.value = "";\n};' }
   ];
 
@@ -207,14 +207,15 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
   /* ----- Hasil dan konsol ----- */
   var BRIDGE = '<script>(function(){function s(t,a){try{parent.postMessage({mzc:1,t:t,m:a.map(function(x){try{return typeof x==="object"?JSON.stringify(x):String(x)}catch(e){return String(x)}}).join(" ")},"*")}catch(e){}}["log","info","warn","error"].forEach(function(k){var o=console[k];console[k]=function(){s(k,[].slice.call(arguments));try{o.apply(console,arguments)}catch(e){}}});window.addEventListener("error",function(e){s("error",[e.message+(e.lineno?" (baris "+e.lineno+")":"")])});window.addEventListener("unhandledrejection",function(e){s("error",["Promise ditolak: "+(e.reason&&e.reason.message||e.reason)])})})();<\/script>';
   function safeJs(js){ return js.replace(/<\/script/gi, '<\\/script'); }
+var UNSLOP_IFRAME_TOKENS = ':root{--ui-canvas:#08090a;--ui-surface:#0f1011;--ui-surface-2:#161719;--ui-ink:#08090a;--ui-on-accent:#08090a;--ui-text:#f7f8f8;--ui-text-muted:#b0b5c0;--ui-border:rgba(255,255,255,.14);--ui-accent:#a5aaff;--ui-accent-bg:#a5aaff;--ui-success:#4cb782;--ui-success-text:#55d39a;--ui-warning:#d7a642;--ui-danger:#ff8a8a;--ui-danger-text:#ff8a8a;--ui-info:#93c5fd;--bg:var(--ui-canvas);--card:var(--ui-surface-2);--line:var(--ui-border);--text:var(--ui-text);--txt:var(--ui-text);--muted:var(--ui-text-muted);--mut:var(--ui-text-muted);--on:var(--ui-on-accent);--accent:var(--ui-accent);--gold:var(--ui-warning);--err:var(--ui-danger)}';
   var stampN = 0;
   function build(c){
     return '<!doctype html><html><head><!--' + Date.now() + '-' + (++stampN) + '--><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">' + BRIDGE +
-      '<style>' + c.css + '</style></head><body>' + c.html + '<script>' + safeJs(c.js) + '<\/script></body></html>';
+      '<style>' + UNSLOP_IFRAME_TOKENS + c.css + '</style></head><body>' + c.html + '<script>' + safeJs(c.js) + '<\/script></body></html>';
   }
   function exportDoc(c){
     return '<!doctype html>\n<html lang="id">\n<head>\n<meta charset="UTF-8">\n<meta name="viewport" content="width=device-width,initial-scale=1">\n<title>Proyek</title>\n<style>\n' +
-      c.css + '\n</style>\n</head>\n<body>\n' + c.html + '\n<script>\n' + safeJs(c.js) + '\n<\/script>\n</body>\n</html>\n';
+      UNSLOP_IFRAME_TOKENS + '\n' + c.css + '\n</style>\n</head>\n<body>\n' + c.html + '\n<script>\n' + safeJs(c.js) + '\n<\/script>\n</body>\n</html>\n';
   }
   var frame = $('frame');
   function addLog(t, m){
@@ -415,5 +416,253 @@ body.light-mode{--bg:#ffffff;--card:#f7f7f8;--line:#e5e5e5;--text:#0a0a0a;--mute
 })();
 </script>
 <script src="editor-pro.js?v=17"></script>
+
+<style id="unslop-foundation" data-archetype="linear-precision">
+:root{
+  --ui-canvas:#08090a;
+  --ui-surface:#0f1011;
+  --ui-surface-2:#161719;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#f7f8f8;
+  --ui-text-muted:#b0b5c0;
+  --ui-border:rgba(255,255,255,.14);
+  --ui-accent:#a5aaff;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#55d39a;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#d7a642;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#ff8a8a;
+  --ui-info:#93c5fd;
+  --ui-content-max:1200px;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+.dark{
+  --ui-canvas:#08090a;
+  --ui-surface:#0f1011;
+  --ui-surface-2:#161719;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#f7f8f8;
+  --ui-text-muted:#b0b5c0;
+  --ui-border:rgba(255,255,255,.14);
+  --ui-accent:#a5aaff;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#55d39a;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#d7a642;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#ff8a8a;
+  --ui-info:#93c5fd;
+  --ui-content-max:1200px;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+body.light-mode{
+  --ui-canvas:#ffffff;
+  --ui-surface:#f4f5f7;
+  --ui-surface-2:#e8eaee;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#0f1011;
+  --ui-text-muted:#4b5563;
+  --ui-border:rgba(15,16,17,.18);
+  --ui-accent:#3f4799;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#1a7a3c;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#8a5a00;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#b42318;
+  --ui-info:#1d4ed8;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+html,body{background:var(--ui-canvas);color:var(--ui-text)}
+:where(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+:where(a,button):hover{filter:brightness(1.08)}
+:where(a,button):active{transform:translateY(1px)}
+:where(button,input,select,textarea):disabled{opacity:.55;cursor:not-allowed}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
 </body>
 </html>

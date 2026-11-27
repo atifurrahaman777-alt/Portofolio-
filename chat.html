@@ -7,7 +7,7 @@
   root.style.visibility = 'hidden';
   var CFG = {apiKey:"AIzaSyArfUhdOVfyIsjKjfD_9BkbixxNa6XRvsM",authDomain:"manz-web.firebaseapp.com",projectId:"manz-web",appId:"1:178479215158:web:265819c21836b2116f5e97"};
   function lock(msg){
-    document.body.innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:24px;text-align:center;font-family:system-ui,sans-serif"><h2>Masuk dulu</h2><p>' + msg + '</p><a href="/" style="display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:#111;color:#fff;text-decoration:none;font-weight:700">Ke beranda</a></div>';
+    document.body.innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:24px;text-align:center;font-family:system-ui,sans-serif"><h2>Masuk dulu</h2><p>' + msg + '</p><a href="/" style="display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:var(--ui-surface-2);color:var(--ui-text);text-decoration:none;font-weight:700">Ke beranda</a></div>';
     root.style.visibility = 'visible';
   }
   function load(src, cb){
@@ -71,7 +71,7 @@ try { if (localStorage.getItem('chat_light') === '1') document.body.classList.ad
     <button type="button" class="gc-ib" id="gc-eye" aria-label="Sembunyikan story"></button>
     <button type="button" class="gc-ib" id="gc-eraser" aria-label="Bersihkan"></button>
     <button type="button" class="gc-ib" id="gc-sticker" aria-label="Emoji"></button>
-    <input id="gc-input" type="text" maxlength="300" placeholder="Tulis pesan" autocomplete="off">
+    <input id="gc-input" type="text" maxlength="300" placeholder="Tulis pesan" autocomplete="off" aria-label="Tulis pesan">
     <button type="button" class="gc-act" id="gc-action" aria-label="Kirim"></button>
   </div>
 </div>
@@ -80,5 +80,253 @@ try { if (localStorage.getItem('chat_light') === '1') document.body.classList.ad
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script>if(!firebase.apps.length)firebase.initializeApp({apiKey:"AIzaSyArfUhdOVfyIsjKjfD_9BkbixxNa6XRvsM",authDomain:"manz-web.firebaseapp.com",projectId:"manz-web",appId:"1:178479215158:web:265819c21836b2116f5e97"});</script>
 <script src="chat.js?v=17"></script>
-<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script></body>
+<script>if('serviceWorker' in navigator)addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'))</script>
+<style id="unslop-foundation" data-archetype="linear-precision">
+:root{
+  --ui-canvas:#08090a;
+  --ui-surface:#0f1011;
+  --ui-surface-2:#161719;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#f7f8f8;
+  --ui-text-muted:#b0b5c0;
+  --ui-border:rgba(255,255,255,.14);
+  --ui-accent:#a5aaff;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#55d39a;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#d7a642;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#ff8a8a;
+  --ui-info:#93c5fd;
+  --ui-content-max:1200px;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+.dark{
+  --ui-canvas:#08090a;
+  --ui-surface:#0f1011;
+  --ui-surface-2:#161719;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#f7f8f8;
+  --ui-text-muted:#b0b5c0;
+  --ui-border:rgba(255,255,255,.14);
+  --ui-accent:#a5aaff;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#55d39a;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#d7a642;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#ff8a8a;
+  --ui-info:#93c5fd;
+  --ui-content-max:1200px;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+body.light-mode{
+  --ui-canvas:#ffffff;
+  --ui-surface:#f4f5f7;
+  --ui-surface-2:#e8eaee;
+  --ui-ink:#08090a;
+  --ui-on-accent:#08090a;
+  --ui-text:#0f1011;
+  --ui-text-muted:#4b5563;
+  --ui-border:rgba(15,16,17,.18);
+  --ui-accent:#3f4799;
+  --ui-accent-bg:#a5aaff;
+  --ui-success:#4cb782;
+  --ui-success-text:#1a7a3c;
+  --ui-warning:#d7a642;
+  --ui-warning-text:#8a5a00;
+  --ui-danger:#ff8a8a;
+  --ui-danger-text:#b42318;
+  --ui-info:#1d4ed8;
+
+  --color-background:var(--ui-canvas);
+  --color-surface:var(--ui-surface);
+  --color-surface-elevated:var(--ui-surface-2);
+  --color-text:var(--ui-text);
+  --color-text-muted:var(--ui-text-muted);
+  --color-border:var(--ui-border);
+  --color-accent:var(--ui-accent);
+  --color-focus:var(--ui-accent);
+  --surface-0:var(--ui-canvas);
+  --surface-1:var(--ui-surface);
+  --surface-elevated:var(--ui-surface-2);
+  --bg:var(--ui-canvas);
+  --bg2:var(--ui-surface);
+  --card:var(--ui-surface-2);
+  --card-2:var(--ui-surface);
+  --panel:var(--ui-surface);
+  --inp:var(--ui-surface-2);
+  --line:var(--ui-border);
+  --text:var(--ui-text);
+  --txt:var(--ui-text);
+  --head:var(--ui-text);
+  --on:var(--ui-on-accent);
+  --muted:var(--ui-text-muted);
+  --mut:var(--ui-text-muted);
+  --code-dim:var(--ui-text-muted);
+  --code-mid:var(--ui-text);
+  --code-strong:var(--ui-text);
+  --accent:var(--ui-accent);
+  --acc:var(--ui-accent);
+  --brand:var(--ui-accent);
+  --brand-hover:var(--ui-accent-bg);
+  --gold:var(--ui-warning-text);
+  --warn:var(--ui-warning-text);
+  --err:var(--ui-danger-text);
+  --purple:var(--ui-accent);
+  --black:var(--ui-ink);
+  --me:var(--ui-accent);
+  --bub:var(--ui-surface-2);
+  --a:var(--ui-success-text);
+  --c:var(--ui-text-muted);
+  --d:var(--ui-accent);
+  --k:var(--ui-warning-text);
+  --m:var(--ui-text-muted);
+  --n:var(--ui-info);
+  --q:var(--ui-accent);
+  --s:var(--ui-success-text);
+  --t:var(--ui-text);
+  --sh-border:var(--ui-border);
+  --sh-card:var(--ui-surface);
+  --sh-card-foreground:var(--ui-text);
+  --sh-foreground:var(--ui-text);
+  --sh-input:var(--ui-surface-2);
+  --sh-primary:var(--ui-accent);
+  --sh-primary-foreground:var(--ui-on-accent);
+  --sh-ring:var(--ui-accent);
+  --sh-secondary:var(--ui-surface-2);
+  --sh-secondary-foreground:var(--ui-text);
+  --sh-radius:6px;
+  --shadow:var(--ui-surface-2);
+}
+html,body{background:var(--ui-canvas);color:var(--ui-text)}
+:where(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+:where(a,button):hover{filter:brightness(1.08)}
+:where(a,button):active{transform:translateY(1px)}
+:where(button,input,select,textarea):disabled{opacity:.55;cursor:not-allowed}
+@media (prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
+</style>
+</body>
 </html>
