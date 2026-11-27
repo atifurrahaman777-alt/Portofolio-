@@ -118,6 +118,11 @@
   $('gc-sticker').innerHTML = ic('smile');
   function syncBell() { $('gc-bell').innerHTML = ic('bell') + (bellOn ? '<i class="gc-bdot"></i>' : ''); }
   function syncTheme() { $('gc-theme').innerHTML = ic(root.classList.contains('light') ? 'sun' : 'moon'); }
+  function setLight(on) {
+    root.classList.toggle('light', on);
+    document.body.classList.toggle('light-mode', on);
+    syncTheme();
+  }
   function renderMe() {
     const p = profile();
     const box = $('gc-me');
@@ -129,9 +134,9 @@
     act.classList.remove('rec');
     act.innerHTML = input.value.trim() ? ic('send') : ic('mic');
   }
-  if (ls.get('chat_light') === '1') root.classList.add('light');
+  setLight(ls.get('chat_light') === '1');
   if (ls.get('chat_hidetop') === '1') $('gc-top').style.display = 'none';
-  syncBell(); syncTheme(); renderMe(); syncAct();
+  syncBell(); renderMe(); syncAct();
 
   function initAudio() {
     try {
@@ -760,9 +765,9 @@
 
   $('gc-back').addEventListener('click', () => { if (history.length > 1) history.back(); else location.href = '/'; });
   $('gc-theme').addEventListener('click', () => {
-    root.classList.toggle('light');
-    ls.set('chat_light', root.classList.contains('light') ? '1' : '0');
-    syncTheme();
+    const on = !root.classList.contains('light');
+    setLight(on);
+    ls.set('chat_light', on ? '1' : '0');
   });
   $('gc-bell').addEventListener('click', () => {
     bellOn = !bellOn;

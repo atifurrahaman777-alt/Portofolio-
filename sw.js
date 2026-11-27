@@ -1,5 +1,5 @@
 // Naikkan versi cache setiap deploy supaya aset lama ikut terhapus.
-const C = 'mannzz-v10';
+const C = 'mannzz-v11';
 const SHELL = '/index.html';
 
 self.addEventListener('install', (e) => {
