@@ -961,7 +961,8 @@ html body .mz-lyrics[hidden]{display:none!important}
 html body #mz-cari{display:flex;flex-direction:column}
 html body .mz-search-top{position:sticky;top:0;z-index:4;padding:14px 0 10px;background:var(--card)!important}
 html body .mz-search-top .mzs-row{display:flex;align-items:center;gap:8px;margin-bottom:0!important}
-html body .mz-search-top .mzs-row input{flex:1;min-width:0}
+html body .mz-search-top .mzs-row input{flex:1 1 auto;min-width:0;max-width:calc(100% - 156px)}
+html body .mz-search-top .mzs-btn{flex:0 0 auto;height:44px;min-width:92px;padding:0 20px!important;font-size:.9rem;white-space:nowrap}
 html body .mz-lyrics-toggle{width:40px;height:40px;flex:none;padding:0;border:1px solid var(--line)!important;border-radius:50%;background:var(--card)!important;color:var(--sp)!important;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .2s,color .2s}
 html body .mz-lyrics-toggle svg{width:20px;height:20px;transition:transform .25s ease}
 html body #mz-cari.mz-lyrics-open .mz-lyrics-toggle svg{transform:rotate(180deg)}
