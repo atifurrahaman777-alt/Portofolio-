@@ -167,7 +167,7 @@ footer{text-align:center;color:var(--muted);font-size:.75rem;padding:18px 0 32px
 <style>
 input[placeholder*="foto" i]{display:block;width:100%;box-sizing:border-box;padding:14px 16px;margin:12px 0;font:inherit;font-size:1rem;color:#111;background:#fffbea;border:1px solid var(--line);border-radius:12px;outline:none}
 input[placeholder*="foto" i]:focus{box-shadow:0 4px 18px var(--shadow)}
-</style><link rel="manifest" href="/manifest.json?v=15"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=15"><style id="mz-bw">
+</style><link rel="manifest" href="/manifest.json?v=16"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=16"><style id="mz-bw">
 html body:not(.light-mode){--accent:#f5f5f5;--purple:#f5f5f5;--on:#0a0a0a}
 html body.light-mode{--accent:#0a0a0a;--purple:#0a0a0a;--on:#fff}
 html body .btn.primary,html body .banner-tag,html body .avatar,html body .contact-block button,html body .badge-avatar,html body .avatar-preview-large{color:var(--on)!important}
@@ -837,8 +837,8 @@ html body .mz-tech-up input{width:20px;height:20px;accent-color:var(--accent)}
   apply(document, st);
 })();
 </script>
-<link rel="icon" type="image/png" href="icon-192.png?v=15">
-<link rel="stylesheet" href="/pro.css?v=15">
+<link rel="icon" type="image/png" href="icon-192.png?v=16">
+<link rel="stylesheet" href="/pro.css?v=16">
 <style id="mz-spotify-css">
 /* Pemutar musik: layout seperti aplikasi pemutar, tetap memakai warna tema. */
 .mzs{align-items:stretch!important;background:var(--bg)!important}
@@ -920,6 +920,29 @@ html body .mzs .mzs-fav.on svg,html body #mzFav.on svg{fill:currentColor}
 html body .mzm-bar i{background:var(--sp)!important}
 html body #mzPlay{background:var(--sp)!important;color:var(--sp-ink)!important;-webkit-text-fill-color:var(--sp-ink)!important;border:0!important;border-radius:50%!important;box-shadow:0 6px 16px rgba(29,185,84,.3)!important}
 html body .mzm{background:var(--card)!important;border:1px solid var(--line)!important;border-radius:16px!important;box-shadow:0 10px 30px var(--shadow)!important}
+/* Detail UI ala Spotify: tombol cari hijau, pill, cover besar, daftar lagu rapi. */
+html body .mz-scroll .mzs-btn{background:var(--sp)!important;color:var(--sp-ink)!important;-webkit-text-fill-color:var(--sp-ink)!important;border:0!important;border-radius:999px!important;font-weight:800!important;box-shadow:0 6px 16px rgba(29,185,84,.25)!important}
+html body .mz-scroll .mzs-row input{border-radius:999px!important;padding:12px 16px!important}
+html body .mz-scroll .mzs-row input:focus{border-color:var(--sp)!important;box-shadow:0 0 0 3px rgba(29,185,84,.18)!important;outline:none!important}
+.mzs-head{background:linear-gradient(180deg,rgba(29,185,84,.12),var(--bg))!important}
+.mz-now-art{width:132px;height:132px;border-radius:20px}
+.mz-now{border-bottom:0!important;border-radius:0 0 24px 24px}
+.mz-now-label{color:var(--sp)!important}
+.mz-now-meta b{font-size:1.25rem}
+.mz-controls .mz-playbig{width:64px;height:64px}
+.mz-controls button{transition:transform .15s,color .15s}
+.mz-controls button:hover{transform:scale(1.08);color:var(--text)!important}
+.mz-controls .mz-playbig:hover{transform:scale(1.05)}
+html body .mzs .mzs-tabs{padding:0 16px 10px!important}
+html body .mzs .mzs-tabs button{flex:0 0 auto!important;margin-right:8px;padding:8px 16px!important;border:0!important;border-bottom:2px solid transparent!important;border-radius:999px!important;background:none!important;color:var(--muted)!important}
+html body .mzs .mzs-tabs button.on{background:rgba(29,185,84,.12)!important;color:var(--sp)!important;-webkit-text-fill-color:var(--sp)!important;border-bottom-color:var(--sp)!important}
+html body .mzs-item{padding:10px 8px!important;border-bottom:0!important;border-radius:12px!important;transition:background .15s}
+html body .mzs-item:hover{background:var(--card-2)!important}
+html body .mzs-item.on{background:var(--card-2)!important}
+html body .mzs-it b{font-weight:800}
+html body .mzm-main img,html body .mzm-ph{width:44px!important;height:44px!important;border-radius:10px!important}
+html body .mzm-bar{height:4px}
+html body .mzm-b:active{transform:scale(.9)}
 </style>
 </head>
 <body>
@@ -2982,6 +3005,6 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   render();
 })();
 </script>
-<script src="/lang.js?v=15"></script>
+<script src="/lang.js?v=16"></script>
 </body>
 </html>
