@@ -2648,7 +2648,33 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
   }
 
   /* ===== Lirik lagu ===== */
-  function loadLyrics(title, artist){
+  /* Judul dari katalog seringkali "Judul - Playlist ...", jadi dibersihkan dulu. */
+  function cleanLyricText(s){
+    return String(s || '')
+      .replace(/\s*[\[(][^\])]*[\])]/g, ' ')
+      .replace(/\b(official|video|audio|lyrics?|lirik|klip|full album|playlist|compilation|terpopuler|lagu)\b/gi, ' ')
+      .replace(/\s*[-–—|:_]\s*/g, ' ')
+      .replace(/\s+/g, ' ')
+      .trim();
+  }
+  function lyricQueries(title, artist){
+    var raw = String(title || '').trim(), a = String(artist || '').trim();
+    var clean = cleanLyricText(raw);
+    var first = String(raw.split(/\s+[-–—|:_]\s+/)[0] || '').trim();
+    var firstClean = cleanLyricText(first);
+    var out = [];
+    function add(t, ar){
+      t = String(t || '').trim(); ar = String(ar || '').trim();
+      if (!t) return;
+      if (out.some(function(x){ return x.t.toLowerCase() === t.toLowerCase() && x.a.toLowerCase() === ar.toLowerCase(); })) return;
+      out.push({ t: t, a: ar });
+    }
+    if (clean === raw) add(raw, a);
+    add(clean, a); add(first, a); add(firstClean, a);
+    add(clean, ''); add(firstClean, ''); add(first, '');
+    return out.slice(0, 5);
+  }
+  async function loadLyrics(title, artist){
     var box = $('mLyrics'), body = $('mLyricsBody'), label = $('mLyricsTitle');
     if (!box || !body) return;
     if (S.lyricAbort) { try { S.lyricAbort.abort(); } catch (e) {} }
@@ -2657,22 +2683,31 @@ location.href='mailto:mannzz144hz@gmail.com?subject='+subject+'&body='+body;
     label.textContent = title || '';
     box.hidden = !lyricsOpen;
     body.textContent = 'Memuat lirik...';
-    var url = 'https://lrclib.net/api/search?track_name=' + encodeURIComponent(title || '')
-      + '&artist_name=' + encodeURIComponent(artist || '');
-    fetch(url, ctrl ? { signal: ctrl.signal, cache: 'no-store' } : { cache: 'no-store' })
-      .then(function(r){ if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-      .then(function(a){
+    var queries = lyricQueries(title, artist), text = '', found = null;
+    for (var i = 0; i < queries.length; i++) {
+      if (ctrl && ctrl.signal.aborted) return;
+      var q = queries[i];
+      var url = 'https://lrclib.net/api/search?track_name=' + encodeURIComponent(q.t)
+        + '&artist_name=' + encodeURIComponent(q.a);
+      try {
+        var r = await fetch(url, ctrl ? { signal: ctrl.signal, cache: 'no-store' } : { cache: 'no-store' });
+        if (!r.ok) continue;
+        var a = await r.json();
         if (ctrl && ctrl.signal.aborted) return;
         var pick = (a && a.find) ? a.find(function(x){ return x && (x.plainLyrics || x.syncedLyrics); }) : null;
         if (!pick && a && a[0]) pick = a[0];
-        var text = pick && pick.plainLyrics;
-        if (!text && pick && pick.syncedLyrics) text = pick.syncedLyrics.replace(/^\[\d{2}:\d{2}(?:\.\d+)?\]\s?/gm, '');
-        body.textContent = text && text.trim() ? text.trim() : 'Lirik belum tersedia untuk lagu ini.';
-      })
-      .catch(function(){
+        var t = pick && pick.plainLyrics;
+        if (!t && pick && pick.syncedLyrics) t = pick.syncedLyrics.replace(/^\[\d{2}:\d{2}(?:\.\d+)?\]\s?/gm, '');
+        if (!pick) continue;
+        if (!found) found = pick;
+        if (t && t.trim()) { text = t.trim(); found = pick; break; }
+      } catch (e) {
         if (ctrl && ctrl.signal.aborted) return;
-        body.textContent = 'Lirik belum tersedia untuk lagu ini.';
-      });
+      }
+    }
+    if (ctrl && ctrl.signal.aborted) return;
+    label.textContent = (found && (found.trackName || found.name)) || title || '';
+    body.textContent = text || 'Lirik belum tersedia untuk lagu ini.';
   }
   function syncLyrics(){
     var box = $('mLyrics'), cari = $('mz-cari'), b = $('mLyricsToggle');
