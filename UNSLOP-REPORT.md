@@ -45,6 +45,11 @@
 | 6 aksen × 2 mode | lolos, kontras teks ≥ 14.8 |
 | Halaman terkunci | kartu gate tampil rapi di desktop & mobile |
 
+## Deploy
+- Commit `fe29733` sudah di-push ke `origin/main`.
+- Vercel auto-deploy selesai: **https://privat-project.vercel.app/** (socket `clean.css?v=8`).
+- Cek produksi: 4 halaman × desktop/mobile status 200, hero tampil, `docW` = viewport, nol error JS.
+
 ## Catatan
 - File `fix*.py`, backup `index.html.before-*`, dan perubahan user yang belum di-commit tidak dihapus.
 - Sisa bold di `games.html` (45) dan `editor.html` (72) adalah teks tombol/syntax editor yang memang perlu penekanan, bukan dekorasi.
