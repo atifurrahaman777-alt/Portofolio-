@@ -15,7 +15,7 @@
 - Tab game/alat/sosial jadi katalog berindeks (`01`, `02`, …) dengan label file mono; header section memakai garis tipis.
 - Game page: nav segmen, papan & kontrol seragam; teks remaining diterjemahkan (Mudah/Sedang/Sulit, Kamu menang, Bot menang, Waktu, dll.).
 - Editor, temp mail, downloader, amfind, amprem, chat, reactch memakai satu sistem kartu, input, dan tipografi yang sama. Halaman terkunci mendapat kartu gate "Akses terbatas" yang rapi.
-- `clean.css` memakai cache-buster `?v=10` di semua halaman.
+- `clean.css` memakai cache-buster `?v=11` di semua halaman.
 
 ## Tema terang / gelap — lebih jelas
 
@@ -51,10 +51,12 @@
 - **Tab Game & Alat**: 2 kolom lebih lega, deskripsi dibatasi 2 baris, tinggi kartu seragam.
 - **Profil**: kartu dipusatkan maks. 880 px; avatar, identitas, dan aksi berjejer rapi.
 - **Chat mobile**: header yang meluber 442 px diperbaiki; 0 overflow.
+- **Regresi profil**: `#tab-profil` dulu diberi `display:flex` tanpa `.active`, sehingga kartu profil muncul di bawah semua tab. Sekarang hanya tampil saat tab aktif, `flex-direction:column`.
+- **Lencana**: kartu sebelumnya flex horizontal (ikon + judul + deskripsi sebaris) sehingga himpit ~156 px. Sekarang kartu vertikal: ikon di atas, teks di bawah; desktop 3 kolom, mobile 1 kolom. 0 overflow.
 
 ## Deploy
-- Commit `fe29733` (putaran pertama) + commit putaran terakhir di-push ke `origin/main`.
-- Vercel auto-deploy: **https://privat-project.vercel.app/** (`clean.css?v=10`).
+- Commit `fe29733`, `1e67f68`, dan commit perbaikan regresi di-push ke `origin/main`.
+- Vercel auto-deploy: **https://privat-project.vercel.app/** (`clean.css?v=11`).
 - Cek produksi: halaman utama, games, downloader, editor × desktop/mobile status 200, `docW` = viewport, nol error JS.
 
 ## Catatan

@@ -1782,8 +1782,8 @@ body:not(.light-mode) header #theme-toggle::after { content:"Gelap"; }
 #tab-pengaturan .mz-fo.sel small { color:var(--ui-on-accent); opacity:.8; }
 #tab-pengaturan .mz-tech-up { min-height:0; margin-top:12px; }
 
-/* Profil: kartu terpusat, identitas berjejer, aksi di kanan */
-#tab-profil { display:flex; justify-content:center; }
+/* Profil: hanya muncul saat tab aktif, kartu terpusat, identitas berjejer */
+#tab-profil.active { display:flex; flex-direction:column; align-items:center; }
 #tab-profil .pf { width:min(880px,100%); padding:24px; }
 #tab-profil .pf-banner { height:132px; min-height:0; }
 .pf-identity {
@@ -1803,6 +1803,20 @@ body:not(.light-mode) header #theme-toggle::after { content:"Gelap"; }
 #tab-profil .pf-stats { margin-top:20px; }
 #tab-profil .pf-tabs { margin-top:20px; }
 
+/* Lencana: kartu berdiri sendiri — ikon di atas, judul + deskripsi tidak himpit */
+#pf-lencana .pf-bd-grid { grid-template-columns:repeat(auto-fit,minmax(180px,1fr)); gap:10px; }
+.pf-bd {
+  flex-direction:column; align-items:flex-start; justify-content:flex-start;
+  gap:6px; min-height:108px; padding:12px; text-align:left; font-weight:500;
+}
+.pf-bd .pf-bi {
+  width:32px; height:32px; flex:none; display:flex; align-items:center; justify-content:center;
+  border-radius:10px; background:var(--ui-raised); color:var(--ui-accent);
+}
+.pf-bd .pf-bi .icon { width:18px; height:18px; }
+.pf-bd b { font-size:14px; font-weight:500; }
+.pf-bd small { font-size:12px; line-height:1.45; color:var(--ui-text-3); }
+
 @media (max-width:760px) {
   #tab-game.active,#tab-alat.active,#tab-sosial.active { grid-template-columns:1fr; }
   #tab-pengaturan.active { grid-template-columns:1fr; }
@@ -1812,6 +1826,10 @@ body:not(.light-mode) header #theme-toggle::after { content:"Gelap"; }
   #tab-pengaturan .mz-fo-list { grid-template-columns:1fr; }
   .pf-identity { grid-template-columns:auto minmax(0,1fr); gap:12px; }
   .pf-identity .pf-actions { grid-column:1/-1; justify-content:flex-start; }
+}
+@media (max-width:560px) {
+  #pf-lencana .pf-bd-grid { grid-template-columns:1fr; }
+  .pf-bd { min-height:0; }
 }
 /* profile-card dipakai juga di beranda (span 8) — netralkan di pengaturan */
 #tab-pengaturan>.profile-card { grid-column:auto; }
