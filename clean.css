@@ -1747,3 +1747,96 @@ body:not(.light-mode) header #theme-toggle::after { content:"Gelap"; }
   header #theme-toggle { width:36px; padding:0; }
   header #theme-toggle::after { display:none; }
 }
+
+/* ==========================================================================
+   RAPI LAGI — katalog 2 kolom, pengaturan berpasangan, profil terpusat
+   ========================================================================== */
+#tab-game.active,#tab-alat.active,#tab-sosial.active {
+  grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; align-items:stretch;
+}
+.tool-card[data-tool] { min-height:106px; }
+.tool-card[data-tool]>div { flex:1 1 auto; }
+#gchat { grid-column:1/-1; }
+
+/* Pengaturan: tema berdampingan dengan font, gaya judul penuh */
+#tab-pengaturan.active {
+  display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
+  gap:16px; align-items:start;
+}
+#tab-pengaturan>.title { grid-column:1/-1; margin-bottom:0; }
+#tab-pengaturan>.profile-card { margin:0; }
+#tab-pengaturan>.profile-card:nth-child(4) { grid-column:1/-1; }
+#tab-pengaturan>button { grid-column:1/-1; justify-self:start; margin-top:-4px; }
+#tab-pengaturan>p { grid-column:1/-1; margin-top:-8px; }
+#tab-pengaturan .mz-sw-grid { grid-template-columns:repeat(3,minmax(0,1fr)); }
+#tab-pengaturan .mz-fo-list { grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }
+#tab-pengaturan .mz-fo {
+  flex-direction:column; align-items:flex-start; justify-content:center;
+  min-height:58px; padding:8px 12px; text-align:left; gap:2px;
+}
+#tab-pengaturan .mz-fo b { font-weight:500; font-size:14px; }
+#tab-pengaturan .mz-fo small {
+  display:block; width:100%; overflow:hidden; text-overflow:ellipsis; white-space:nowrap;
+  font-size:11px; color:var(--ui-text-3);
+}
+#tab-pengaturan .mz-fo.sel small { color:var(--ui-on-accent); opacity:.8; }
+#tab-pengaturan .mz-tech-up { min-height:0; margin-top:12px; }
+
+/* Profil: kartu terpusat, identitas berjejer, aksi di kanan */
+#tab-profil { display:flex; justify-content:center; }
+#tab-profil .pf { width:min(880px,100%); padding:24px; }
+#tab-profil .pf-banner { height:132px; min-height:0; }
+.pf-identity {
+  position:relative; display:grid; grid-template-columns:auto minmax(0,1fr) auto;
+  gap:16px; align-items:end; margin:-40px 0 0; padding:0 6px;
+}
+.pf-identity .pf-av {
+  width:76px; height:76px; z-index:1; border:4px solid var(--ui-surface);
+}
+.pf-identity .pf-id { min-width:0; margin:0; }
+.pf-identity .pf-name { overflow-wrap:anywhere; }
+.pf-identity .pf-actions { justify-content:flex-end; }
+#tab-profil .pf-bio,#tab-profil .pf-chip,#tab-profil .pf-hint,#tab-profil #pfBody {
+  margin-left:6px; margin-right:6px;
+}
+#tab-profil .pf-bio { margin-top:20px; }
+#tab-profil .pf-stats { margin-top:20px; }
+#tab-profil .pf-tabs { margin-top:20px; }
+
+@media (max-width:760px) {
+  #tab-game.active,#tab-alat.active,#tab-sosial.active { grid-template-columns:1fr; }
+  #tab-pengaturan.active { grid-template-columns:1fr; }
+  #tab-pengaturan>.profile-card:nth-child(4),
+  #tab-pengaturan>button,#tab-pengaturan>p { grid-column:auto; }
+  #tab-pengaturan .mz-sw-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+  #tab-pengaturan .mz-fo-list { grid-template-columns:1fr; }
+  .pf-identity { grid-template-columns:auto minmax(0,1fr); gap:12px; }
+  .pf-identity .pf-actions { grid-column:1/-1; justify-content:flex-start; }
+}
+/* profile-card dipakai juga di beranda (span 8) — netralkan di pengaturan */
+#tab-pengaturan>.profile-card { grid-column:auto; }
+
+/* Perbaikan penting: panel game/amprem muncul saat atribut hidden dicabut */
+.ocean-view:not([hidden]) { display:block; }
+.tool-card p {
+  display:-webkit-box; -webkit-box-orient:vertical; -webkit-line-clamp:2; overflow:hidden;
+}
+
+/* Chat di layar kecil: header tidak melebar, tombol tetap terpakai */
+.gc-title { font-weight:500; }
+@media (max-width:560px) {
+  .gc {
+    width:100%; margin:0 auto; height:100dvh;
+    border-left:0; border-right:0; border-radius:0;
+  }
+  .gc-head,.gc-bar { gap:5px; padding:8px 10px; }
+  #gc-back,#gc-bell { display:none; }
+  .gc-ib { width:38px!important; min-width:38px!important; padding:0!important; }
+  .gc-bar .gc-ib { width:34px!important; min-width:34px!important; }
+  .gc-title { flex:1 1 auto; min-width:0; font-size:14px; }
+  .gc-title span { display:none; }
+  #gc-me { flex:0 0 auto; }
+  #gc-me .gc-av { width:32px; height:32px; }
+  #gc-input { min-width:0; }
+  .gc-act { padding:0 12px!important; }
+}

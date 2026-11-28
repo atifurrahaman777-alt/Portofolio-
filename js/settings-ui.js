@@ -41,7 +41,7 @@
       var name = document.createElement('b');
       name.textContent = f.n;
       var sm = document.createElement('small');
-      sm.textContent = 'Aa Bb Cc 123 - Santai dulu, main game.';
+      sm.textContent = 'Aa Bb Cc 123';
       if (f.css) { name.style.fontFamily = f.css; sm.style.fontFamily = f.css; }
       b.append(name, sm);
       b.addEventListener('click', function(){ S.set({font: f.id}); render(); });

@@ -15,7 +15,7 @@
 - Tab game/alat/sosial jadi katalog berindeks (`01`, `02`, …) dengan label file mono; header section memakai garis tipis.
 - Game page: nav segmen, papan & kontrol seragam; teks remaining diterjemahkan (Mudah/Sedang/Sulit, Kamu menang, Bot menang, Waktu, dll.).
 - Editor, temp mail, downloader, amfind, amprem, chat, reactch memakai satu sistem kartu, input, dan tipografi yang sama. Halaman terkunci mendapat kartu gate "Akses terbatas" yang rapi.
-- `clean.css` memakai cache-buster `?v=8` di semua halaman.
+- `clean.css` memakai cache-buster `?v=10` di semua halaman.
 
 ## Tema terang / gelap — lebih jelas
 
@@ -45,10 +45,17 @@
 | 6 aksen × 2 mode | lolos, kontras teks ≥ 14.8 |
 | Halaman terkunci | kartu gate tampil rapi di desktop & mobile |
 
+## Putaran terakhir (preview → push)
+- **Game**: panel `.ocean-view` ternyata tetap `display:none` karena JS hanya mencabut `hidden`, tidak menambah `.active`. Diperbaiki dengan `.ocean-view:not([hidden]) { display:block }`; 10 game sekarang benar-benar tampil.
+- **Pengaturan**: `.profile-card` mewarisi `grid-column:span 8` dari beranda sehingga grid pecah. Dinetralkan di `#tab-pengaturan`; tema + font jadi 2 kolom, gaya judul penuh lebar, preview font disingkat.
+- **Tab Game & Alat**: 2 kolom lebih lega, deskripsi dibatasi 2 baris, tinggi kartu seragam.
+- **Profil**: kartu dipusatkan maks. 880 px; avatar, identitas, dan aksi berjejer rapi.
+- **Chat mobile**: header yang meluber 442 px diperbaiki; 0 overflow.
+
 ## Deploy
-- Commit `fe29733` sudah di-push ke `origin/main`.
-- Vercel auto-deploy selesai: **https://privat-project.vercel.app/** (socket `clean.css?v=8`).
-- Cek produksi: 4 halaman × desktop/mobile status 200, hero tampil, `docW` = viewport, nol error JS.
+- Commit `fe29733` (putaran pertama) + commit putaran terakhir di-push ke `origin/main`.
+- Vercel auto-deploy: **https://privat-project.vercel.app/** (`clean.css?v=10`).
+- Cek produksi: halaman utama, games, downloader, editor × desktop/mobile status 200, `docW` = viewport, nol error JS.
 
 ## Catatan
 - File `fix*.py`, backup `index.html.before-*`, dan perubahan user yang belum di-commit tidak dihapus.
