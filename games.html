@@ -8,7 +8,7 @@
 
 <title>Games | Mann'zz Tools</title>
 <link rel="manifest" href="/manifest.json?v=20"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=20"><link rel="icon" type="image/png" href="icon-192.png?v=20">
-<link rel="stylesheet" href="/clean.css?v=3">
+<link rel="stylesheet" href="/clean.css?v=8">
 <style id="mz-state-contract">
 :is(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
 button:hover,a:hover{background:var(--ui-raised)}
@@ -28,7 +28,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.5;curs
 </header>
 
 <section class="hero">
-<div class="eyebrow">MINI GAMES</div>
+<div class="eyebrow">Game mini</div>
 <h1>Santai dulu,<br><span class="accent">main game.</span></h1>
 <p class="sub">Koleksi mini game ringan buat ngabisin waktu. Semua jalan langsung di browser.</p>
 </section>
@@ -51,21 +51,21 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.5;curs
 <section class="card game-box ocean-view" id="view-ttt" data-view="ttt">
 <h2 style="text-align:center;margin-top:0">Tic Tac Toe vs Bot</h2>
 <div class="game-controls">
-<button type="button" class="btn" data-diff="easy">Easy</button>
-<button type="button" class="btn" data-diff="medium">Medium</button>
-<button type="button" class="btn" data-diff="hard">Hard</button>
+<button type="button" class="btn" data-diff="easy">Mudah</button>
+<button type="button" class="btn" data-diff="medium">Sedang</button>
+<button type="button" class="btn" data-diff="hard">Sulit</button>
 </div>
 <div class="ttt-board" id="ttt-board"></div>
-<p class="ttt-status" id="ttt-status">Pick a difficulty to start.</p>
+<p class="ttt-status" id="ttt-status">Pilih tingkat kesulitan untuk mulai.</p>
 <div style="text-align:center"><button type="button" class="btn" id="ttt-reset">Reset</button></div>
 </section>
 
 <!-- WHACK A MOLE -->
 <section class="card game-box ocean-view" id="view-wam" data-view="wam" hidden>
 <h2 style="text-align:center;margin-top:0">Whack-a-Mole</h2>
-<div class="wam-top"><span id="wam-score">Score: 0</span><span id="wam-time">Time: 30s</span></div>
+<div class="wam-top"><span id="wam-score">Skor: 0</span><span id="wam-time">Waktu: 30 dtk</span></div>
 <div class="wam-grid" id="wam-grid"></div>
-<div style="text-align:center;margin-top:16px"><button type="button" class="btn" id="wam-start">Start</button></div>
+<div style="text-align:center;margin-top:16px"><button type="button" class="btn" id="wam-start">Mulai</button></div>
 </section>
 
 <!-- REACTION TIME -->
@@ -252,7 +252,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     if (winner) {
       gameOver = true;
       if (winner === 'draw') statusEl.textContent = "It's a draw!";
-      else statusEl.innerHTML = winner === 'X' ? 'You win! <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>' : 'Bot wins!';
+      else statusEl.innerHTML = winner === 'X' ? 'Kamu menang! <svg viewBox="0 0 24 24" style="width:1em;height:1em;display:inline-block;vertical-align:-0.15em;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round"><path d="M12 2v4M12 18v4M2 12h4M18 12h4M4.9 4.9l2.8 2.8M16.3 16.3l2.8 2.8M4.9 19.1l2.8-2.8M16.3 7.7l2.8-2.8"/></svg>' : 'Bot menang.';
       return true;
     }
     return false;
@@ -263,11 +263,11 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     board[i] = 'X';
     render();
     if (endCheck()) return;
-    statusEl.textContent = 'Bot thinking...';
+    statusEl.textContent = 'Bot sedang berpikir...';
     setTimeout(() => {
       botMove();
       render();
-      if (!endCheck()) statusEl.textContent = 'Your turn.';
+      if (!endCheck()) statusEl.textContent = 'Giliranmu.';
     }, 300);
   }
 
@@ -276,14 +276,14 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     diffBtns.forEach(x => x.classList.toggle('active', x === b));
     board = Array(9).fill(null);
     gameOver = false;
-    statusEl.textContent = `Mode: ${difficulty[0].toUpperCase()+difficulty.slice(1)}. Your turn.`;
+    statusEl.textContent = `Mode: ${difficulty[0].toUpperCase()+difficulty.slice(1)}. Giliranmu.`;
     render();
   }));
 
   resetBtn.addEventListener('click', () => {
     board = Array(9).fill(null);
     gameOver = false;
-    statusEl.textContent = difficulty ? 'Your turn.' : 'Pick a difficulty to start.';
+    statusEl.textContent = difficulty ? 'Giliranmu.' : 'Pilih tingkat kesulitan dulu.';
     render();
   });
 
@@ -305,7 +305,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     h.addEventListener('pointerdown', () => {
       if (h.classList.contains('up')) {
         score++;
-        scoreEl.textContent = 'Score: ' + score;
+        scoreEl.textContent = 'Skor: ' + score;
         h.classList.remove('up');
         h.textContent = '';
       }
@@ -326,13 +326,13 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
     running = true;
     score = 0;
     timeLeft = 30;
-    scoreEl.textContent = 'Score: 0';
-    timeEl.textContent = 'Time: 30s';
+    scoreEl.textContent = 'Skor: 0';
+    timeEl.textContent = 'Waktu: 30 dtk';
     startBtn.disabled = true;
     moleTimer = setInterval(popRandom, 700);
     countdown = setInterval(() => {
       timeLeft--;
-      timeEl.textContent = 'Time: ' + timeLeft + 's';
+      timeEl.textContent = 'Waktu: ' + timeLeft + ' dtk';
       if (timeLeft <= 0) stop();
     }, 1000);
   }
@@ -785,7 +785,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
       return false;
     }
     function check(){
-      if (!canMove()) { over = true; msg.textContent = 'Game over! Skor: ' + score; return; }
+      if (!canMove()) { over = true; msg.textContent = 'Permainan selesai. Skor: ' + score; return; }
       for (var r = 0; r < 4; r++) for (var c = 0; c < 4; c++) if (g[r][c] === 2048) { msg.textContent = 'Kamu dapat 2048! Lanjut terus.'; return; }
     }
     function render(){
@@ -938,7 +938,7 @@ gtabs.forEach(t => t.addEventListener('click', () => showGame(t.dataset.gameTab)
       var eat = (h.x === food.x && h.y === food.y);
       var body = eat ? snake : snake.slice(0, -1);
       var hit = body.some(function(s){ return s.x === h.x && s.y === h.y; });
-      if (hit) { stop('Game over! Kamu menabrak dirimu sendiri. Skor: ' + score); return false; }
+      if (hit) { stop('Permainan selesai. Kamu menabrak dirimu sendiri. Skor: ' + score); return false; }
       prev = snake.slice();
       snake.unshift(h);
       if (eat) {

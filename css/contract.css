@@ -1,0 +1,4 @@
+:is(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
+button:hover,a:hover{background:var(--ui-raised)}
+button:active,a:active{transform:none}
+button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.5;cursor:not-allowed}

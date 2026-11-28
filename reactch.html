@@ -7,7 +7,7 @@
   root.style.visibility = 'hidden';
   var CFG = {apiKey:"AIzaSyArfUhdOVfyIsjKjfD_9BkbixxNa6XRvsM",authDomain:"manz-web.firebaseapp.com",projectId:"manz-web",appId:"1:178479215158:web:265819c21836b2116f5e97"};
   function lock(msg){
-    document.body.innerHTML = '<div style="max-width:420px;margin:18vh auto;padding:24px;text-align:center;font-family:system-ui,sans-serif"><h2>Masuk dulu</h2><p>' + msg + '</p><a href="/" style="display:inline-block;margin-top:12px;padding:12px 20px;border-radius:10px;background:var(--ui-surface-2);color:var(--ui-text);text-decoration:none;font-weight:500">Ke beranda</a></div>';
+    document.body.innerHTML = '<div class="gate-screen"><div class="gate-card"><div class="gate-mark"><svg viewBox="0 0 24 24" class="icon"><rect x="5" y="11" width="14" height="9" rx="2"/><path d="M8 11V8a4 4 0 018 0v3"/></svg></div><span class="gate-kicker">Akses terbatas</span><h1 class="gate-title">Masuk dulu untuk lanjut</h1><p class="gate-msg">' + msg + '</p><div class="gate-actions"><a class="btn primary" href="/#masuk">Masuk ke akun</a><a class="btn" href="/">Ke beranda</a></div><p class="gate-note">Tamu tetap bisa memakai Game dan Musik.</p></div></div>';
     root.style.visibility = 'visible';
   }
   function load(src, cb){
@@ -41,7 +41,7 @@
 <title>React Channel | Mann'zz Tools</title>
 
 <link rel="manifest" href="/manifest.json?v=20"><meta name="theme-color" content="#0d1117"><link rel="apple-touch-icon" href="/icon-192.png?v=20"><link rel="icon" type="image/png" href="icon-192.png?v=20">
-<link rel="stylesheet" href="/clean.css?v=3">
+<link rel="stylesheet" href="/clean.css?v=8">
 <style id="mz-state-contract">
 :is(a,button,input,select,textarea,[role="button"]):focus-visible{outline:2px solid var(--ui-accent);outline-offset:2px}
 button:hover,a:hover{background:var(--ui-raised)}
@@ -61,7 +61,7 @@ button:disabled,input:disabled,select:disabled,textarea:disabled{opacity:.5;curs
 </header>
 
 <section class="hero">
-<div class="eyebrow">WHATSAPP TOOLS</div>
+<div class="eyebrow">Alat WhatsApp</div>
 <h1>React ke post<br><span class="accent">channel WhatsApp.</span></h1>
 <p class="sub">Tempel link post channel WhatsApp dan pilih emoji, lalu kirim reaksi langsung.</p>
 </section>
